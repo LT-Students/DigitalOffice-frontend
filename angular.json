@@ -178,7 +178,6 @@
       }
     }
   },
-  "defaultProject": "DigitalOffice-frontend",
   "cli": {
     "analytics": "b9acfdf8-e7dd-4c29-8c52-f140c5a3acbf"
   }

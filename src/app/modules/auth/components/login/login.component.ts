@@ -1,7 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import {
+	UntypedFormBuilder,
+	UntypedFormControl,
+	UntypedFormGroup,
+	FormGroupDirective,
+	NgForm,
+	Validators,
+} from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
@@ -13,7 +20,7 @@ import { LoadingState } from '@app/utils/loading-state';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class LoginErrorMatcher implements ErrorStateMatcher {
-	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		return !!form?.hasError('login');
 	}
 }
@@ -28,12 +35,12 @@ class LoginErrorMatcher implements ErrorStateMatcher {
 export class LoginComponent extends LoadingState implements OnInit {
 	public AuthRoutes = AuthRoutes;
 
-	public loginForm: FormGroup;
+	public loginForm: UntypedFormGroup;
 
 	constructor(
 		private authService: AuthService,
 		private router: Router,
-		private formBuilder: FormBuilder,
+		private formBuilder: UntypedFormBuilder,
 		private route: ActivatedRoute
 	) {
 		super();

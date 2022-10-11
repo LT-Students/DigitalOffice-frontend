@@ -20,7 +20,7 @@ import { UserService } from '@app/services/user/user.service';
 import { WithPagination } from '@app/types/find-request.interface';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
 interface FindUsersParams extends WithPagination {
@@ -37,7 +37,7 @@ export class UserListService {
 
 	private statusChange = new BehaviorSubject<Status>('active');
 	public statusChange$ = this.statusChange.asObservable();
-	public nameControl = new FormControl('');
+	public nameControl = new UntypedFormControl('');
 
 	private skipCount$ = new BehaviorSubject<number>(0);
 

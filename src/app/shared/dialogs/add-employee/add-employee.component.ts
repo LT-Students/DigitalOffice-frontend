@@ -5,7 +5,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { debounceTime, map, takeUntil, tap } from 'rxjs/operators';
 import { FilterService, FilterUsersRequest } from '@app/services/filter/filter.service';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 export enum OpenAddEmployeeModalFrom {
@@ -44,7 +44,7 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 		private filterService: FilterService,
 		private cdr: ChangeDetectorRef,
 		private dialogRef: MatDialogRef<AddEmployeeComponent>,
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		@Inject(MAT_DIALOG_DATA)
 		private _data: { idToHide: string[]; pageId: string; openFrom: OpenAddEmployeeModalFrom; moduleName: string }
 	) {

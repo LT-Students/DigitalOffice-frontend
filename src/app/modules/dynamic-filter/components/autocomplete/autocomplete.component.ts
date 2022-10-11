@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AutocompleteFilterParams, Filter } from '../../models';
@@ -25,7 +25,7 @@ import { AutocompleteFilterParams, Filter } from '../../models';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutocompleteComponent implements OnInit, OnDestroy, Filter<AutocompleteFilterParams<any>> {
-	public control = new FormControl(null);
+	public control = new UntypedFormControl(null);
 	public params!: AutocompleteFilterParams<any>;
 	private destroy$ = new Subject<void>();
 

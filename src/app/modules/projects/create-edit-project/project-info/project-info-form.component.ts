@@ -8,7 +8,7 @@ import {
 	Self,
 	ChangeDetectorRef,
 } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormBuilder, NgControl, ValidationErrors } from '@angular/forms';
 import { DepartmentInfo as ProjectDepartmentInfo } from '@api/project-service/models/department-info';
 import { DepartmentService } from '@app/services/department/department.service';
 import { Subject } from 'rxjs';
@@ -47,7 +47,7 @@ export class ProjectInfoFormComponent implements OnInit, OnDestroy, ControlValue
 	public departmentAutocompleteConfig = this.autocompleteConfigs.getDepartmentsConfig();
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private departmentService: DepartmentService,
 		@Optional() @Self() private ngControl: NgControl,
 		private cdr: ChangeDetectorRef,

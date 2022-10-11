@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
@@ -45,7 +45,7 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		private _formBuilder: FormBuilder,
+		private _formBuilder: UntypedFormBuilder,
 		private _userService: UserService,
 		private dialogRef: MatDialogRef<any>,
 		private _rightsService: RightsService,
@@ -117,7 +117,7 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 			});
 	}
 
-	private initForm(): FormGroup {
+	private initForm(): UntypedFormGroup {
 		return this._formBuilder.group({
 			lastName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			firstName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],

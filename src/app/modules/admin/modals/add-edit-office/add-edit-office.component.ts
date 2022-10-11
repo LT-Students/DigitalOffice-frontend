@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { OfficeService } from '@app/services/company/office.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DoValidators } from '@app/validators/do-validators';
@@ -20,7 +20,7 @@ import { finalize } from 'rxjs/operators';
 export class AddEditOfficeComponent {
 	public EditPath = OfficePath;
 
-	public officeForm: FormGroup;
+	public officeForm: UntypedFormGroup;
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	private readonly _officeInfo?: InitialDataEditRequest<OfficePath> & { id: UUID };
@@ -28,7 +28,7 @@ export class AddEditOfficeComponent {
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) officeInfo: Required<OfficeInfo>,
-		private _fb: FormBuilder,
+		private _fb: UntypedFormBuilder,
 		private _officeService: OfficeService,
 		private _dialogRef: MatDialogRef<AddEditOfficeComponent>
 	) {
@@ -36,7 +36,10 @@ export class AddEditOfficeComponent {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 
 		this.officeForm = this._fb.group({
-			[OfficePath.CITY]: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.matchMaxLength(200)]],
+			[OfficePath.CITY]: [
+				'',
+				[Validators.required, DoValidators.noWhitespaces, DoValidators.matchMaxLength(200)],
+			],
 			[OfficePath.ADDRESS]: ['', [Validators.required, DoValidators.noWhitespaces]],
 			[OfficePath.NAME]: ['', [DoValidators.noWhitespaces]],
 		});

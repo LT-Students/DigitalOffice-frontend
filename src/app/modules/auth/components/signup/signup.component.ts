@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 import { catchError, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
@@ -30,13 +30,13 @@ export class SignupComponent extends LoadingState implements OnInit {
 		private currentUserService: CurrentUserService,
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		private fb: FormBuilder
+		private fb: UntypedFormBuilder
 	) {
 		super();
 	}
 
 	public ngOnInit(): void {
-		this.hintValidations$ = (this.loginForm.get('login') as FormControl).valueChanges.pipe(
+		this.hintValidations$ = (this.loginForm.get('login') as UntypedFormControl).valueChanges.pipe(
 			startWith(''),
 			map((value: string) => [
 				{ label: 'не менее 5 символов', valid: value.length >= 5 },

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DateTime } from 'luxon';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { filter, finalize, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
 import { EMPTY_GUID, isGUIDEmpty } from '@app/utils/utils';
@@ -26,7 +26,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 	public projectOptions$ = this.getProjectOptions$();
 	public monthOptions = this.getMonthOptions();
 	public addHoursForm = this.initForm();
-	public dateControl = new FormControl(DateTime.now());
+	public dateControl = new UntypedFormControl(DateTime.now());
 	private wasProjectPreviouslySelected = false;
 	private destroy$ = new Subject();
 
@@ -34,7 +34,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		return this.addHoursForm.get('project')?.value as ProjectOption;
 	}
 
-	constructor(private fb: FormBuilder, private attendanceService: AttendanceService) {
+	constructor(private fb: UntypedFormBuilder, private attendanceService: AttendanceService) {
 		super();
 	}
 
@@ -90,7 +90,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		return now.year === date.year && now.month === date.month;
 	}
 
-	private initForm(): FormGroup {
+	private initForm(): UntypedFormGroup {
 		return this.fb.group({
 			time: ['', [DoValidators.required, DoValidators.min(0), DoValidators.max(744), DoValidators.intNum]],
 			project: [null, DoValidators.required],
@@ -128,7 +128,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 	public patchWorkTimeInfoIntoForm(): void {
 		const project = this.project;
 		const isOtherOptionSelected = isGUIDEmpty(project.projectId);
-		const commentControl = this.addHoursForm.get('comment') as FormControl;
+		const commentControl = this.addHoursForm.get('comment') as UntypedFormControl;
 
 		if (isOtherOptionSelected) {
 			commentControl.addValidators(DoValidators.required);

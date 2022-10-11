@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from '@app/models/user/user.model';
 import { DoValidators } from '@app/validators/do-validators';
 import { DateFormat } from '@app/types/date.enum';
@@ -37,7 +37,7 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) data: Observable<User>,
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private userService: UserService,
 		private employeePage: EmployeePageService,
 		private permission: PermissionService,
@@ -49,7 +49,7 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 
 	ngOnInit(): void {}
 
-	private initForm(): FormGroup {
+	private initForm(): UntypedFormGroup {
 		return this.fb.group({
 			[UserPath.FIRST_NAME]: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			[UserPath.LAST_NAME]: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -13,14 +13,14 @@ import { EmailValue } from '@shared/dialogs/user-recovery/email-item/email-item.
 @Injectable()
 export class UserRecoveryService {
 	private userId!: string;
-	public form!: FormArray;
+	public form!: UntypedFormArray;
 	public isPending = false;
 	public emailForRecovery$ = new BehaviorSubject<CommunicationInfo | null>(null);
 
 	constructor(
 		private userService: UserService,
 		private communicationService: CommunicationService,
-		private fb: FormBuilder
+		private fb: UntypedFormBuilder
 	) {}
 
 	public setInitialData(userId: string, emails: CommunicationInfo[], isPending: boolean): void {
@@ -35,7 +35,7 @@ export class UserRecoveryService {
 	}
 
 	public recover$(): Observable<OperationResultResponse> {
-		const selectedControl = this.form.controls.find((c: AbstractControl) => c.value.checked) as FormControl;
+		const selectedControl = this.form.controls.find((c: AbstractControl) => c.value.checked) as UntypedFormControl;
 		const recoverEmail = selectedControl.value as EmailValue;
 
 		return (

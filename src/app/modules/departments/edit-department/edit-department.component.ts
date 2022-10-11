@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DoValidators } from '@app/validators/do-validators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NavigationService } from '@app/services/navigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@app/services/dialog.service';
@@ -26,7 +26,7 @@ interface FormValue {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditDepartmentComponent extends LoadingState implements OnInit {
-	public form!: FormGroup;
+	public form!: UntypedFormGroup;
 
 	public department$ = this.departmentPageState.department$;
 	get departmentFirstValue$(): Observable<Department> {
@@ -34,7 +34,7 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 	}
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private navigation: NavigationService,
 		private route: ActivatedRoute,
 		private router: Router,

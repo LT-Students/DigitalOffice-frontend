@@ -8,7 +8,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Icons } from '@shared/modules/icons/icons';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
@@ -23,14 +23,14 @@ export class OfficeListComponent implements AfterViewInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
-	public filters: FormGroup;
+	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: DialogService,
 		private _officeService: OfficeService,
 		private _route: ActivatedRoute,
-		private _fb: FormBuilder
+		private _fb: UntypedFormBuilder
 	) {
 		this.filters = this._fb.group({
 			showDeactivated: [false],

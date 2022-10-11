@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DateTime, Interval } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
@@ -21,7 +21,7 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public leaveTime: LeaveTime,
 		private dialogRef: MatDialogRef<EditLeaveComponent>,
-		fb: FormBuilder,
+		fb: UntypedFormBuilder,
 		attendanceService: AttendanceService
 	) {
 		super(fb, attendanceService);

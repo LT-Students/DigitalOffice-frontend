@@ -8,7 +8,7 @@ import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Icons } from '@shared/modules/icons/icons';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
@@ -24,14 +24,14 @@ export class ManageRolesComponent implements AfterViewInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
-	public filters: FormGroup;
+	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: DialogService,
 		private _rightsService: RightsService,
 		private _route: ActivatedRoute,
-		private _fb: FormBuilder
+		private _fb: UntypedFormBuilder
 	) {
 		this.filters = this._fb.group({
 			showDeactivated: [false],

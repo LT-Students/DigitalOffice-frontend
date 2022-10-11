@@ -7,7 +7,7 @@ import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PositionInfo } from '@api/position-service/models/position-info';
 import { Icons } from '@shared/modules/icons/icons';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
@@ -23,14 +23,14 @@ export class PositionListComponent implements AfterViewInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public positions$!: Observable<OperationResultResponse<IPositionInfo[]>>;
-	public filters: FormGroup;
+	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: DialogService,
 		private _positionService: PositionService,
 		private _route: ActivatedRoute,
-		private _fb: FormBuilder
+		private _fb: UntypedFormBuilder
 	) {
 		this.filters = this._fb.group({
 			showDeactivated: [false],

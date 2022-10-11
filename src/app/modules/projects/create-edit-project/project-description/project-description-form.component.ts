@@ -7,7 +7,7 @@ import {
 	Self,
 	ChangeDetectorRef,
 } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormBuilder, NgControl, ValidationErrors } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { DoValidators } from '@app/validators/do-validators';
@@ -31,7 +31,7 @@ export class ProjectDescriptionFormComponent implements OnInit, OnDestroy, Contr
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		@Optional() @Self() private ngControl: NgControl,
 		private cdr: ChangeDetectorRef
 	) {

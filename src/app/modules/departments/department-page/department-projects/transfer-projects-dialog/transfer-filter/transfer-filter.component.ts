@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { DataSourceFilterBase } from '@app/types/do-table-data-source';
 import { Icons } from '@shared/modules/icons/icons';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
@@ -38,7 +38,7 @@ export class TransferFilterComponent implements OnInit, OnDestroy, DataSourceFil
 
 	private subscription!: Subscription;
 
-	constructor(private fb: FormBuilder, private autocompleteConfigs: AutocompleteConfigsService) {}
+	constructor(private fb: UntypedFormBuilder, private autocompleteConfigs: AutocompleteConfigsService) {}
 
 	public ngOnInit(): void {
 		this.subscription = this.form.valueChanges.pipe(debounceTime(300)).subscribe({

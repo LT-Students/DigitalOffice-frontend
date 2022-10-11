@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Filter } from '../../models/filter';
 import { SelectFilterParams } from '../../models/select';
@@ -30,7 +30,7 @@ import { SelectFilterParams } from '../../models/select';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent implements OnInit, OnDestroy, Filter<SelectFilterParams<any>> {
-	public control = new FormControl('');
+	public control = new UntypedFormControl('');
 	private subscription!: Subscription;
 	public params!: SelectFilterParams<any>;
 	private onChange = () => {};

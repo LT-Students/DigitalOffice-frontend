@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,7 @@ export class TransferProjectsDialogComponent implements OnInit, OnDestroy {
 	public subscription!: Subscription;
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private tableConfig: TableConfigService,
 		private apiService: DepartmentProjectsApiService,
 		private route: ActivatedRoute,

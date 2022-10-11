@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { AlertService } from '@app/services/alert.service';
@@ -14,7 +14,7 @@ import { AddEditLeaveHoursBase } from './add-edit-leave-hours-base';
 	providers: [{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
 export class AddLeaveHoursComponent extends AddEditLeaveHoursBase {
-	constructor(private alert: AlertService, fb: FormBuilder, attendanceService: AttendanceService) {
+	constructor(private alert: AlertService, fb: UntypedFormBuilder, attendanceService: AttendanceService) {
 		super(fb, attendanceService);
 	}
 

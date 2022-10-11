@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { Icons } from '@shared/modules/icons/icons';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
 import { EditableTextFieldParams } from './editable-text-field.component';
@@ -69,7 +69,7 @@ import { EditableTextFieldParams } from './editable-text-field.component';
 export class EditableTimeComponent implements OnInit, TableCell<number> {
 	public readonly Icons = Icons;
 
-	public control = new FormControl(null, [Validators.required, Validators.min(0), Validators.max(744)]);
+	public control = new UntypedFormControl(null, [Validators.required, Validators.min(0), Validators.max(744)]);
 
 	public set value(v: number) {
 		this.control.setValue(v, { emitEvent: false });

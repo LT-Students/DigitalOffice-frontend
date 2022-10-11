@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommunicationType } from '@api/user-service/models';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { finalize } from 'rxjs/operators';
@@ -26,17 +26,17 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 
 	private subscription!: Subscription;
 
-	private get typeControl(): FormControl {
-		return this.contactForm.get('type') as FormControl;
+	private get typeControl(): UntypedFormControl {
+		return this.contactForm.get('type') as UntypedFormControl;
 	}
 
-	private get valueControl(): FormControl {
-		return this.contactForm.get('value') as FormControl;
+	private get valueControl(): UntypedFormControl {
+		return this.contactForm.get('value') as UntypedFormControl;
 	}
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public employeeId: string,
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private dialogRef: MatDialogRef<AddContactComponent>,
 		private communicationService: CommunicationService
 	) {

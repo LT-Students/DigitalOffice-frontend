@@ -12,8 +12,8 @@ import { Icons } from '@shared/modules/icons/icons';
 import {
 	AbstractControl,
 	ControlValueAccessor,
-	FormBuilder,
-	FormControl,
+	UntypedFormBuilder,
+	UntypedFormControl,
 	FormGroupDirective,
 	NgControl,
 	ValidationErrors,
@@ -28,7 +28,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { ProjectStatus } from '../../models/project-status';
 
 class EndDateErrorMatcher implements ErrorStateMatcher {
-	public isErrorState(control: FormControl | null, form: FormGroupDirective | null): boolean {
+	public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | null): boolean {
 		return !!control?.invalid || !!form?.hasError('invalidDuration');
 	}
 }
@@ -74,14 +74,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 	);
 	private initialEndDate: DateTime | null = null;
 
-	private get endDateControl(): FormControl {
-		return this.form.get('endDate') as FormControl;
+	private get endDateControl(): UntypedFormControl {
+		return this.form.get('endDate') as UntypedFormControl;
 	}
 
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		@Optional() @Self() private ngControl: NgControl,
 		private cdr: ChangeDetectorRef
 	) {

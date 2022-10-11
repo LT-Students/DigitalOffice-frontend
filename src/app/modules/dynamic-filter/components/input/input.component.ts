@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Filter, InputFilterParams } from '../../models';
 
@@ -28,7 +28,7 @@ import { Filter, InputFilterParams } from '../../models';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent implements OnInit, OnDestroy, Filter<InputFilterParams> {
-	public control = new FormControl('');
+	public control = new UntypedFormControl('');
 	private subscription!: Subscription;
 	public params?: InputFilterParams;
 	private onChange = () => {};
