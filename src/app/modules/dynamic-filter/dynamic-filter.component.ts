@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { FilterDef } from './models';
@@ -26,14 +26,14 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
 	}
 	private _filters: FilterDef[] = [];
 
-	public form!: FormGroup;
+	public form!: UntypedFormGroup;
 	private filterSubscription!: Subscription;
 
 	public get value(): FilterEvent {
 		return this.filterBlankProps(this.form.getRawValue());
 	}
 
-	constructor(private fb: FormBuilder) {}
+	constructor(private fb: UntypedFormBuilder) {}
 
 	public ngOnInit(): void {
 		const group = this.filters.reduce(

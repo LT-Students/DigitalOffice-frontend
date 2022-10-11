@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Optional, Self, OnDestroy, Input } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { takeUntil } from 'rxjs/operators';
@@ -53,7 +53,7 @@ export class TimeInputComponent implements OnInit, OnDestroy, ControlValueAccess
 	private static uniqueId = 0;
 	public readonly Icons = Icons;
 
-	public control = new FormControl(null);
+	public control = new UntypedFormControl(null);
 	public readonly stateChanges = new Subject<void>();
 	public readonly destroy$ = new Subject<void>();
 	public readonly controlType = 'time-input';

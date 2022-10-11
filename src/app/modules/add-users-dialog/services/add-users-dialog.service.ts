@@ -1,6 +1,6 @@
 import { Injectable, ViewContainerRef } from '@angular/core';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { MatDialogRef } from '@angular/material/dialog';
 import { AddUsersDialogComponent } from '../add-users-dialog.component';
 import { AddUsersDialogData } from '../models/models';
 

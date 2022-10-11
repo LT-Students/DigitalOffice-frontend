@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, Observable, of, Subject, timer } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { debounce, finalize, map, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
@@ -40,8 +40,8 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 	public dataSource!: AddUsersDataSource;
 	public tableData!: TableOptions;
 
-	public searchControl = new FormControl(null);
-	public toggleControl = new FormControl(false);
+	public searchControl = new UntypedFormControl(null);
+	public toggleControl = new UntypedFormControl(false);
 	private destroy$ = new Subject<void>();
 
 	constructor(

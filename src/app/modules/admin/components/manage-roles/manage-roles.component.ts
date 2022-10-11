@@ -8,7 +8,7 @@ import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Icons } from '@shared/modules/icons/icons';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
@@ -19,19 +19,18 @@ import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.c
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	public readonly Icons = Icons;
 
-	@ViewChild(MatPaginator) paginator!: MatPaginator;
-
 	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
-	public filters: FormGroup;
+	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: DialogService,
 		private _rightsService: RightsService,
 		private _route: ActivatedRoute,
-		private _fb: FormBuilder
+		private _fb: UntypedFormBuilder
 	) {
 		this.filters = this._fb.group({
 			showDeactivated: [false],
@@ -64,7 +63,7 @@ export class ManageRolesComponent implements AfterViewInit {
 			.openModal<AddEditRoleComponent>(AddEditRoleComponent, ModalWidth.M, roleInfo)
 			.afterClosed()
 			.subscribe({
-				next: (result) => {
+				next: () => {
 					this._refreshCurrentPage$$.next(true);
 				},
 			});
@@ -90,7 +89,7 @@ export class ManageRolesComponent implements AfterViewInit {
 					);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
@@ -115,7 +114,7 @@ export class ManageRolesComponent implements AfterViewInit {
 					);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}

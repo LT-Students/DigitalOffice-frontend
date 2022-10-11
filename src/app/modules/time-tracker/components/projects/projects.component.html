@@ -23,6 +23,7 @@
 				<span>{{ workTime.project.shortName }}</span>
 			</td>
 			<td class="cell">
+				<!--eslint-disable-next-line @angular-eslint/template/eqeqeq-->
 				<span *ngIf="workTime?.managerHours == null; else managerHours">{{ workTime.userHours }}</span>
 				<ng-template #managerHours>
 					<div class="flex flex_ai_center">
@@ -33,18 +34,16 @@
 								[style.width.px]="16"
 								[style.height.px]="16"
 								[svgIcon]="Icons.InfoOutline"
-								[mdePopoverTriggerFor]="popover"
-								mdePopoverPositionY="above"
-								[mdePopoverOffsetX]="-12"
+								[doPopoverTrigger]="popover"
 							></mat-icon>
 						</span>
 					</div>
-					<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+					<do-popover #popover>
 						<span class="mat-body-2">Автор изменения</span>
 						<p>{{ workTime.managerInfo ? (workTime.managerInfo | fullName) : '—' }}</p>
 						<span class="mat-body-2">Часы сотрудника</span>
 						<p>{{ workTime.userHours }}</p>
-					</mde-popover>
+					</do-popover>
 				</ng-template>
 			</td>
 			<td class="cell">

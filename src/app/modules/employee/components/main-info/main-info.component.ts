@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewContainerRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DateFormat } from '@app/types/date.enum';
 import { ModalWidth } from '@app/services/dialog.service';
@@ -18,7 +18,7 @@ import { EmployeePageService } from '../../services/employee-page.service';
 	styleUrls: ['./main-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainInfoComponent implements OnInit {
+export class MainInfoComponent {
 	public readonly Icons = Icons;
 	public readonly DateFormat = DateFormat;
 	public readonly AppRoutes = AppRoutes;
@@ -37,8 +37,6 @@ export class MainInfoComponent implements OnInit {
 		private dialog: MatDialog,
 		private viewContainer: ViewContainerRef
 	) {}
-
-	public ngOnInit(): void {}
 
 	public editUser(): void {
 		this.dialog.open(EditInfoComponent, {

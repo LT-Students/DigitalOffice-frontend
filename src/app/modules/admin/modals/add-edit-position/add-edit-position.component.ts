@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PositionService } from '@app/services/position/position.service';
 import { DoValidators } from '@app/validators/do-validators';
@@ -20,7 +20,7 @@ import { finalize } from 'rxjs/operators';
 export class AddEditPositionComponent {
 	public EditPath = PositionPath;
 
-	public positionForm: FormGroup;
+	public positionForm: UntypedFormGroup;
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	private readonly _positionInfo?: InitialDataEditRequest<PositionPath> & { id: UUID };
@@ -29,7 +29,7 @@ export class AddEditPositionComponent {
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) positionInfo: Required<PositionInfo>,
-		private _fb: FormBuilder,
+		private _fb: UntypedFormBuilder,
 		private _positionService: PositionService,
 		private _dialogRef: MatDialogRef<AddEditPositionComponent>
 	) {

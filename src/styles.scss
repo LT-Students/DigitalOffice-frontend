@@ -6,7 +6,7 @@
 @use 'layouts/table';
 @use 'do/underlined';
 @use 'do/button';
-@use '~@angular/cdk/overlay-prebuilt';
+@use '@angular/cdk/overlay-prebuilt';
 @use './stylesheets/material/expansion-panel';
 @use './stylesheets/material/mat-button';
 @use './stylesheets/material/mat-checkbox';

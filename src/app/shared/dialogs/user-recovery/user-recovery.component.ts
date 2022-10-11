@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl, UntypedFormArray } from '@angular/forms';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { UserRecoveryService } from '@shared/dialogs/user-recovery/user-recovery.service';
 import { Subject } from 'rxjs';
@@ -25,7 +25,7 @@ export class UserRecoveryComponent implements OnInit {
 
 	public isFormValid = false;
 	public title = '';
-	public form!: FormArray;
+	public form!: UntypedFormArray;
 
 	constructor(@Inject(MAT_DIALOG_DATA) data: UserRecoveryData, private userRecovery: UserRecoveryService) {
 		this.userRecovery.setInitialData(data.userId, data.emails, data.isPending);

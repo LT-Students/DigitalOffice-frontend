@@ -1,0 +1,10 @@
+@use 'base/variables' as variables;
+
+.popover {
+	margin-bottom: 8px;
+	padding: 12px;
+
+	color: #fff;
+	background-color: variables.$tooltip;
+	border-radius: 8px;
+}

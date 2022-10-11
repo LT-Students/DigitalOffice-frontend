@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { throwError } from 'rxjs';
 import { AuthService } from '@app/services/auth/auth.service';
 import { CurrentUserService } from '@app/services/current-user.service';
@@ -28,7 +28,7 @@ export class ReactivateComponent extends LoadingState {
 		private _currentUserService: CurrentUserService,
 		private activatedRoute: ActivatedRoute,
 		private _router: Router,
-		private fb: FormBuilder
+		private fb: UntypedFormBuilder
 	) {
 		super();
 	}

@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { Icons } from '@shared/modules/icons/icons';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
 import { EditableTextFieldParams } from './editable-text-field.component';
@@ -30,15 +30,15 @@ import { EditableTextFieldParams } from './editable-text-field.component';
 				*ngIf="row.managerHours != null"
 				class="text-secondary_default icon"
 				[svgIcon]="Icons.InfoOutline"
-				[mdePopoverTriggerFor]="popover"
-				mdePopoverPositionY="below"
+				[doPopoverTrigger]="popover"
+				position="below"
 			></mat-icon>
-			<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+			<do-popover #popover>
 				<span class="mat-body-2">Автор изменения</span>
 				<p>{{ row.manager ? (row.manager | fullName) : '—' }}</p>
 				<span class="mat-body-2">Часы сотрудника</span>
 				<p>{{ row.userHours || 0 }}</p>
-			</mde-popover>
+			</do-popover>
 		</div>
 	`,
 	styles: [
@@ -66,10 +66,15 @@ import { EditableTextFieldParams } from './editable-text-field.component';
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditableTimeComponent implements OnInit, TableCell<number> {
+export class EditableTimeComponent implements TableCell<number> {
 	public readonly Icons = Icons;
 
-	public control = new FormControl(null, [Validators.required, Validators.min(0), Validators.max(744)]);
+	public control = new UntypedFormControl(null, [Validators.required, Validators.min(0), Validators.max(744)]);
+
+	public params!: EditableTextFieldParams;
+	public row: WorkTimeInfo;
+
+	public isEditMode = false;
 
 	public set value(v: number) {
 		this.control.setValue(v, { emitEvent: false });
@@ -77,16 +82,9 @@ export class EditableTimeComponent implements OnInit, TableCell<number> {
 	}
 	private previousValue = 0;
 
-	public params!: EditableTextFieldParams;
-	public row: WorkTimeInfo;
-
-	public isEditMode = false;
-
 	constructor(tableCell: TableCellComponent) {
 		this.row = tableCell.row;
 	}
-
-	ngOnInit(): void {}
 
 	public save(): void {
 		if (this.control.invalid) {

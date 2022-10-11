@@ -1,5 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+	AbstractControl,
+	UntypedFormBuilder,
+	UntypedFormGroup,
+	ValidationErrors,
+	ValidatorFn,
+	Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
@@ -15,14 +22,14 @@ import { AuthRoutes } from '../../../auth/models/auth-routes';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardComponent implements OnInit {
-	public companyForm: FormGroup;
-	public adminForm: FormGroup;
-	public smtpForm: FormGroup;
+	public companyForm: UntypedFormGroup;
+	public adminForm: UntypedFormGroup;
+	public smtpForm: UntypedFormGroup;
 
 	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
-		private _formBuilder: FormBuilder,
+		private _formBuilder: UntypedFormBuilder,
 		private adminService: AdminService,
 		private _router: Router,
 		private _titleService: Title

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
-import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 import { ConfirmDialogComponent, ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent, InfoDialogData } from '@shared/dialogs/info-dialog/info-dialog.component';
 

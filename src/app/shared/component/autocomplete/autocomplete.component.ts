@@ -10,7 +10,7 @@ import {
 	EventEmitter,
 } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NgControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -90,8 +90,8 @@ export class AutocompleteComponent<T> implements OnInit, OnDestroy, ControlValue
 
 	public filteredOptions$!: Observable<T[]>;
 
-	public searchControl = new FormControl(null);
-	public valueControl = new FormControl(null);
+	public searchControl = new UntypedFormControl(null);
+	public valueControl = new UntypedFormControl(null);
 	public stateChanges = new Subject<void>();
 	public destroy$ = new Subject<void>();
 

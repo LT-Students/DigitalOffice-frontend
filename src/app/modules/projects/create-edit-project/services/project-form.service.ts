@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { EditRequest, PatchDocument, ProjectPath } from '@app/types/edit-request';
 import { getUTCWithOffset } from '@app/utils/utils';
@@ -24,7 +24,7 @@ export class ProjectFormService {
 
 	private initialValue?: FormValue;
 
-	constructor(private fb: FormBuilder) {}
+	constructor(private fb: UntypedFormBuilder) {}
 
 	public getSubmitValue(): EditRequest<ProjectPath> | FormValue {
 		const formValue = this.form.getRawValue();

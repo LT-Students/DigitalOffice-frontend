@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Optional, Self } from '@angular/core';
 import { GenderApiService } from '@api/user-service/services/gender-api.service';
 import { debounceTime, filter, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NgControl } from '@angular/forms';
 import { GenderInfo } from '@api/user-service/models/gender-info';
 import { Subject } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -26,8 +26,8 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GenderSelectComponent implements OnInit, OnDestroy, ControlValueAccessor {
-	public valueControl = new FormControl(null);
-	public searchControl = new FormControl(null);
+	public valueControl = new UntypedFormControl(null);
+	public searchControl = new UntypedFormControl(null);
 
 	public genders$ = this.searchControl.valueChanges.pipe(
 		debounceTime(500),

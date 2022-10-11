@@ -8,7 +8,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Icons } from '@shared/modules/icons/icons';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
@@ -19,18 +19,18 @@ import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-of
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements AfterViewInit {
-	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	public readonly Icons = Icons;
 
 	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
-	public filters: FormGroup;
+	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: DialogService,
 		private _officeService: OfficeService,
 		private _route: ActivatedRoute,
-		private _fb: FormBuilder
+		private _fb: UntypedFormBuilder
 	) {
 		this.filters = this._fb.group({
 			showDeactivated: [false],
@@ -63,7 +63,7 @@ export class OfficeListComponent implements AfterViewInit {
 			.openModal<AddEditOfficeComponent>(AddEditOfficeComponent, ModalWidth.M, officeInfo)
 			.afterClosed()
 			.subscribe({
-				next: (result) => {
+				next: () => {
 					this._refreshCurrentPage$$.next(true);
 				},
 			});
@@ -82,7 +82,7 @@ export class OfficeListComponent implements AfterViewInit {
 					return iif(() => !!confirm, this._officeService.deleteOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
@@ -100,7 +100,7 @@ export class OfficeListComponent implements AfterViewInit {
 					return iif(() => !!confirm, this._officeService.restoreOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}

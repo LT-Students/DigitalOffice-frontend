@@ -1,5 +1,12 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import {
+	UntypedFormBuilder,
+	UntypedFormControl,
+	UntypedFormGroup,
+	FormGroupDirective,
+	NgForm,
+	Validators,
+} from '@angular/forms';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, finalize, map, startWith, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -12,13 +19,13 @@ import { LoadingState } from '@app/utils/loading-state';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class PasswordErrorMatcher extends ErrorStateMatcher {
-	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		return super.isErrorState(control, form) || !!form?.hasError('noMatch');
 	}
 }
 
 class LoginSecretErrorMatcher extends ErrorStateMatcher {
-	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		return super.isErrorState(control, form) || !!form?.hasError('invalidLoginSecret');
 	}
 }
@@ -32,13 +39,17 @@ class LoginSecretErrorMatcher extends ErrorStateMatcher {
 export class ResetPasswordComponent extends LoadingState implements OnInit {
 	public AuthRoutes = AuthRoutes;
 
-	public resetForm: FormGroup;
+	public resetForm: UntypedFormGroup;
 	public isCompleted$: BehaviorSubject<boolean>;
 	public passwordErrorMatcher = new PasswordErrorMatcher();
 	public loginSecretErrorMatcher = new LoginSecretErrorMatcher();
 	public hintValidations$!: Observable<HintValidation[]>;
 
-	constructor(private _fb: FormBuilder, private _passwordService: PasswordService, private _route: ActivatedRoute) {
+	constructor(
+		private _fb: UntypedFormBuilder,
+		private _passwordService: PasswordService,
+		private _route: ActivatedRoute
+	) {
 		super();
 		this.resetForm = this._fb.group(
 			{
@@ -53,7 +64,7 @@ export class ResetPasswordComponent extends LoadingState implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.hintValidations$ = (this.resetForm.get('password') as FormControl).valueChanges.pipe(
+		this.hintValidations$ = (this.resetForm.get('password') as UntypedFormControl).valueChanges.pipe(
 			startWith(''),
 			map((value: string) => [
 				{ label: 'от 8 до 50 символов', valid: value.length >= 8 && value.length <= 50 },

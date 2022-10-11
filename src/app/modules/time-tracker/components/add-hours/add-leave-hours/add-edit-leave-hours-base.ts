@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, first, mapTo, switchMap, tap } from 'rxjs/operators';
@@ -29,13 +29,13 @@ export class AddEditLeaveHoursBase extends LoadingState {
 
 	public selectedIntervalDurationInHours$ = new BehaviorSubject(0);
 
-	constructor(private fb: FormBuilder, protected attendanceService: AttendanceService) {
+	constructor(private fb: UntypedFormBuilder, protected attendanceService: AttendanceService) {
 		super();
 	}
 
 	public handleDateSelection(): void {
 		const startTimeValue: DateTime = this.form.get('startTime')?.value;
-		const endTimeControl = this.form.get('endTime') as FormControl;
+		const endTimeControl = this.form.get('endTime') as UntypedFormControl;
 		const endTimeValue: DateTime = this.form.get('startTime')?.value;
 		if (!startTimeValue) return;
 		if (!endTimeValue) {

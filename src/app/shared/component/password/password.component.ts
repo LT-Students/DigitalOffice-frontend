@@ -9,7 +9,7 @@ import {
 	OnInit,
 	ElementRef,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroupDirective, NgControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, FormGroupDirective, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -30,7 +30,7 @@ export class PasswordComponent implements OnInit, OnDestroy, ControlValueAccesso
 	public hide = true;
 	public focused = false;
 	public touched = false;
-	public control = new FormControl(null);
+	public control = new UntypedFormControl(null);
 
 	@Input() errorStateMatcher?: ErrorStateMatcher;
 
@@ -84,7 +84,7 @@ export class PasswordComponent implements OnInit, OnDestroy, ControlValueAccesso
 	}
 	get errorState(): boolean {
 		const matcher = this.errorStateMatcher ?? this.errorMatcher;
-		return matcher.isErrorState(this.ngControl.control as FormControl, this.form);
+		return matcher.isErrorState(this.ngControl.control as UntypedFormControl, this.form);
 	}
 
 	@HostBinding()

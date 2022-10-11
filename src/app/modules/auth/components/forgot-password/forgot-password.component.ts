@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -16,10 +16,10 @@ import { AuthRoutes } from '../../models/auth-routes';
 export class ForgotPasswordComponent extends LoadingState {
 	public AuthRoutes = AuthRoutes;
 
-	public forgotPasswordForm: FormGroup;
+	public forgotPasswordForm: UntypedFormGroup;
 	public isCompleted$: BehaviorSubject<boolean>;
 
-	constructor(private _passwordService: PasswordService, private _formBuilder: FormBuilder) {
+	constructor(private _passwordService: PasswordService, private _formBuilder: UntypedFormBuilder) {
 		super();
 		this.isCompleted$ = new BehaviorSubject<boolean>(false);
 

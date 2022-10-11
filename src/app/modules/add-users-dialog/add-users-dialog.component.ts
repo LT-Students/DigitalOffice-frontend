@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subject, timer } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { debounce, finalize, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
 import { LoadingState } from '@app/utils/loading-state';
@@ -25,8 +25,8 @@ export class AddUsersDialogComponent extends LoadingState implements OnInit, OnD
 	public dataSource!: AddUsersDataSource;
 	public tableData!: TableOptions;
 
-	public searchControl = new FormControl(null);
-	public toggleControl = new FormControl(false);
+	public searchControl = new UntypedFormControl(null);
+	public toggleControl = new UntypedFormControl(false);
 	private destroy$ = new Subject<void>();
 
 	constructor(

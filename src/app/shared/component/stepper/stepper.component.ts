@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, HostBinding, OnDestroy, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { DoValidators } from '@app/validators/do-validators';
 import { Subject } from 'rxjs';
@@ -108,7 +108,7 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 	@HostBinding('attr.aria-describedby')
 	public userAriaDescribedBy?: string | undefined;
 
-	public stepperControl: FormControl;
+	public stepperControl: UntypedFormControl;
 
 	constructor(@Optional() @Self() public ngControl: NgControl | null) {
 		this._required = false;
@@ -118,7 +118,7 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		}
 		this.focused = true;
 		this.stateChanges = new Subject<void>();
-		this.stepperControl = new FormControl(0, [DoValidators.floatNumber]);
+		this.stepperControl = new UntypedFormControl(0, [DoValidators.floatNumber]);
 		this.placeholder = '';
 		this.step = 1;
 		this.min = Number.MIN_SAFE_INTEGER;

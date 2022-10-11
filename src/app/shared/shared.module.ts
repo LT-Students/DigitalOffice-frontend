@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
@@ -67,6 +66,8 @@ import { JoinPipe } from './pipes/join.pipe';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-spaces.directive';
+import { PopoverComponent } from './component/popover/popover.component';
+import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
 
 @NgModule({
 	declarations: [
@@ -129,6 +130,8 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ImageViewerComponent,
 		SafeImageUrlPipe,
 		RemoveRedundantSpacesDirective,
+		PopoverComponent,
+		PopoverTriggerDirective,
 	],
 	imports: [
 		CommonModule,
@@ -137,7 +140,6 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ReactiveFormsModule,
 		MaterialModule,
 		InfiniteScrollModule,
-		MdePopoverModule,
 		ImageCropperModule,
 		IconsModule,
 	],
@@ -147,7 +149,6 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		MaterialModule,
 		IconsModule,
 		InfiniteScrollModule,
-		MdePopoverModule,
 		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,
@@ -206,6 +207,8 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ImageViewerComponent,
 		SafeImageUrlPipe,
 		RemoveRedundantSpacesDirective,
+		PopoverComponent,
+		PopoverTriggerDirective,
 	],
 })
 export class SharedModule {}
