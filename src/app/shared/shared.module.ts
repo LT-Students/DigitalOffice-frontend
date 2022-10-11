@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
@@ -141,7 +140,6 @@ import { PopoverTriggerDirective } from './component/popover/popover-trigger.dir
 		ReactiveFormsModule,
 		MaterialModule,
 		InfiniteScrollModule,
-		MdePopoverModule,
 		ImageCropperModule,
 		IconsModule,
 	],
@@ -151,7 +149,6 @@ import { PopoverTriggerDirective } from './component/popover/popover-trigger.dir
 		MaterialModule,
 		IconsModule,
 		InfiniteScrollModule,
-		MdePopoverModule,
 		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,

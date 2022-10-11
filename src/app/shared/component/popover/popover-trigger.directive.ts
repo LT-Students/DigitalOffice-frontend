@@ -8,26 +8,29 @@ type PopoverPosition = 'above' | 'below' | 'after' | 'before';
 
 @Directive({
 	selector: '[doPopoverTrigger]',
+	exportAs: 'doPopoverTrigger',
 })
 export class PopoverTriggerDirective implements OnInit, OnDestroy {
 	@Input() doPopoverTrigger!: PopoverComponent;
 	@Input() position: PopoverPosition = 'above';
+	@Input() disableHoverEvent = false;
 
 	private overlayRef!: OverlayRef;
 
 	constructor(private elementRef: ElementRef, private overlay: Overlay, private vcr: ViewContainerRef) {}
 
-	@HostListener('mouseenter') onMouseEnter() {
-		if (!this.overlayRef.hasAttached()) {
-			const portal = new TemplatePortal(this.doPopoverTrigger.templateRef, this.vcr);
-			this.overlayRef.attach(portal);
+	@HostListener('mouseenter') private onMouseEnter() {
+		if (this.disableHoverEvent) {
+			return;
 		}
+		this.attachPopover();
 	}
 
-	@HostListener('mouseleave') onMouseLeave() {
-		if (this.overlayRef.hasAttached()) {
-			this.overlayRef.detach();
+	@HostListener('mouseleave') private onMouseLeave() {
+		if (this.disableHoverEvent) {
+			return;
 		}
+		this.detachPopover();
 	}
 
 	public ngOnInit(): void {
@@ -36,6 +39,27 @@ export class PopoverTriggerDirective implements OnInit, OnDestroy {
 
 	public ngOnDestroy(): void {
 		this.overlayRef.dispose();
+	}
+
+	public show(): void {
+		this.attachPopover();
+	}
+
+	public hide(): void {
+		this.detachPopover();
+	}
+
+	private attachPopover(): void {
+		if (!this.overlayRef.hasAttached()) {
+			const portal = new TemplatePortal(this.doPopoverTrigger.templateRef, this.vcr);
+			this.overlayRef.attach(portal);
+		}
+	}
+
+	private detachPopover(): void {
+		if (this.overlayRef.hasAttached()) {
+			this.overlayRef.detach();
+		}
 	}
 
 	private createOverlay(): void {
@@ -57,9 +81,15 @@ export class PopoverTriggerDirective implements OnInit, OnDestroy {
 			case 'below':
 				return [Positions.BELOW, Positions.ABOVE];
 			case 'after':
-				return [Positions.AFTER, Positions.BEFORE];
+				return [
+					{ ...Positions.AFTER, offsetX: 16 },
+					{ ...Positions.BEFORE, offsetX: -16 },
+				];
 			case 'before':
-				return [Positions.BEFORE, Positions.AFTER];
+				return [
+					{ ...Positions.BEFORE, offsetX: -16 },
+					{ ...Positions.AFTER, offsetX: 16 },
+				];
 			default:
 				return [];
 		}
