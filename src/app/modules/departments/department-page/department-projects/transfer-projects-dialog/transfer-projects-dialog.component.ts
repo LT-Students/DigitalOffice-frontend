@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ProjectInfo } from '@api/project-service/models/project-info';
@@ -31,7 +31,7 @@ export class TransferProjectsDialogComponent implements OnInit, OnDestroy {
 		private tableConfig: TableConfigService,
 		private apiService: DepartmentProjectsApiService,
 		private route: ActivatedRoute,
-		private dialogRef: MatDialogRef<TransferProjectsDialogComponent>
+		private dialogRef: DialogRef
 	) {}
 
 	public ngOnInit(): void {
@@ -45,7 +45,7 @@ export class TransferProjectsDialogComponent implements OnInit, OnDestroy {
 			convertListParamsToRequestParams: this.convertListParamsToRequestParams.bind(this),
 		};
 
-		this.subscription = this.dialogRef.backdropClick().subscribe({
+		this.subscription = this.dialogRef.backdropClick.subscribe({
 			next: () => this.dialogRef.close(this.tableConfig.isProjectTransfered),
 		});
 	}

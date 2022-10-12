@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/
 import { Icons } from '@shared/modules/icons/icons';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { BehaviorSubject } from 'rxjs';
@@ -67,13 +67,11 @@ export class ProjectFilesComponent implements OnInit {
 				first(),
 				map((p: ProjectResponse) => p.id),
 				switchMap((projectId: string) => {
-					return this.dialog
-						.open(AddFilesComponent, {
-							width: ModalWidth.M,
-							autoFocus: false,
-							data: projectId,
-						})
-						.beforeClosed();
+					return this.dialog.open(AddFilesComponent, {
+						width: ModalWidth.M,
+						autoFocus: false,
+						data: projectId,
+					}).closed;
 				}),
 				tap(() => this.selectedProject.refreshFiles())
 			)

@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { Icons } from '@shared/modules/icons/icons';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { DownloadItemComponent } from './download-item.component';
 
 @Component({
@@ -11,17 +11,15 @@ import { DownloadItemComponent } from './download-item.component';
 	styleUrls: ['./download-files.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DownloadFilesComponent implements OnInit {
+export class DownloadFilesComponent {
 	public readonly Icons = Icons;
 	private downloadedFilesCount = 0;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public files: FileInfo[],
+		@Inject(DIALOG_DATA) public files: FileInfo[],
 		private dialog: DialogService,
-		private dialogRef: MatDialogRef<DownloadItemComponent>
+		private dialogRef: DialogRef<DownloadItemComponent>
 	) {}
-
-	ngOnInit(): void {}
 
 	public handleUploadedFile(): void {
 		this.downloadedFilesCount++;

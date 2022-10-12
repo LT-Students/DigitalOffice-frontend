@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { BehaviorSubject, Observable, of, Subject, timer } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 import { debounce, finalize, map, startWith, takeUntil, tap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { LoadingState } from '@app/utils/loading-state';
 import { TableComponent } from '../../table/table.component';
-import { TableOptions } from '../../table/models/table-options';
+import { TableOptions } from '../../table/models';
 import { AddProjectUsersService, ProjectUserInfo } from './add-project-users.service';
 
 export interface HiddenUser<T> {
@@ -46,8 +46,8 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 
 	constructor(
 		private addUsersService: AddProjectUsersService,
-		private dialogRef: MatDialogRef<AddProjectUsersComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: AddEmployeeDialogData
+		private dialogRef: DialogRef,
+		@Inject(DIALOG_DATA) public data: AddEmployeeDialogData
 	) {
 		super();
 	}

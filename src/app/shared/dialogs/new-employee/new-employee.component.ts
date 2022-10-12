@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
 import { CommunicationType, ContractTerm, CreateCommunicationRequest } from '@api/user-service/models';
@@ -24,7 +23,8 @@ import { getUTCWithOffset } from '@app/utils/utils';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { LoadingState } from '@app/utils/loading-state';
 import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogRef } from '@angular/cdk/dialog';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 
 @Component({
 	selector: 'do-new-employee',
@@ -47,7 +47,7 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 	constructor(
 		private _formBuilder: UntypedFormBuilder,
 		private _userService: UserService,
-		private dialogRef: MatDialogRef<any>,
+		private dialogRef: DialogRef<any>,
 		private _rightsService: RightsService,
 		private _positionService: PositionService,
 		private _departmentService: DepartmentService,

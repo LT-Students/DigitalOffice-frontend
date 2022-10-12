@@ -10,6 +10,7 @@ import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IconsModule } from '@shared/modules/icons/icons.module';
 import { OptionComponent } from '@shared/component/option/option.component';
+import { PortalModule } from '@angular/cdk/portal';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -68,6 +69,7 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-spaces.directive';
 import { PopoverComponent } from './component/popover/popover.component';
 import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
+import { DialogComponent } from './component/dialog/dialog.component';
 
 @NgModule({
 	declarations: [
@@ -132,6 +134,7 @@ import { PopoverTriggerDirective } from './component/popover/popover-trigger.dir
 		RemoveRedundantSpacesDirective,
 		PopoverComponent,
 		PopoverTriggerDirective,
+		DialogComponent,
 	],
 	imports: [
 		CommonModule,
@@ -142,6 +145,7 @@ import { PopoverTriggerDirective } from './component/popover/popover-trigger.dir
 		InfiniteScrollModule,
 		ImageCropperModule,
 		IconsModule,
+		PortalModule,
 	],
 	exports: [
 		CommonModule,

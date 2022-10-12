@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
-
-import { RoleInfo } from '@api/rights-service/models';
-import { RightsService } from '@app/services/rights/rights.service';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { RoleInfo } from '@api/rights-service/models';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { RightsService } from '@app/services/rights/rights.service';
+import { ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class ManageRolesComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: DialogService,
+		private dialog: DialogService,
 		private _rightsService: RightsService,
 		private _route: ActivatedRoute,
 		private _fb: UntypedFormBuilder
@@ -59,25 +59,21 @@ export class ManageRolesComponent implements AfterViewInit {
 	}
 
 	public onAddEditRole(roleInfo?: RoleInfo): void {
-		this._modalService
-			.openModal<AddEditRoleComponent>(AddEditRoleComponent, ModalWidth.M, roleInfo)
-			.afterClosed()
-			.subscribe({
-				next: () => {
-					this._refreshCurrentPage$$.next(true);
-				},
-			});
+		this.dialog.open(AddEditRoleComponent, { width: ModalWidth.M, data: roleInfo }).closed.subscribe({
+			next: () => {
+				this._refreshCurrentPage$$.next(true);
+			},
+		});
 	}
 
 	public onDeleteRole(roleInfo: RoleInfo): void {
-		this._modalService
+		this.dialog
 			.confirm({
 				confirmText: 'Да, удалить роль',
 				title: `Удаление роли ${roleInfo.localizations?.[0]?.name}`,
 				message: `Вы действительно хотите удалить роль ${roleInfo.localizations?.[0]?.name}?`,
 			})
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirm) => {
 					return iif(
 						() => !!confirm,
@@ -95,14 +91,13 @@ export class ManageRolesComponent implements AfterViewInit {
 	}
 
 	public onRestoreRole(roleInfo: RoleInfo): void {
-		this._modalService
+		this.dialog
 			.confirm({
 				confirmText: 'Да, восстановить роль',
 				title: `Восстановление роли ${roleInfo.localizations?.[0]?.name}`,
 				message: `Вы действительно хотите восстановить роль ${roleInfo.localizations?.[0]?.name}?`,
 			})
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirm) => {
 					return iif(
 						() => !!confirm,

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommunicationType } from '@api/user-service/models';
 import { UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { finalize } from 'rxjs/operators';
 import { parsePhoneNumber } from 'libphonenumber-js';
@@ -35,9 +35,9 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 	}
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public employeeId: string,
+		@Inject(DIALOG_DATA) public employeeId: string,
 		private fb: UntypedFormBuilder,
-		private dialogRef: MatDialogRef<AddContactComponent>,
+		private dialogRef: DialogRef<AddContactComponent>,
 		private communicationService: CommunicationService
 	) {
 		super();

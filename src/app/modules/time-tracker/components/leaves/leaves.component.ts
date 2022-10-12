@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
 
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
@@ -16,9 +16,8 @@ import { EditLeaveComponent } from '../../dialogs/edit-leave/edit-leave.componen
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeavesComponent {
-	public readonly Icons = Icons;
-
 	@Input() leaves: LeaveTime[] = [];
+	public readonly Icons = Icons;
 
 	public canEdit$ = this.attendanceService.canEdit$;
 
@@ -45,8 +44,7 @@ export class LeavesComponent {
 
 		this.dialogService
 			.confirm(confirmDialogData)
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirmed?: boolean) =>
 					!!confirmed ? this.attendanceService.deleteLeaveTime(leave.id) : EMPTY
 				)

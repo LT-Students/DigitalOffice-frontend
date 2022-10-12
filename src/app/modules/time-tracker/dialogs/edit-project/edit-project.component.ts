@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';
@@ -21,9 +21,9 @@ export class EditProjectComponent extends LoadingState implements OnInit {
 	public workTimeDate = DateTime.fromObject({ year: this.workTime.year, month: this.workTime.month });
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public workTime: WorkTime,
+		@Inject(DIALOG_DATA) public workTime: WorkTime,
 		private fb: UntypedFormBuilder,
-		private dialogRef: MatDialogRef<EditProjectComponent>,
+		private dialogRef: DialogRef<EditProjectComponent>,
 		private attendanceService: AttendanceService
 	) {
 		super();

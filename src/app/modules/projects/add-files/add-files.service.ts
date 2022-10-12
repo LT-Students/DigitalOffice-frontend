@@ -2,12 +2,12 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { FileAccessType } from '@api/file-service/models/file-access-type';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { getFileIcon } from '@shared/pipes/file-icon.pipe';
 import { formatBytes } from '@shared/pipes/format-bytes.pipe';
-import { TableOptions } from '../../table/models/table-options';
+import { TableOptions } from '../../table/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { ColumnDef } from '../../table/models';
 import { UploadProgressComponent } from './upload-progress/upload-progress.component';
@@ -39,7 +39,7 @@ export class AddFilesService {
 
 	constructor(
 		@Inject(LOCALE_ID) private locale: string,
-		@Inject(MAT_DIALOG_DATA) private entityId: string,
+		@Inject(DIALOG_DATA) private entityId: string,
 		private dialog: DialogService
 	) {}
 

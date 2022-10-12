@@ -1,17 +1,17 @@
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 
 export class WarningOnDialogClose {
 	public get closeEvents$(): Observable<MouseEvent | KeyboardEvent> {
 		return merge(
-			this.dialogRef.backdropClick(),
-			this.dialogRef.keydownEvents().pipe(filter((e: KeyboardEvent) => e.key === 'Escape'))
+			this.dialogRef.backdropClick,
+			this.dialogRef.keydownEvents.pipe(filter((e: KeyboardEvent) => e.key === 'Escape'))
 		);
 	}
 
-	constructor(private dialogRef: MatDialogRef<any>, private dialog: DialogService) {}
+	constructor(private dialogRef: DialogRef<any>, private dialog: DialogService) {}
 
 	public beforeClose(isFormDirty: boolean): void {
 		if (isFormDirty) {
@@ -21,8 +21,7 @@ export class WarningOnDialogClose {
 					message: 'Закрыть окно? Ваши данные не сохранятся',
 					confirmText: 'Да, закрыть',
 				})
-				.afterClosed()
-				.subscribe({
+				.closed.subscribe({
 					next: (confirm?: boolean) => (confirm ? this.close() : null),
 				});
 		} else {

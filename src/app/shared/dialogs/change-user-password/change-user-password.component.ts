@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { UntypedFormBuilder, UntypedFormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -37,7 +37,7 @@ export class ChangeUserPasswordComponent implements OnInit {
 
 	constructor(
 		private fb: UntypedFormBuilder,
-		private dialogRef: MatDialogRef<ChangeUserPasswordComponent>,
+		private dialogRef: DialogRef,
 		private passwordService: PasswordService
 	) {}
 

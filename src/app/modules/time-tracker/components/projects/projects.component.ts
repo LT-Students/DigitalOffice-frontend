@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { isGUIDEmpty } from '@app/utils/utils';

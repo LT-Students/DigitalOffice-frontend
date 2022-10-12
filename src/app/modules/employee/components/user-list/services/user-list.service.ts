@@ -19,7 +19,7 @@ import { FilterService } from '@app/services/filter/filter.service';
 import { UserService } from '@app/services/user/user.service';
 import { WithPagination } from '@app/types/find-request.interface';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { UntypedFormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
@@ -67,8 +67,7 @@ export class UserListService {
 			.open(NewEmployeeComponent, {
 				width: ModalWidth.M,
 			})
-			.afterClosed()
-			.pipe(withLatestFrom(this.statusChange$))
+			.closed.pipe(withLatestFrom(this.statusChange$))
 			.subscribe(([_, status]: [any, Status]) => {
 				if (status !== 'active') {
 					this.refreshCount();

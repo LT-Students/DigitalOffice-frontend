@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { UserInfo } from '@api/project-service/models/user-info';
@@ -93,9 +93,10 @@ export class ProjectUsersComponent implements OnInit {
 						entityName: p.name,
 						usersToHide: p.users?.map((u) => ({ id: u.userId, role: u.role })) || [],
 					};
-					return this.dialog
-						.open<[UserInfo[], ProjectResponse]>(AddProjectUsersComponent, { width: ModalWidth.M, data })
-						.afterClosed();
+					return this.dialog.open<[UserInfo[], ProjectResponse]>(AddProjectUsersComponent, {
+						width: ModalWidth.M,
+						data,
+					}).closed;
 				})
 			)
 			.subscribe({

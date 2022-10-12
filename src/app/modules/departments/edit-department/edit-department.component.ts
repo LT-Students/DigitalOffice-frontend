@@ -3,12 +3,12 @@ import { DoValidators } from '@app/validators/do-validators';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NavigationService } from '@app/services/navigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from '@app/services/dialog.service';
 import { finalize, first, switchMap, switchMapTo } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
 import { booleanGuard } from '@app/utils/utils';
 import { LoadingState } from '@app/utils/loading-state';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { DepartmentPageStateService } from '../department-id-route-container/department-page-state.service';
 import { Department } from '../department-page/department';
 import { DepartmentService } from '../services/department.service';
@@ -105,7 +105,7 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 								confirmText: 'Восстановить',
 								action$,
 						  };
-					return this.dialog.confirm(confirmConfig).afterClosed();
+					return this.dialog.confirm(confirmConfig).closed;
 				})
 			)
 			.subscribe();

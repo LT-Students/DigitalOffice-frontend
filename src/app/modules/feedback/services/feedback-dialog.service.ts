@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogRef } from '@angular/cdk/dialog';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
 import { ImageContent } from '@api/feedback-service/models/image-content';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { AppRoutes } from '@app/models/app-routes';
-import { Subject } from 'rxjs';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { FeedbackDetailsComponent } from '../feedback-details/feedback-details.component';
 import { FeedbackFormComponent } from '../feedback-form/feedback-form.component';
 
@@ -25,8 +25,7 @@ export class FeedbackDialogService {
 				width: ModalWidth.M,
 				disableClose: true,
 			})
-			.afterClosed()
-			.subscribe({
+			.closed.subscribe({
 				next: (isFeedbackCreated?: boolean) => {
 					if (isFeedbackCreated) {
 						const isFeedbackListOpened = this.router.url.indexOf(`/${AppRoutes.Feedback}`) === 0;
@@ -38,7 +37,10 @@ export class FeedbackDialogService {
 			});
 	}
 
-	public openReportDetails(feedback: FeedbackInfo, images?: ImageContent[]): MatDialogRef<FeedbackDetailsComponent> {
+	public openReportDetails(
+		feedback: FeedbackInfo,
+		images?: ImageContent[]
+	): DialogRef<unknown, FeedbackDetailsComponent> {
 		return this.dialog.open(FeedbackDetailsComponent, { width: ModalWidth.M, data: { feedback, images } });
 	}
 }

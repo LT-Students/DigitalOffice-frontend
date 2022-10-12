@@ -4,7 +4,7 @@ import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { combineLatest, Observable } from 'rxjs';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { Router } from '@angular/router';

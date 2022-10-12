@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { forkJoin, of, Subject } from 'rxjs';
 import { finalize, first, switchMap, takeUntil } from 'rxjs/operators';
 import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
 import { DoValidators } from '@app/validators/do-validators';
-import { DialogService } from '@app/services/dialog.service';
 import { LoadingState } from '@app/utils/loading-state';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { FeedbackType } from '../models/feedback-type';
 import { FeedbackService } from '../services/feedback.service';
 import { UploadImagesComponent } from './upload-images/upload-images.component';
@@ -34,7 +34,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		private fb: UntypedFormBuilder,
 		private feedbackService: FeedbackService,
 		private dialog: DialogService,
-		private dialogRef: MatDialogRef<FeedbackFormComponent>
+		private dialogRef: DialogRef
 	) {
 		super();
 	}
@@ -43,6 +43,10 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		this.warningOnClose.closeEvents$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: () => this.beforeClose(),
 		});
+	}
+
+	public beforeClose(): void {
+		this.warningOnClose.beforeClose(this.isFormDirty());
 	}
 
 	public submitReport(): void {
@@ -79,9 +83,5 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 
 	private close(isFeedbackCreated = false): void {
 		this.dialogRef.close(isFeedbackCreated);
-	}
-
-	public beforeClose(): void {
-		this.warningOnClose.beforeClose(this.isFormDirty());
 	}
 }

@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { UserService } from '@app/services/user/user.service';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { UserInfo } from '@api/user-service/models/user-info';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -121,12 +121,9 @@ export class ContextMenuService {
 			};
 			removeCallback = this.userService.removePending(userId);
 		}
-		return this.dialog
-			.confirm(confirmConfig)
-			.afterClosed()
-			.pipe(
-				switchMap((confirmed?: boolean) => (confirmed ? removeCallback : EMPTY)),
-				map(() => this.userList.removeFromList(userId))
-			);
+		return this.dialog.confirm(confirmConfig).closed.pipe(
+			switchMap((confirmed?: boolean) => (confirmed ? removeCallback : EMPTY)),
+			map(() => this.userList.removeFromList(userId))
+		);
 	}
 }
