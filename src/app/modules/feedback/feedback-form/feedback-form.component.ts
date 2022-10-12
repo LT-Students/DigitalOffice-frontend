@@ -5,8 +5,8 @@ import { forkJoin, of, Subject } from 'rxjs';
 import { finalize, first, switchMap, takeUntil } from 'rxjs/operators';
 import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
 import { DoValidators } from '@app/validators/do-validators';
-import { DialogService } from '@app/services/dialog.service';
 import { LoadingState } from '@app/utils/loading-state';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { FeedbackType } from '../models/feedback-type';
 import { FeedbackService } from '../services/feedback.service';
 import { UploadImagesComponent } from './upload-images/upload-images.component';
@@ -45,6 +45,10 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		});
 	}
 
+	public beforeClose(): void {
+		this.warningOnClose.beforeClose(this.isFormDirty());
+	}
+
 	public submitReport(): void {
 		if (this.form.invalid) {
 			this.form.markAllAsTouched();
@@ -79,9 +83,5 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 
 	private close(isFeedbackCreated = false): void {
 		this.dialogRef.close(isFeedbackCreated);
-	}
-
-	public beforeClose(): void {
-		this.warningOnClose.beforeClose(this.isFormDirty());
 	}
 }

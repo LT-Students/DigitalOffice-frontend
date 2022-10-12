@@ -4,29 +4,6 @@ import { ComponentType } from '@angular/cdk/overlay';
 import { ConfirmDialogComponent, ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { InfoDialogComponent, InfoDialogData } from '@shared/dialogs/info-dialog/info-dialog.component';
 
-export enum ModalType {
-	CREATE,
-	DELETE,
-	EDIT,
-	WATCH,
-}
-
-export enum AdminDashboardModalType {
-	NEW_COMPANY,
-	NEW_EMPLOYEE,
-	NEW_DEPARTMENT,
-	NEW_POSITION,
-	NEW_ROLE,
-	NEW_PROJECT,
-	MANAGE_USERS,
-	MANAGE_ROLES,
-	NEW_OFFICE,
-	DEPARTMENT_LIST,
-	OFFICE_LIST,
-	POSITION_LIST,
-	COMPANY_SETTINGS,
-}
-
 export const enum ModalWidth {
 	L = '1240px',
 	M = '848px',

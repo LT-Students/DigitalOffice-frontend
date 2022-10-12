@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { LoadingState } from '@app/utils/loading-state';
@@ -19,8 +19,8 @@ export interface ConfirmDialogData {
 })
 export class ConfirmDialogComponent extends LoadingState {
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
-		private dialogRef: MatDialogRef<ConfirmDialogComponent>
+		@Inject(DIALOG_DATA) public data: ConfirmDialogData,
+		private dialogRef: DialogRef<ConfirmDialogComponent>
 	) {
 		super();
 	}
