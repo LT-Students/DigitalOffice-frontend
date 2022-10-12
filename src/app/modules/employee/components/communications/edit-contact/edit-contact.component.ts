@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { UntypedFormControl } from '@angular/forms';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationType } from '@api/user-service/models/communication-type';
@@ -27,8 +27,8 @@ export class EditContactComponent extends LoadingState {
 	public contactType = this.communication.type;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public communication: CommunicationInfo,
-		private dialogRef: MatDialogRef<EditContactComponent>,
+		@Inject(DIALOG_DATA) public communication: CommunicationInfo,
+		private dialogRef: DialogRef<EditContactComponent>,
 		private communicationService: CommunicationService
 	) {
 		super();

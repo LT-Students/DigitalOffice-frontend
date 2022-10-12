@@ -16,7 +16,7 @@ import { NewsService } from '@app/services/news/news.service';
 import { CreateNewsRequest } from '@api/news-service/models/create-news-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogService } from '@app/services/dialog.service';
 import { OperationResultResponseNewsResponse } from '@api/news-service/models/operation-result-response-news-response';
 import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';

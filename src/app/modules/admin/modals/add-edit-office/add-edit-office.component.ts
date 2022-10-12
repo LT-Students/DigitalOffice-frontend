@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { OfficeService } from '@app/services/company/office.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DoValidators } from '@app/validators/do-validators';
 import { OfficeInfo } from '@api/office-service/models/office-info';
 import { InitialDataEditRequest, OfficePath } from '@app/types/edit-request';
@@ -10,6 +9,7 @@ import { UUID } from '@app/types/uuid.type';
 import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { finalize } from 'rxjs/operators';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
 	selector: 'do-new-office',
@@ -27,10 +27,10 @@ export class AddEditOfficeComponent {
 	public readonly MAX_CITY_LENGTH = 200;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) officeInfo: Required<OfficeInfo>,
+		@Inject(DIALOG_DATA) officeInfo: Required<OfficeInfo>,
 		private _fb: UntypedFormBuilder,
 		private _officeService: OfficeService,
-		private _dialogRef: MatDialogRef<AddEditOfficeComponent>
+		private _dialogRef: DialogRef
 	) {
 		this.isEditMode = !!officeInfo;
 		this.loading$$ = new BehaviorSubject<boolean>(false);

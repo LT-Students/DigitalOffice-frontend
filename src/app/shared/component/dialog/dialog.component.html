@@ -2,7 +2,13 @@
 	<div class="container">
 		<div class="spacer" [style.height.px]="48"></div>
 		<div class="dialog-content" [style.width]="_config.width">
-			<button doButton class="close-dialog" data-test="close-dialog-button" (click)="handleCrossClick()">
+			<button
+				doButton
+				class="close-dialog"
+				tabindex="-1"
+				data-test="close-dialog-button"
+				(click)="handleCrossClick()"
+			>
 				<mat-icon>close</mat-icon>
 			</button>
 			<ng-template cdkPortalOutlet></ng-template>

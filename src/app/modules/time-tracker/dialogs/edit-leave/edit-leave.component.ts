@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { DateTime, Interval } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
@@ -19,8 +19,8 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 	private initialValue!: Required<SubmitLeaveTimeValue>;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public leaveTime: LeaveTime,
-		private dialogRef: MatDialogRef<EditLeaveComponent>,
+		@Inject(DIALOG_DATA) public leaveTime: LeaveTime,
+		private dialogRef: DialogRef<EditLeaveComponent>,
 		fb: UntypedFormBuilder,
 		attendanceService: AttendanceService
 	) {

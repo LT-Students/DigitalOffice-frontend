@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { RightInfo, RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
@@ -8,6 +7,7 @@ import { DoValidators } from '@app/validators/do-validators';
 import { BehaviorSubject, iif, Observable } from 'rxjs';
 import { finalize, map, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
 	selector: 'do-new-role',
@@ -25,9 +25,9 @@ export class AddEditRoleComponent implements OnInit {
 	public readonly MAX_DESCRIPTION_LENGTH = 300;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) roleInfo: RoleInfo,
+		@Inject(DIALOG_DATA) roleInfo: RoleInfo,
 		private _rightsService: RightsService,
-		private _dialogRef: MatDialogRef<AddEditRoleComponent>,
+		private _dialogRef: DialogRef,
 		private _fb: UntypedFormBuilder
 	) {
 		this.isEditMode = !!roleInfo;

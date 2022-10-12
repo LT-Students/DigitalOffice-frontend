@@ -15,7 +15,7 @@ import { ProjectUserRoleType } from '@api/project-service/models/project-user-ro
 import { FileAccessType } from '@api/project-service/models/file-access-type';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { MAX_INT32 } from '@app/utils/utils';
 import { WithPagination } from '@app/types/find-request.interface';
 import { DownloadFilesComponent } from './download-files/download-files.component';

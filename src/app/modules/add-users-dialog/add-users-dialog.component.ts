@@ -1,12 +1,12 @@
 import { Component, ChangeDetectionStrategy, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Subject, timer } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 import { debounce, finalize, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
 import { LoadingState } from '@app/utils/loading-state';
 import { TableComponent } from '../table/table.component';
-import { TableOptions } from '../table/models/table-options';
+import { TableOptions } from '../table/models';
 import { AddUsersTableConfigService } from './services/add-users-table-config.service';
 import { AddUsersDialogData, NewUserBase } from './models/models';
 import { AddUsersDataSource } from './models/add-users-data-source';
@@ -30,10 +30,10 @@ export class AddUsersDialogComponent extends LoadingState implements OnInit, OnD
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public data: AddUsersDialogData,
+		@Inject(DIALOG_DATA) public data: AddUsersDialogData,
 		private apiService: AddUsersApiBase,
 		private tableConfigService: AddUsersTableConfigService<NewUserBase>,
-		private dialogRef: MatDialogRef<AddUsersDialogComponent>
+		private dialogRef: DialogRef<AddUsersDialogComponent>
 	) {
 		super();
 	}

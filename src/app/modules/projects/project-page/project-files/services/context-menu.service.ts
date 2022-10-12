@@ -1,7 +1,7 @@
 import { Injectable, ViewContainerRef } from '@angular/core';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { Icons } from '@shared/modules/icons/icons';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { catchError, filter, first, switchMap, tap } from 'rxjs/operators';
@@ -54,30 +54,6 @@ export class ContextMenuService {
 		];
 	}
 
-	private editFile(file: FileInfo): void {
-		this.dialog
-			.open<FileInfo>(EditFileComponent, {
-				width: ModalWidth.M,
-				data: file,
-				viewContainerRef: this.viewContainerRef,
-			})
-			.afterClosed()
-			.pipe(
-				switchMap((newFile?: FileInfo) =>
-					newFile
-						? this.selectedProject.files$.pipe(
-								first(),
-								tap((files: FileInfo[]) => {
-									const newFiles = files.map((f: FileInfo) => (f.id === newFile.id ? newFile : f));
-									this.selectedProject.setProject({ files: newFiles });
-								})
-						  )
-						: EMPTY
-				)
-			)
-			.subscribe();
-	}
-
 	public removeFiles(files: FileInfo | FileInfo[]): void {
 		const fileIds = (!Array.isArray(files) ? [files] : files).map((f: FileInfo) => f.id);
 		const deleteMessage =
@@ -100,21 +76,42 @@ export class ContextMenuService {
 					const oldFiles = p.files;
 					const newFiles = p.files.filter((f: FileInfo) => !fileIds.includes(f.id));
 
-					return this.dialog
-						.confirm({
-							title: 'Удаление документа',
-							confirmText: 'Удалить',
-							message: deleteMessage,
-							action$: this.projectService.removeFiles(projectId, fileIds).pipe(
-								tap(() => this.selectedProject.setProject({ files: newFiles })),
-								catchError(() => {
-									this.selectedProject.setProject({ files: oldFiles });
-									return EMPTY;
-								})
-							),
-						})
-						.afterClosed();
+					return this.dialog.confirm({
+						title: 'Удаление документа',
+						confirmText: 'Удалить',
+						message: deleteMessage,
+						action$: this.projectService.removeFiles(projectId, fileIds).pipe(
+							tap(() => this.selectedProject.setProject({ files: newFiles })),
+							catchError(() => {
+								this.selectedProject.setProject({ files: oldFiles });
+								return EMPTY;
+							})
+						),
+					}).closed;
 				})
+			)
+			.subscribe();
+	}
+
+	private editFile(file: FileInfo): void {
+		this.dialog
+			.open<FileInfo>(EditFileComponent, {
+				width: ModalWidth.M,
+				data: file,
+				viewContainerRef: this.viewContainerRef,
+			})
+			.closed.pipe(
+				switchMap((newFile?: FileInfo) =>
+					newFile
+						? this.selectedProject.files$.pipe(
+								first(),
+								tap((files: FileInfo[]) => {
+									const newFiles = files.map((f: FileInfo) => (f.id === newFile.id ? newFile : f));
+									this.selectedProject.setProject({ files: newFiles });
+								})
+						  )
+						: EMPTY
+				)
 			)
 			.subscribe();
 	}

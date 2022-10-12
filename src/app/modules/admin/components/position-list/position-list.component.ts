@@ -1,15 +1,14 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { PositionInfo } from '@api/position-service/models/position-info';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { PositionInfo } from '@api/position-service/models/position-info';
 import { Icons } from '@shared/modules/icons/icons';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 
 @Component({
@@ -19,15 +18,15 @@ import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edi
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PositionListComponent implements AfterViewInit {
-	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	public readonly Icons = Icons;
 
 	public positions$!: Observable<OperationResultResponse<IPositionInfo[]>>;
 	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: DialogService,
+		private dialog: DialogService,
 		private _positionService: PositionService,
 		private _route: ActivatedRoute,
 		private _fb: UntypedFormBuilder
@@ -59,25 +58,21 @@ export class PositionListComponent implements AfterViewInit {
 	}
 
 	public onAddEditPosition(positionInfo?: PositionInfo): void {
-		this._modalService
-			.openModal<AddEditPositionComponent>(AddEditPositionComponent, ModalWidth.M, positionInfo)
-			.afterClosed()
-			.subscribe({
-				next: () => {
-					this._refreshCurrentPage$$.next(true);
-				},
-			});
+		this.dialog.open(AddEditPositionComponent, { width: ModalWidth.M, data: positionInfo }).closed.subscribe({
+			next: () => {
+				this._refreshCurrentPage$$.next(true);
+			},
+		});
 	}
 
 	public onDeletePosition(positionInfo: PositionInfo): void {
-		this._modalService
+		this.dialog
 			.confirm({
 				confirmText: 'Да, удалить',
 				title: `Удаление должности ${positionInfo.name}`,
 				message: `Вы действительно хотите удалить должность ${positionInfo.name}`,
 			})
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirm) =>
 					iif(() => !!confirm, this._positionService.deletePosition(positionInfo.id ?? ''), EMPTY)
 				)
@@ -88,14 +83,13 @@ export class PositionListComponent implements AfterViewInit {
 	}
 
 	public onRestorePosition(positionInfo: PositionInfo): void {
-		this._modalService
+		this.dialog
 			.confirm({
 				confirmText: 'Да, восстановить',
 				title: `Восстановление должности ${positionInfo.name}`,
 				message: `Вы действительно хотите восстановить должность ${positionInfo.name}`,
 			})
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirm) =>
 					iif(() => !!confirm, this._positionService.restorePosition(positionInfo.id ?? ''), EMPTY)
 				)

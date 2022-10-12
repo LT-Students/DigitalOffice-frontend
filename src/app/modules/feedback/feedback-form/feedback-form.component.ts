@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { forkJoin, of, Subject } from 'rxjs';
 import { finalize, first, switchMap, takeUntil } from 'rxjs/operators';
 import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
@@ -34,7 +34,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		private fb: UntypedFormBuilder,
 		private feedbackService: FeedbackService,
 		private dialog: DialogService,
-		private dialogRef: MatDialogRef<FeedbackFormComponent>
+		private dialogRef: DialogRef
 	) {
 		super();
 	}

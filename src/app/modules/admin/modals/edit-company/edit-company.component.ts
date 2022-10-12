@@ -7,7 +7,7 @@ import { finalize, switchMap, tap } from 'rxjs/operators';
 import { createEditRequest } from '@app/utils/utils';
 import { CompanyService } from '@app/services/company/company.service';
 import { Company } from '@app/models/company';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
 	selector: 'do-edit-company',
@@ -27,7 +27,7 @@ export class EditCompanyComponent implements OnInit {
 		private _fb: UntypedFormBuilder,
 		private _companyService: CompanyService,
 		private _currentCompany: CurrentCompanyService,
-		private _dialogRef: MatDialogRef<EditCompanyComponent>
+		private _dialogRef: DialogRef
 	) {
 		this.companyForm = this._fb.group({
 			[CompanyPath.COMPANY_NAME]: [null, Validators.required],
