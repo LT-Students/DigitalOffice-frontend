@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
 import { DepartmentsRoutes } from '../../models/departments-routes';
 import { Department } from '../department';
@@ -17,7 +18,9 @@ export class DepartmentInfoComponent {
 
 	@Input() department!: Department;
 
-	public canAccessTimeList$ = this.departmentPermissions.canAccessTimeList$(this.departmentState.department$);
+	public canAccessTimeList$ = this.departmentPermissions.canAccessTimeList$(
+		this.departmentState.department$.pipe(map((d: Department) => d.id))
+	);
 	public canEditDepartment$ = this.departmentPermissions.canEditDepartment$();
 
 	constructor(

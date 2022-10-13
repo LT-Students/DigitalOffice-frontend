@@ -54,57 +54,60 @@ export class TableConfigsService {
 	}
 
 	public getTableOptions$(): Observable<TableOptions> {
-		return this.departmentPermissions.canManageUsers$(this.departmentState.department$).pipe(
-			map((hasPermission: boolean) => {
-				return {
-					sortActive: 'role',
-					sortDirection: 'desc',
-					rowHeight: 64,
-					columns: [
-						new ColumnDef({
-							type: 'userInfoCell',
-							field: 'name',
-							headerName: 'Фио',
-							sortEnabled: true,
-							disableClearSort: true,
-							valueGetter: (user: DepartmentUser) => user,
-							columnStyle: { overflow: 'hidden' },
-							headerStyle: { 'margin-left': '60px' },
-							params: new UserInfoParams({
-								statusIconGetter: (user: DepartmentUser) =>
-									DepartmentRoleInfo.getRoleInfoByRole(user.role).icon,
-								iconColor: this.iconColor,
-								onAvatarClick: (user: DepartmentUser) => {
-									this.router.navigate([AppRoutes.Users, user.id]);
-								},
-								onNameClick: (user: DepartmentUser) => {
-									this.router.navigate([AppRoutes.Users, user.id]);
+		return this.departmentPermissions
+			.canManageUsers$(this.departmentState.department$.pipe(map((d: Department) => d.id)))
+			.pipe(
+				map((hasPermission: boolean) => {
+					return {
+						sortActive: 'role',
+						sortDirection: 'desc',
+						rowHeight: 64,
+						columns: [
+							new ColumnDef({
+								type: 'userInfoCell',
+								field: 'name',
+								headerName: 'Фио',
+								sortEnabled: true,
+								disableClearSort: true,
+								valueGetter: (user: DepartmentUser) => user,
+								columnStyle: { overflow: 'hidden' },
+								headerStyle: { 'margin-left': '60px' },
+								params: new UserInfoParams({
+									statusIconGetter: (user: DepartmentUser) =>
+										DepartmentRoleInfo.getRoleInfoByRole(user.role).icon,
+									iconColor: this.iconColor,
+									onAvatarClick: (user: DepartmentUser) => {
+										this.router.navigate([AppRoutes.Users, user.id]);
+									},
+									onNameClick: (user: DepartmentUser) => {
+										this.router.navigate([AppRoutes.Users, user.id]);
+									},
+								}),
+							}),
+							new ColumnDef({
+								type: 'selectCell',
+								field: 'role',
+								headerName: 'Роль',
+								sortEnabled: true,
+								disableClearSort: true,
+								valueGetter: (user: DepartmentUser) => user.role,
+								headerStyle: { 'padding-left': '20px', flex: '0 0 25%' },
+								columnStyle: { flex: '0 0 25%' },
+								params: {
+									options: DepartmentRoleInfo.getAllRoles(),
+									displayValueGetter: (role: DepartmentRole) =>
+										DepartmentRoleInfo.getRoleInfoByRole(role).label,
+									iconGetter: (role: DepartmentRole) =>
+										DepartmentRoleInfo.getRoleInfoByRole(role).icon,
+									iconColor: this.iconColor,
+									updateRow: this.changeRole.bind(this),
+									disabled: () => !hasPermission,
 								},
 							}),
-						}),
-						new ColumnDef({
-							type: 'selectCell',
-							field: 'role',
-							headerName: 'Роль',
-							sortEnabled: true,
-							disableClearSort: true,
-							valueGetter: (user: DepartmentUser) => user.role,
-							headerStyle: { 'padding-left': '20px', flex: '0 0 25%' },
-							columnStyle: { flex: '0 0 25%' },
-							params: {
-								options: DepartmentRoleInfo.getAllRoles(),
-								displayValueGetter: (role: DepartmentRole) =>
-									DepartmentRoleInfo.getRoleInfoByRole(role).label,
-								iconGetter: (role: DepartmentRole) => DepartmentRoleInfo.getRoleInfoByRole(role).icon,
-								iconColor: this.iconColor,
-								updateRow: this.changeRole.bind(this),
-								disabled: () => !hasPermission,
-							},
-						}),
-					],
-				};
-			})
-		);
+						],
+					};
+				})
+			);
 	}
 
 	private changeRole(u: DepartmentUser, role: DepartmentRole): void {

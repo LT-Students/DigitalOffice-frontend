@@ -12,6 +12,7 @@ export class DepartmentPageResolver implements Resolve<Department> {
 
 	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Department> {
 		const departmentId = route.params['id'];
+		console.log('department page');
 		return this.departmentService.getDepartment(departmentId);
 	}
 }
