@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { DoTableDataSource } from '@app/types/do-table-data-source';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../../dynamic-filter/models';
 import { ColumnDef, TableOptions } from '../../../../table/models';
 import { UserInfoParams } from '../../../../table/cell-components/user-info/user-info.component';
@@ -30,7 +31,8 @@ export class TableConfigsService {
 		private departmentState: DepartmentPageStateService,
 		private autocompleteConfigs: AutocompleteConfigsService,
 		private router: Router,
-		private departmentPermissions: DepartmentPermissionService
+		private departmentPermissions: DepartmentPermissionService,
+		private currentUser: CurrentUserService
 	) {}
 
 	public getFilterConfig(): FilterDef[] {
@@ -115,7 +117,7 @@ export class TableConfigsService {
 			.pipe(
 				first(),
 				switchMap((d: Department) => this.departmentUsersApi.changeUserRole(d.id, u.id, role, u.role)),
-				switchMap(() => this._dataSource.refetchData())
+				switchMap(() => forkJoin([this._dataSource.refetchData(), this.currentUser.refreshUser()]))
 			)
 			.subscribe();
 	}

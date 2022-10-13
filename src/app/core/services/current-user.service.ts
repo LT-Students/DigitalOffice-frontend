@@ -3,6 +3,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { UserService } from '@app/services/user/user.service';
+import { first, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root',
@@ -32,5 +33,13 @@ export class CurrentUserService {
 
 	public setUser(user: User): void {
 		this._user.next(user);
+	}
+
+	public refreshUser(): Observable<User> {
+		return this.user$.pipe(
+			first(),
+			switchMap((u: User) => this.getUserOnLogin(u.id)),
+			tap((u: User) => this.setUser(u))
+		);
 	}
 }
