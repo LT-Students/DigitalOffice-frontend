@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
-import { first, switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { UserRights } from '@app/types/user-rights.enum';
 import { Icons } from '@shared/modules/icons/icons';
 import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
@@ -37,7 +37,9 @@ export class DepartmentUsersComponent implements OnInit {
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<DepartmentUser>;
 	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
 
-	public canManageUsers$ = this.departmentPermissions.canManageDepartment$(this.departmentState.department$);
+	public canManageUsers$ = this.departmentPermissions.canManageUsers$(
+		this.departmentState.department$.pipe(map((d: Department) => d.id))
+	);
 	public filterData = this.tableConfigs.getFilterConfig();
 	public tableOptions$!: Observable<TableOptions>;
 	public dataSource!: DoTableDataSource<DepartmentUser>;
