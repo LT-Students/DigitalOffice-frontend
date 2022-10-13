@@ -1,7 +1,4 @@
-import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { User } from '@app/models/user/user.model';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'do-edit-info',
@@ -10,5 +7,5 @@ import { Observable } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditInfoComponent {
-	constructor(@Inject(DIALOG_DATA) data: Observable<User>) {}
+	constructor() {}
 }

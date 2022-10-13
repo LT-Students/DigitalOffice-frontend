@@ -2,7 +2,7 @@
 	<ng-container *hasPermission="UserRights.AddEditRemoveUsers">
 		<button
 			*ngIf="selectedUser.isActive"
-			mat-button
+			doButton
 			class="employee-page__button mat-body-1 flex"
 			(click)="archiveUser(selectedUser.id)"
 		>
@@ -11,7 +11,7 @@
 		</button>
 		<button
 			*ngIf="!selectedUser.isActive"
-			mat-button
+			doButton
 			class="employee-page__button mat-body-1"
 			(click)="restoreUser(selectedUser)"
 		>

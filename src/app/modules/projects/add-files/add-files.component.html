@@ -15,6 +15,6 @@
 	<do-table class="table" [dataSource]="filesDataSource" [tableOptions]="tableOptions"></do-table>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="filesDataSource.haveFiles" align="center">
-	<button class="button" doButton mat-dialog-close>Отмена</button>
+	<button class="button" doButton doDialogClose>Отмена</button>
 	<button class="button" mat-flat-button color="primary" (click)="uploadFiles()">Сохранить</button>
 </mat-dialog-actions>

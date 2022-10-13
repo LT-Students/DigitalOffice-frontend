@@ -49,6 +49,12 @@ export class DialogComponent<C extends DialogConfig = DialogConfig> extends CdkD
 		this.simulateBackdropClick();
 	}
 
+	public handleBackdropClick(event: Event, backdrop: HTMLDivElement) {
+		if (event.target === backdrop) {
+			this.backdropClick.next();
+		}
+	}
+
 	private simulateBackdropClick(): void {
 		this.overlayRef.backdropElement?.click();
 	}

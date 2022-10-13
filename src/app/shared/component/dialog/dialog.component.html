@@ -1,6 +1,5 @@
-<div #backdrop class="backdrop" (click)="$event.target === backdrop && backdropClick.next()">
+<div #backdrop class="backdrop" (click)="handleBackdropClick($event, backdrop)">
 	<div class="container">
-		<div class="spacer" [style.height.px]="48"></div>
 		<div class="dialog-content" [style.width]="_config.width">
 			<button
 				doButton
@@ -13,6 +12,5 @@
 			</button>
 			<ng-template cdkPortalOutlet></ng-template>
 		</div>
-		<div class="spacer" [style.height.px]="48"></div>
 	</div>
 </div>
