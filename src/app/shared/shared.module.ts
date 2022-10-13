@@ -70,6 +70,7 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 import { PopoverComponent } from './component/popover/popover.component';
 import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
 import { DialogComponent } from './component/dialog/dialog.component';
+import { DialogCloseDirective } from './component/dialog/dialog-close.directive';
 
 @NgModule({
 	declarations: [
@@ -135,6 +136,7 @@ import { DialogComponent } from './component/dialog/dialog.component';
 		PopoverComponent,
 		PopoverTriggerDirective,
 		DialogComponent,
+		DialogCloseDirective,
 	],
 	imports: [
 		CommonModule,
@@ -213,6 +215,7 @@ import { DialogComponent } from './component/dialog/dialog.component';
 		RemoveRedundantSpacesDirective,
 		PopoverComponent,
 		PopoverTriggerDirective,
+		DialogCloseDirective,
 	],
 })
 export class SharedModule {}
