@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_TABS_CONFIG, MatTabsModule } from '@angular/material/tabs';
 import {
 	DateAdapter,
@@ -110,7 +110,6 @@ Settings.defaultLocale = 'ru';
 		MatSlideToggleModule,
 	],
 	providers: [
-		{ provide: MatDialogRef, useValue: {} },
 		{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
 		//TODO for some reason range-picker inside AddHoursComponent getting provided only from this module, not from AppModule
 		{

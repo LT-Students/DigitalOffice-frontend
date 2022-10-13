@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { AbstractControl, UntypedFormArray } from '@angular/forms';
-import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { UserRecoveryService } from '@shared/dialogs/user-recovery/user-recovery.service';
-import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { CommunicationInfo } from '@api/user-service/models/communication-info';
+import { LoadingState } from '@app/utils/loading-state';
+import { UserRecoveryService } from '@shared/dialogs/user-recovery/user-recovery.service';
 
 export interface UserRecoveryData {
 	userId: string;
@@ -20,7 +20,7 @@ export interface UserRecoveryData {
 	providers: [UserRecoveryService],
 })
 export class UserRecoveryComponent implements OnInit {
-	public isLoading$ = new Subject<boolean>();
+	public loadingState = new LoadingState();
 	public emailForRecovery$ = this.userRecovery.emailForRecovery$;
 
 	public isFormValid = false;
@@ -47,10 +47,10 @@ export class UserRecoveryComponent implements OnInit {
 	}
 
 	public onSubmit(): void {
-		this.isLoading$.next(true);
+		this.loadingState.setLoading(true);
 		this.userRecovery
 			.recover$()
-			.pipe(finalize(() => this.isLoading$.next(false)))
+			.pipe(finalize(() => this.loadingState.setLoading(false)))
 			.subscribe();
 	}
 }

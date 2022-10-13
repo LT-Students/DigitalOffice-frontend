@@ -18,7 +18,7 @@
 		<button mat-button mat-dialog-close data-test="close-dialog">Отмена</button>
 		<button
 			[disabled]="!isFormValid"
-			[loading]="isLoading$ | async"
+			[loading]="loadingState.loading$ | async"
 			mat-flat-button
 			(click)="onSubmit()"
 			color="primary"

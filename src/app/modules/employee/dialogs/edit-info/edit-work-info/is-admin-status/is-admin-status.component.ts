@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { finalize, switchMap } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { LoadingState } from '@app/utils/loading-state';
@@ -41,7 +41,7 @@ export interface IsAdminStatusConfig {
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IsAdminStatusComponent extends LoadingState implements OnInit {
+export class IsAdminStatusComponent extends LoadingState {
 	@Input()
 	set config(config: IsAdminStatusConfig | null) {
 		if (config) {
@@ -56,8 +56,6 @@ export class IsAdminStatusComponent extends LoadingState implements OnInit {
 	constructor(private workInfoConfig: WorkInfoConfigService) {
 		super();
 	}
-
-	ngOnInit(): void {}
 
 	public changeAdminStatus(value: boolean): void {
 		this.setLoading(true);
