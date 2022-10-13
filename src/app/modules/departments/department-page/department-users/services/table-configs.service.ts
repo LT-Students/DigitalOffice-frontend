@@ -7,13 +7,12 @@ import { Icons } from '@shared/modules/icons/icons';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { DoTableDataSource } from '@app/types/do-table-data-source';
 import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../../dynamic-filter/models';
-import { ColumnDef } from '../../../../table/models';
+import { ColumnDef, TableOptions } from '../../../../table/models';
 import { UserInfoParams } from '../../../../table/cell-components/user-info/user-info.component';
 import { DepartmentPageStateService } from '../../../department-id-route-container/department-page-state.service';
 import { DepartmentPermissionService } from '../../../services/department-permission.service';
 import { DepartmentRole, DepartmentRoleInfo } from '../models/department-role-info';
 import { DepartmentUser } from '../models/department-user';
-import { TableOptions } from '../../../../table/models/table-options';
 import { Department } from '../../department';
 import { DepartmentUsersApiService } from './department-users-api.service';
 
@@ -55,7 +54,7 @@ export class TableConfigsService {
 	}
 
 	public getTableOptions$(): Observable<TableOptions> {
-		return this.departmentPermissions.canManageDepartment$(this.departmentState.department$).pipe(
+		return this.departmentPermissions.canManageUsers$(this.departmentState.department$).pipe(
 			map((hasPermission: boolean) => {
 				return {
 					sortActive: 'role',

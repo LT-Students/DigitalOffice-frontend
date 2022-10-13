@@ -20,8 +20,12 @@ export class DepartmentPermissionService {
 		return this.checkPermission$(UserRights.AddEditRemoveTime, department$);
 	}
 
-	public canManageDepartment$(department$: Observable<Department>): Observable<boolean> {
+	public canManageUsers$(department$: Observable<Department>): Observable<boolean> {
 		return this.checkPermission$(UserRights.AddEditRemoveDepartment, department$);
+	}
+
+	public canEditDepartment$(): Observable<boolean> {
+		return this.permission.checkPermission$(UserRights.AddEditRemoveDepartment);
 	}
 
 	public canTransferProjects$(departmentId: string): Observable<boolean> {

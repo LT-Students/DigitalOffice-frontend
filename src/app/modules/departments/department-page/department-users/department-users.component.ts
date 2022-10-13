@@ -37,7 +37,7 @@ export class DepartmentUsersComponent implements OnInit {
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<DepartmentUser>;
 	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
 
-	public canManageUsers$ = this.departmentPermissions.canManageDepartment$(this.departmentState.department$);
+	public canManageUsers$ = this.departmentPermissions.canManageUsers$(this.departmentState.department$);
 	public filterData = this.tableConfigs.getFilterConfig();
 	public tableOptions$!: Observable<TableOptions>;
 	public dataSource!: DoTableDataSource<DepartmentUser>;
