@@ -1,11 +1,20 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	Inject,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { finalize, switchMap, tap } from 'rxjs/operators';
+import { finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/title-datepicker-v2.component';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { BehaviorSubject, merge, Observable, Subject } from 'rxjs';
 import { MAX_INT32 } from '@app/utils/utils';
 import { SortDirection } from '@angular/material/sort';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
@@ -25,7 +34,7 @@ import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType } from './
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [ManagerTimelistService, I18nPluralPipe],
 })
-export class ManagerTimelistComponent extends LoadingState implements OnInit, AfterViewInit {
+export class ManagerTimelistComponent extends LoadingState implements OnInit, AfterViewInit, OnDestroy {
 	public readonly Icons = Icons;
 	public readonly maxDate = DateTime.now().plus({ month: 1 });
 
@@ -38,19 +47,30 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 	public expandedRow!: ReturnType<ManagerTimelistService['getExpandedRowData']>;
 	public dataSource!: TimeListDataSource;
 
+	private destroy$ = new Subject();
+
 	constructor(
 		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
 		private timelistService: ManagerTimelistService,
 		private route: ActivatedRoute,
-		private timeService: TimeService
+		private timeService: TimeService,
+		private cdr: ChangeDetectorRef
 	) {
 		super();
 	}
 
 	public ngOnInit(): void {
-		const data = this.route.snapshot.data['stats'];
-		this.dataSource = new TimeListDataSource(data, this.timeService, this.entityInfo.entityType);
-		this.expandedRow = this.timelistService.getExpandedRowData(this.dataSource);
+		this.route.data
+			.pipe(
+				tap((data) => {
+					const stats = data['stats'];
+					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType);
+					this.expandedRow = this.timelistService.getExpandedRowData(this.dataSource);
+					this.cdr.markForCheck();
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
 	}
 
 	public ngAfterViewInit(): void {
@@ -61,9 +81,15 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 					const { year, month } = this.datepicker.selectDate;
 					const name = this.filter.value['name'] || '';
 					return this.dataSource.loadStats(this.entityInfo.entityId, month, year, sort.direction, name);
-				})
+				}),
+				takeUntil(this.destroy$)
 			)
 			.subscribe();
+	}
+
+	public ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	public handleDownload(): void {
