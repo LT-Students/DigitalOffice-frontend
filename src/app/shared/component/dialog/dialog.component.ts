@@ -1,8 +1,9 @@
 import {
-	AfterViewChecked,
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
 	ElementRef,
+	HostListener,
 	Inject,
 	NgZone,
 	OnInit,
@@ -23,7 +24,7 @@ import { Subject } from 'rxjs';
 })
 export class DialogComponent<C extends DialogConfig = DialogConfig>
 	extends CdkDialogContainer
-	implements OnInit, AfterViewChecked
+	implements OnInit, AfterViewInit
 {
 	@ViewChild('container') container!: ElementRef<HTMLDivElement>;
 	public isIncreasedPadding = new Subject<boolean>();
@@ -60,13 +61,20 @@ export class DialogComponent<C extends DialogConfig = DialogConfig>
 			next: () => this.simulateBackdropClick(),
 		});
 	}
+	public ngAfterViewInit(): void {
+		/**
+		 * setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+		 */
+		setTimeout(() => this.onWindowResize());
+	}
 
 	/**
 	 * With vertical padding set to 48px, there's might be an unnecessary scroll even though dialog is fitted in
 	 * the screen. So to fix this we set minimal padding to 10px and if pure container height is bigger than
 	 * viewport height, then set vertical padding to 48px. Otherwise, set minimal padding to 10px;
 	 */
-	public ngAfterViewChecked(): void {
+
+	@HostListener('window:resize') onWindowResize(): void {
 		const viewportHeight = window.innerHeight;
 		const containerPaddingSum = parseFloat(getComputedStyle(this.container.nativeElement).padding) * 2;
 		const containerHeight = this.container.nativeElement.clientHeight - containerPaddingSum;
