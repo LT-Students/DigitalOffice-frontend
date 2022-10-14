@@ -1,4 +1,4 @@
-<h2 class="dialog-title" doUnderline mat-dialog-title>Добавить сотрудника в команду</h2>
+<h2 class="dialog-title" doUnderline>Добавить сотрудника в команду</h2>
 <h5 class="entity-name" *ngIf="data?.entityName as name">{{ name }}</h5>
 <do-form-field class="search">
 	<mat-form-field>
@@ -18,11 +18,9 @@
 		>Посмотреть выбранных</mat-slide-toggle
 	>
 </div>
-<mat-dialog-content>
-	<div class="list">
-		<do-table class="table" [dataSource]="dataSource" [tableOptions]="tableData"></do-table>
-	</div>
-</mat-dialog-content>
+<div class="list">
+	<do-table class="table" [dataSource]="dataSource" [tableOptions]="tableData"></do-table>
+</div>
 <do-actions class="actions">
 	<button doButton (click)="close()">Отменить</button>
 	<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="addUsers()">

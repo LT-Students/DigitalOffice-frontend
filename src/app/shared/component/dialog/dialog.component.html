@@ -1,5 +1,5 @@
 <div #backdrop class="backdrop" (click)="handleBackdropClick($event, backdrop)">
-	<div class="container">
+	<div #container class="container" [style.padding]="(isIncreasedPadding | async) ? '48px 0' : '10px 0'">
 		<div class="dialog-content" [style.width]="_config.width">
 			<button
 				doButton
