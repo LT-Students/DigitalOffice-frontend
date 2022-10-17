@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { TableOptions } from '../../table/models/table-options';
+import { ColumnDef, TableOptions } from '../../table/models';
 import { CheckboxParams } from '../../table/cell-components/checkbox/checkbox.component';
-import { ColumnDef } from '../../table/models';
 import { ExistingUserBase, NewUserBase } from '../models/models';
 import { UserInfoParams } from '../../table/cell-components/user-info/user-info.component';
 import { AddUsersDataSource } from '../models/add-users-data-source';

@@ -22,7 +22,7 @@ export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements 
 	public loadUsers(search: string): void {
 		let users$: Observable<T[]>;
 		if (search) {
-			users$ = this.apiService.findUsers(search).pipe(map(this.mapUsersToSelected.bind(this)));
+			users$ = this.apiService.loadUsers(search).pipe(map(this.mapUsersToSelected.bind(this)));
 		} else {
 			users$ = of(this.selection.selected);
 		}
