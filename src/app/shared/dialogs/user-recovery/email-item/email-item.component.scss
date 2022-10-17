@@ -1,3 +1,7 @@
+:host {
+	position: relative;
+}
+
 .email {
 	&-container {
 		display: flex;
@@ -20,8 +24,8 @@
 	}
 
 	&-error {
-		position: relative;
-		top: 2px;
+		position: absolute;
+		top: 24px;
 		left: 26px;
 	}
 }

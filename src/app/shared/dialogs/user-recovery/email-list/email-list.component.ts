@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, UntypedFormArray, UntypedFormControl, ValidatorFn } from '@angular/forms';
 import { EmailValue } from '@shared/dialogs/user-recovery/email-item/email-item.component';
 
@@ -16,15 +16,13 @@ const emailExists: ValidatorFn = (control: AbstractControl) => {
 	styleUrls: ['./email-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EmailListComponent implements OnInit {
+export class EmailListComponent {
 	@Input() form!: UntypedFormArray;
 	@Output() selectionChange = new EventEmitter<number>();
 
 	public isEmailAdded = false;
 
 	constructor() {}
-
-	ngOnInit(): void {}
 
 	public addEmail(): void {
 		this.isEmailAdded = true;

@@ -13,9 +13,9 @@
 		</div>
 	</ng-template>
 </div>
-<mat-dialog-actions class="controls">
+<do-actions class="controls">
 	<ng-container *ngIf="!(emailForRecovery$ | async)?.value; else finishControl">
-		<button mat-button doDialogClose data-test="close-dialog">Отмена</button>
+		<button doButton doDialogClose data-test="close-dialog">Отмена</button>
 		<button
 			[disabled]="!isFormValid"
 			[loading]="loadingState.loading$ | async"
@@ -32,4 +32,4 @@
 			Всё понятно!
 		</button>
 	</ng-template>
-</mat-dialog-actions>
+</do-actions>

@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
 	selector: 'do-actions',
-	template: `<ng-content select="[doButton],[mat-button],[mat-flat-button]"></ng-content>`,
+	template: `<ng-content></ng-content>`,
 	styles: [
 		`
 			do-actions {
@@ -20,8 +20,6 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 })
-export class ActionsComponent implements OnInit {
+export class ActionsComponent {
 	constructor() {}
-
-	ngOnInit(): void {}
 }
