@@ -16,6 +16,7 @@ import {
 	SlideApplyButtonComponent,
 	SlideApplyButtonParams,
 } from '../cell-components/slide-apply-button/slide-apply-button.component';
+import { EditableDateRangeComponent } from '../cell-components/editable-text-field/editable-date-range.component';
 
 export const CELL_TYPES = {
 	textCell: TextComponent,
@@ -28,6 +29,7 @@ export const CELL_TYPES = {
 	selectCell: SelectComponent,
 	editableTextFieldCell: EditableTextFieldComponent,
 	editableTimeCell: EditableTimeComponent,
+	editableDateRangeCell: EditableDateRangeComponent,
 	showMoreTextCell: ShowMoreTextComponent,
 	contextMenuCell: ContextMenuCellComponent,
 };

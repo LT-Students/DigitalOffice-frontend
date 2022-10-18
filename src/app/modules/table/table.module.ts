@@ -15,6 +15,7 @@ import { EditableTimeComponent } from './cell-components/editable-text-field/edi
 import { ShowMoreTextComponent } from './cell-components/show-more-text/show-more-text.component';
 import { ContextMenuCellComponent } from './cell-components/context-menu/context-menu-cell.component';
 import { SlideApplyButtonComponent } from './cell-components/slide-apply-button/slide-apply-button.component';
+import { EditableDateRangeComponent } from './cell-components/editable-text-field/editable-date-range.component';
 
 @NgModule({
 	declarations: [
@@ -29,6 +30,7 @@ import { SlideApplyButtonComponent } from './cell-components/slide-apply-button/
 		IconComponent,
 		EditableTextFieldComponent,
 		EditableTimeComponent,
+		EditableDateRangeComponent,
 		ShowMoreTextComponent,
 		ContextMenuCellComponent,
 		SlideApplyButtonComponent,

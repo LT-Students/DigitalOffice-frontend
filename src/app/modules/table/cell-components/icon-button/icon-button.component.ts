@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { TableCell } from '../../models';
 
@@ -22,7 +22,7 @@ export class IconButtonParams {
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IconButtonComponent implements OnInit, TableCell<any> {
+export class IconButtonComponent implements TableCell<any> {
 	public value: any;
 	set params(params: IconButtonParams) {
 		this.icon = params.icon();
@@ -32,6 +32,4 @@ export class IconButtonComponent implements OnInit, TableCell<any> {
 	public onClick: Function = () => {};
 
 	constructor() {}
-
-	ngOnInit(): void {}
 }
