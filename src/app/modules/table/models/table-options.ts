@@ -2,6 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { SortDirection } from '@angular/material/sort';
+import { TrackByFunction } from '@angular/core';
 import { ColumnDef } from './column-def';
 
 export interface TableOptions<T = any> {
@@ -17,4 +18,5 @@ export interface TableOptions<T = any> {
 	contextMenuItems?: MenuItem[];
 	sortActive?: string;
 	sortDirection?: SortDirection;
+	trackByFn?: TrackByFunction<T>;
 }

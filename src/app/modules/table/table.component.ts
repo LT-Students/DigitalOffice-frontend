@@ -134,4 +134,8 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 			this.expandedElement = this.expandedRowComparator([this.expandedElement, row]) ? null : row;
 		}
 	}
+
+	public trackByFn(index: number, row: T): any {
+		return row;
+	}
 }
