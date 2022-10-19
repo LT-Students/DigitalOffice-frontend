@@ -1,4 +1,4 @@
-<h1 doUnderline class="page-title">Статистика команды</h1>
+<h1 doUnderline class="page-title">{{ pageTitle }}</h1>
 <h5 class="entity-name">{{ entityInfo.name }}</h5>
 <div class="period flex flex_jc_space-between flex_ai_center">
 	<do-title-datepicker-v2 [maxDate]="maxDate" [dateStyle]="{ 'text-transform': 'capitalize' }">
@@ -10,18 +10,35 @@
 </div>
 <do-dynamic-filter [filters]="filterConfig"></do-dynamic-filter>
 <do-table [dataSource]="dataSource" [tableOptions]="tableData" [expandedRowTemplate]="details">
-	<ng-template #details let-workTimes="workTimes" let-leaveTimes="leaveTimes">
-		<div class="additional-info">
-			<h5 class="heading">Детализация по проектам</h5>
+	<ng-template
+		#details
+		let-user="user"
+		let-companyInfo="companyInfo"
+		let-workTimes="workTimes"
+		let-leaveTimes="leaveTimes"
+	>
+		<div *ngIf="expandedRow$ | async as expandedRow" class="additional-info">
+			<h5 class="header">Детализация по проектам</h5>
 			<do-table [dataSource]="workTimes" [tableOptions]="expandedRow.workTimes">
 				<ng-template cdkNoDataRow>
-					<div [style.padding-left.px]="34">Нет данных о проектах</div>
+					<div [style.padding]="'0 0 10px 34px'">Нет данных о проектах</div>
 				</ng-template>
 			</do-table>
-			<ng-container *ngIf="leaveTimes.length">
-				<h5 class="heading">Детализация по отсутствиям</h5>
-				<do-table [dataSource]="leaveTimes" [tableOptions]="expandedRow.leaveTimes"></do-table>
-			</ng-container>
+			<div class="header flex flex_ai_center">
+				<h5 class="title">Детализация по отсутствиям</h5>
+				<button
+					*ngIf="canAddLeaveTime$ | async"
+					doButton
+					(click)="addLeaveTimeDialog(user.id, companyInfo.rate)"
+				>
+					<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+				</button>
+			</div>
+			<do-table [dataSource]="leaveTimes" [tableOptions]="expandedRow.leaveTimes">
+				<ng-template cdkNoDataRow>
+					<div [style.padding]="'0 0 10px 34px'">Нет данных об отсутствиях</div>
+				</ng-template>
+			</do-table>
 		</div>
 	</ng-template>
 </do-table>

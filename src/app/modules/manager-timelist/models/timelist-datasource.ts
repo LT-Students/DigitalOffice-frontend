@@ -82,7 +82,19 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			.subscribe({ error: () => this.data.next(oldData) });
 	}
 
-	public addLeaveTime(): void {}
+	public addLeaveTime(userId: string, leaveTime: LeaveTime): void {
+		const oldData = this.data.value;
+		const newData = oldData.map((s: UserStat) => {
+			if (s.user.id === userId) {
+				return {
+					...s,
+					leaveTimes: [leaveTime, ...s.leaveTimes],
+				};
+			}
+			return s;
+		});
+		this.data.next(newData);
+	}
 
 	public updateLeaveTimeDates(
 		leaveTime: LeaveTime,

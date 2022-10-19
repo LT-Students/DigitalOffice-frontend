@@ -15,6 +15,7 @@ import { AddLeaveHoursComponent } from './components/add-hours/add-leave-hours/a
 import { AddWorkTimeHoursComponent } from './components/add-hours/add-worktime-hours/add-work-time-hours.component';
 import { LegendComponent } from './components/time-widget/legend/legend.component';
 import { LeaveHoursPipe } from './components/leaves/leave-hours.pipe';
+import { AddLeaveTimeBaseComponent } from './shared/add-leave-time-base/add-leave-time-base.component';
 
 @NgModule({
 	declarations: [
@@ -31,9 +32,10 @@ import { LeaveHoursPipe } from './components/leaves/leave-hours.pipe';
 		AddWorkTimeHoursComponent,
 		LegendComponent,
 		LeaveHoursPipe,
+		AddLeaveTimeBaseComponent,
 	],
 	imports: [SharedModule, TimeTrackerRoutingModule],
 	providers: [],
-	exports: [],
+	exports: [AddLeaveTimeBaseComponent],
 })
 export class TimeTrackerModule {}
