@@ -3,75 +3,19 @@
 		Редактирование часов
 		<span class="mat-h3 primary">за {{ leaveTime.leaveType | leaveLabel: false | lowercase }}</span>
 	</h3>
-	<form class="content" [formGroup]="form">
-		<div class="flex flex-ai-end">
-			<do-form-field label="Диапазон отсутствия" labelClass="text-main">
-				<mat-form-field>
-					<mat-date-range-input
-						(click)="picker.open()"
-						[min]="minDate"
-						[dateFilter]="disableReservedDays"
-						[rangePicker]="$any(picker)"
-					>
-						<input
-							matStartDate
-							placeholder="ДД/ММ/ГГГГ"
-							formControlName="startTime"
-							data-test="edit-leave-start-input"
-						/>
-						<input
-							matEndDate
-							placeholder="ДД/ММ/ГГГГ"
-							formControlName="endTime"
-							data-test="edit-leave-end-input"
-						/>
-					</mat-date-range-input>
-					<mat-datepicker-toggle matSuffix [for]="picker" data-test="edit-leave-datepicker-btn">
-						<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-					</mat-datepicker-toggle>
-					<mat-date-range-picker
-						#picker
-						[dateClass]="dateClass"
-						(closed)="handleDateSelection()"
-					></mat-date-range-picker>
-					<mat-error>{{
-						form.controls['startTime'].errors || form.controls['endTime'].errors | controlErrors
-					}}</mat-error>
-				</mat-form-field>
-			</do-form-field>
-			<div class="modal__hours">
-				<span>Выбрано</span>
-				<h3>{{ selectedIntervalDurationInHours$ | async }}<span class="text-secondary_default"> ч</span></h3>
-			</div>
-		</div>
-		<do-form-field label="Комментарий" labelClass="text-main">
-			<mat-form-field>
-				<textarea
-					#comment
-					cdkTextareaAutosize
-					cdkAutosizeMinRows="5"
-					cdkAutosizeMaxRows="5"
-					matInput
-					formControlName="comment"
-					maxlength="500"
-					placeholder="Написать..."
-					data-test="edit-leave-comment-input"
-				></textarea>
-				<mat-hint>{{ comment.value.length }}/500</mat-hint>
-			</mat-form-field>
-		</do-form-field>
-		<div class="controls">
+	<do-add-leave-time-base [hideLeaveTypeSelect]="true">
+		<div actions class="controls">
 			<button doButton type="button" (click)="close()" data-test="close-dialog-btn">Отменить</button>
 			<button
 				mat-flat-button
 				color="primary"
 				type="submit"
-				[loading]="loading$ | async"
+				[loading]="baseComponent.loadingState.loading$ | async"
 				(click)="handleSubmit()"
 				data-test="edit-leave-save-btn"
 			>
 				Сохранить
 			</button>
 		</div>
-	</form>
+	</do-add-leave-time-base>
 </div>

@@ -18,7 +18,7 @@ export interface Activities {
 	leaves: LeaveTime[];
 }
 
-interface MonthHolidays {
+export interface MonthHolidays {
 	year: number;
 	month: number;
 	holidays: boolean[];
@@ -40,7 +40,7 @@ export interface SubmitLeaveTimeValue {
 	leaveTimeId?: string;
 }
 
-const FULL_WORKDAY_LENGTH_IN_HOURS = 8;
+export const FULL_WORKDAY_LENGTH_IN_HOURS = 8;
 export const LAST_DAY_TO_FILL_HOURS = 5;
 export const MAX_FUTURE_DATE = DateTime.now().plus({ month: 1 }).endOf('month');
 
@@ -52,13 +52,12 @@ export class AttendanceService {
 	private readonly leaveTimes = new BehaviorSubject<LeaveTime[]>([]);
 	public readonly leaveTimes$ = this.leaveTimes.asObservable();
 
-	private readonly selectedDate = new BehaviorSubject<DateTime>(DateTime.now());
+	private readonly selectedDate = new BehaviorSubject(DateTime.now());
 	public readonly selectedDate$ = this.selectedDate.asObservable();
 
 	private readonly monthNorm = new BehaviorSubject<number>(160);
 	public readonly monthNorm$ = this.monthNorm.asObservable();
 
-	private holidays: MonthHolidays = { month: 1, year: 0, holidays: [] };
 	private datepickerHolidays: MonthHolidays[] = [];
 	private reservedLeaveIntervals: Interval[] = [];
 
@@ -160,19 +159,23 @@ export class AttendanceService {
 		);
 	}
 
+	/**
+	 *
+	 * @return leaveTimeId
+	 */
 	public submitLeaveTime(
 		leaveValue: SubmitLeaveTimeValue,
 		initialValue?: Required<SubmitLeaveTimeValue>
-	): Observable<any> {
-		let action: Observable<any>;
+	): Observable<string> {
+		let action: Observable<string>;
 		if (initialValue) {
 			const { leaveTimeId, ...compareValue } = initialValue;
 			const editRequest = this.getLeaveTimeEditRequest(leaveValue, compareValue);
-			action = this.timeService.editLeaveTime(leaveTimeId, editRequest);
+			action = this.timeService.editLeaveTime(leaveTimeId, editRequest).pipe(map(() => leaveTimeId));
 		} else {
-			action = this.timeService.createLeaveTime(leaveValue);
+			action = this.timeService.createLeaveTime(leaveValue).pipe(map((res) => res.body));
 		}
-		return action.pipe(switchMap(this.getLeaveTimes.bind(this)));
+		return action.pipe(switchMap((id: string) => this.getLeaveTimes().pipe(map(() => id))));
 	}
 
 	private getLeaveTimeEditRequest(
@@ -232,8 +235,7 @@ export class AttendanceService {
 	}
 
 	private setMonthAndHolidaysForSelectedMonth(monthLimit: WorkTimeMonthLimitInfo | null): void {
-		const { normHours, holidays, month, year } = monthLimit || { normHours: 168, holidays: '', month: 0, year: 0 };
-		this.holidays = { month, year, holidays: holidays.split('').map(Number).map(Boolean) };
+		const { normHours } = monthLimit || { normHours: 168, holidays: '', month: 0, year: 0 };
 		this.monthNorm.next(normHours * this.rate);
 	}
 
@@ -311,6 +313,11 @@ export class AttendanceService {
 			FULL_WORKDAY_LENGTH_IN_HOURS * this.rate,
 			this.filterWeekends.bind(this)
 		);
+	}
+
+	public getMinDate(): DateTime {
+		const date = DateTime.now();
+		return (date.day <= LAST_DAY_TO_FILL_HOURS ? date.minus({ month: 1 }) : date).startOf('month');
 	}
 
 	private getSelectedDate$(): Observable<DateTime> {
