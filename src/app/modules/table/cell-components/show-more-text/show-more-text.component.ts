@@ -12,14 +12,15 @@ import {
 import { FormControl } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { TableCell } from '../../models';
+import { TableCellComponent } from '../../table-cell.component';
 
 export class ShowMoreTextParams {
 	public numberOfLines?: number;
 	public editEnabled?: boolean;
-	public updateRow?: (o: any, v: string | null) => void;
+	public updateRow?: (o: any, v: string) => void;
 
 	constructor(
-		params?: Partial<{ numberOfLines: number; updateRow: (o: any, v: string | null) => void; editEnabled: boolean }>
+		params?: Partial<{ numberOfLines: number; updateRow: (o: any, v: string) => void; editEnabled: boolean }>
 	) {
 		this.numberOfLines = params?.numberOfLines;
 		this.editEnabled = params?.editEnabled;
@@ -97,7 +98,7 @@ export class ShowMoreTextComponent implements AfterViewInit, AfterViewChecked, T
 		this.control.setValue(value);
 		this.defaultValue = value;
 	}
-	public control = new FormControl('');
+	public control = new FormControl('', { nonNullable: true });
 	public defaultValue = '';
 
 	public params!: ShowMoreTextParams;
@@ -110,7 +111,13 @@ export class ShowMoreTextComponent implements AfterViewInit, AfterViewChecked, T
 
 	public collapsedHeight = 0;
 
-	constructor(@Inject(DOCUMENT) private document: Document, private cdr: ChangeDetectorRef) {}
+	constructor(
+		@Inject(DOCUMENT) private document: Document,
+		private cdr: ChangeDetectorRef,
+		tableCell: TableCellComponent
+	) {
+		this.row = tableCell.row;
+	}
 
 	public ngAfterViewInit(): void {
 		this.lineHeight = parseFloat(

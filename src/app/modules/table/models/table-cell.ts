@@ -16,7 +16,10 @@ import {
 	SlideApplyButtonComponent,
 	SlideApplyButtonParams,
 } from '../cell-components/slide-apply-button/slide-apply-button.component';
-import { EditableDateRangeComponent } from '../cell-components/editable-text-field/editable-date-range.component';
+import {
+	EditableDateRangeComponent,
+	EditableDateRangeParams,
+} from '../cell-components/editable-text-field/editable-date-range.component';
 
 export const CELL_TYPES = {
 	textCell: TextComponent,
@@ -43,6 +46,7 @@ export type CellParams =
 	| UserInfoParams
 	| CheckboxParams
 	| EditableTextFieldParams
+	| EditableDateRangeParams
 	| ShowMoreTextParams
 	| SlideApplyButtonParams;
 

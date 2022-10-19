@@ -4,36 +4,44 @@ import { I18nPluralPipe } from '@angular/common';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { DateFilterFn, MatCalendarCellClassFunction, MatDateRangeInput } from '@angular/material/datepicker';
 import { DateTime } from 'luxon';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { Icons } from '@shared/modules/icons/icons';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
-import { LeaveTime } from '../../../manager-timelist/models/user-stat';
-import { EditableTextFieldParams } from './editable-text-field.component';
 
-export class EditableDateRangeParams extends EditableTextFieldParams {
+export class EditableDateRangeParams {
 	public minDate?: DateTime;
 	public maxDate?: DateTime;
 	public disableReservedDays: any;
 	public dateClass: any;
+	public updateRow?: (o: any, v: DateRangeValue) => void;
+	public disabled?: boolean;
 
 	constructor(
-		params?: Partial<
-			{
-				minDate: DateTime;
-				maxDate: DateTime;
-				disableReservedDays: DateFilterFn<DateTime>;
-				dateClass: MatCalendarCellClassFunction<DateTime>;
-			} & EditableTextFieldParams
-		>
+		params?: Partial<{
+			minDate: DateTime;
+			maxDate: DateTime;
+			disableReservedDays: DateFilterFn<DateTime>;
+			dateClass: MatCalendarCellClassFunction<DateTime>;
+			disabled: boolean;
+			updateRow: (o: any, v: DateRangeValue) => void;
+		}>
 	) {
-		super(params);
-		this.minDate = params?.minDate;
-		this.maxDate = params?.maxDate;
-		this.disableReservedDays = params?.disableReservedDays;
-		this.dateClass = params?.dateClass;
+		if (params) {
+			this.minDate = params.minDate;
+			this.maxDate = params.maxDate;
+			this.disableReservedDays = params.disableReservedDays;
+			this.dateClass = params.dateClass;
+			this.disabled = params.disabled;
+			this.updateRow = params.updateRow;
+		}
 	}
+}
+
+interface DateRangeValue {
+	startDate: DateTime;
+	endDate: DateTime;
+	hours: number;
 }
 
 @Component({
@@ -41,7 +49,7 @@ export class EditableDateRangeParams extends EditableTextFieldParams {
 	template: `
 		<div class="flex flex_ai_center position-relative">
 			<span *ngIf="!isEditMode" class="editable" [class.enabled]="!params.disabled" (click)="enableEditMode()">{{
-				previousValue | execute: getLeavePeriodString.bind(this)
+				defaultValue | execute: getLeavePeriodString.bind(this)
 			}}</span>
 			<do-form-field *ngIf="isEditMode" class="range-picker" [formGroup]="form">
 				<mat-form-field>
@@ -127,7 +135,7 @@ export class EditableDateRangeParams extends EditableTextFieldParams {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [I18nPluralPipe, { provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
-export class EditableDateRangeComponent implements TableCell<LeaveTime> {
+export class EditableDateRangeComponent implements TableCell<DateRangeValue> {
 	public readonly Icons = Icons;
 
 	public form = this.fb.group({
@@ -136,15 +144,15 @@ export class EditableDateRangeComponent implements TableCell<LeaveTime> {
 	});
 
 	public params!: EditableDateRangeParams;
-	public row: WorkTimeInfo;
+	public row: any;
 
 	public isEditMode = false;
 
-	public set value(v: LeaveTime) {
+	public set value(v: DateRangeValue) {
 		this.form.patchValue(v, { emitEvent: false });
-		this.previousValue = v;
+		this.defaultValue = { ...v };
 	}
-	public previousValue!: LeaveTime;
+	public defaultValue!: DateRangeValue;
 
 	constructor(tableCell: TableCellComponent, private fb: FormBuilder, private pluralPipe: I18nPluralPipe) {
 		this.row = tableCell.row;
@@ -164,10 +172,10 @@ export class EditableDateRangeComponent implements TableCell<LeaveTime> {
 		}
 		this.isEditMode = false;
 		const { startDate, endDate } = this.form.value;
-		this.previousValue.startDate = startDate as DateTime;
-		this.previousValue.endDate = endDate as DateTime;
+		this.defaultValue.startDate = startDate as DateTime;
+		this.defaultValue.endDate = endDate as DateTime;
 		if (this.params.updateRow) {
-			this.params.updateRow(this.row, String(this.form.value));
+			this.params.updateRow(this.row, { ...this.form.value, hours: this.defaultValue.hours } as DateRangeValue);
 		}
 	}
 
@@ -175,7 +183,7 @@ export class EditableDateRangeComponent implements TableCell<LeaveTime> {
 		if (rangeInput?.focused || rangeInput?.rangePicker.opened) {
 			return;
 		}
-		this.form.patchValue(this.previousValue);
+		this.form.patchValue(this.defaultValue);
 		this.isEditMode = false;
 	}
 
@@ -188,10 +196,10 @@ export class EditableDateRangeComponent implements TableCell<LeaveTime> {
 		}
 	}
 
-	public getLeavePeriodString(lt: LeaveTime): string {
-		const startDate = lt.startDate.toFormat('d.MM.yy');
-		const endDate = lt.endDate.toFormat('d.MM.yy');
-		const hoursPlural = this.pluralPipe.transform(lt.hours, {
+	public getLeavePeriodString(v: DateRangeValue): string {
+		const startDate = v.startDate.toFormat('d.MM.yy');
+		const endDate = v.endDate.toFormat('d.MM.yy');
+		const hoursPlural = this.pluralPipe.transform(v.hours, {
 			one: '# час',
 			few: '# часа',
 			other: '# часов',
