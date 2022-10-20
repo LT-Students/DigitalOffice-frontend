@@ -4,10 +4,9 @@ import { getUTCWithOffset, MAX_INT32 } from '@app/utils/utils';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { LeaveTimePath, PatchDocument } from '@app/types/edit-request';
 import { TimeService } from '../services/time.service';
-import { LeaveTime, LeaveTimeFactory, UserStat } from './user-stat';
+import { LeaveTime, LeaveTimeFactory, UserStat, WorkTime } from './user-stat';
 import { TimelistEntityType } from './timelist-entity';
 
 export class TimeListDataSource extends DataSource<UserStat> {
@@ -44,14 +43,14 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			.pipe(tap((data: UserStat[]) => this.data.next(data)));
 	}
 
-	public updateWorkTimeHours(workTime: WorkTimeInfo, hours: number): void {
+	public updateWorkTimeHours(workTime: WorkTime, hours: number): void {
 		const oldData = this.data.value;
 		const newData = oldData.map((s: UserStat) => {
-			const wt = s.workTimes.find((wt: WorkTimeInfo) => wt.id === workTime.id);
+			const wt = s.workTimes.find((wt: WorkTime) => wt.id === workTime.id);
 			if (wt) {
 				return {
 					...s,
-					workTimes: s.workTimes.map((wt: WorkTimeInfo) =>
+					workTimes: s.workTimes.map((wt: WorkTime) =>
 						wt.id === workTime.id ? { ...wt, userHours: hours, managerHours: hours } : wt
 					),
 				};
@@ -62,14 +61,14 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		this.apiService.editWorkTime(workTime.id, hours, '/Hours').subscribe({ error: () => this.data.next(oldData) });
 	}
 
-	public updateWorkTimeComment(workTime: WorkTimeInfo, comment: string): void {
+	public updateWorkTimeComment(workTime: WorkTime, comment: string): void {
 		const oldData = this.data.value;
 		const newData = oldData.map((s: UserStat) => {
-			const wt = s.workTimes.find((wt: WorkTimeInfo) => wt.id === workTime.id);
+			const wt = s.workTimes.find((wt: WorkTime) => wt.id === workTime.id);
 			if (wt) {
 				return {
 					...s,
-					workTimes: s.workTimes.map((wt: WorkTimeInfo) =>
+					workTimes: s.workTimes.map((wt: WorkTime) =>
 						wt.id === workTime.id ? { ...wt, description: comment, managerDescription: comment } : wt
 					),
 				};

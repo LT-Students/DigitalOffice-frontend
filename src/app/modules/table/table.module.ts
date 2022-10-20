@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { CdkTableModule } from '@angular/cdk/table';
+import { TimeTrackerModule } from '../time-tracker/time-tracker.module';
 import { TableComponent } from './table.component';
 import { TableCellComponent } from './table-cell.component';
 import { TextComponent } from './cell-components/text/text.component';
@@ -35,7 +36,7 @@ import { EditableDateRangeComponent } from './cell-components/editable-text-fiel
 		ContextMenuCellComponent,
 		SlideApplyButtonComponent,
 	],
-	imports: [SharedModule, CdkTableModule],
+	imports: [SharedModule, CdkTableModule, TimeTrackerModule],
 	exports: [TableComponent, CdkTableModule],
 })
 export class TableModule {}

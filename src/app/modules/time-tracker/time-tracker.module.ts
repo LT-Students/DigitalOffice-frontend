@@ -16,6 +16,7 @@ import { AddWorkTimeHoursComponent } from './components/add-hours/add-worktime-h
 import { LegendComponent } from './components/time-widget/legend/legend.component';
 import { LeaveHoursPipe } from './components/leaves/leave-hours.pipe';
 import { AddLeaveTimeBaseComponent } from './shared/add-leave-time-base/add-leave-time-base.component';
+import { WorkTimeChangedTooltipComponent } from './shared/work-time-changed-tooltip/work-time-changed-tooltip.component';
 
 @NgModule({
 	declarations: [
@@ -33,9 +34,10 @@ import { AddLeaveTimeBaseComponent } from './shared/add-leave-time-base/add-leav
 		LegendComponent,
 		LeaveHoursPipe,
 		AddLeaveTimeBaseComponent,
+		WorkTimeChangedTooltipComponent,
 	],
 	imports: [SharedModule, TimeTrackerRoutingModule],
 	providers: [],
-	exports: [AddLeaveTimeBaseComponent],
+	exports: [AddLeaveTimeBaseComponent, WorkTimeChangedTooltipComponent],
 })
 export class TimeTrackerModule {}

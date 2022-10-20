@@ -22,8 +22,8 @@ export class WorkTime implements WorkTimeInfo {
 	public managerDescription?: string;
 	public project: ProjectInfo;
 	public limitInfo: WorkTimeMonthLimitInfo;
-	public userInfo?: UserInfo;
-	public managerInfo?: UserInfo;
+	public user?: UserInfo;
+	public manager?: UserInfo;
 
 	public get hours(): number {
 		return this.managerHours || this.userHours;
@@ -44,8 +44,8 @@ export class WorkTime implements WorkTimeInfo {
 		this.jobs = workTime.jobs;
 		this.managerDescription = workTime.managerDescription;
 		this.limitInfo = limitInfo;
-		this.userInfo = user;
-		this.managerInfo = workTime.manager;
+		this.user = user;
+		this.manager = workTime.manager;
 
 		const project = workTime.project as ProjectInfo;
 		this.project = isGUIDEmpty(project.id)

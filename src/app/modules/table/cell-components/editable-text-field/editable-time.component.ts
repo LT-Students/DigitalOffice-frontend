@@ -28,19 +28,15 @@ import { EditableTextFieldParams } from './editable-text-field.component';
 					/>
 				</mat-form-field>
 			</do-form-field>
-			<mat-icon
-				*ngIf="row.managerHours != null"
-				class="text-secondary_default icon"
-				[svgIcon]="Icons.InfoOutline"
-				[doPopoverTrigger]="popover"
-				position="below"
-			></mat-icon>
-			<do-popover #popover>
-				<span class="mat-body-2">Автор изменения</span>
-				<p>{{ row.manager ? (row.manager | fullName) : '—' }}</p>
-				<span class="mat-body-2">Часы сотрудника</span>
-				<p>{{ row.userHours || 0 }}</p>
-			</do-popover>
+			<ng-container *ngIf="row.managerHours != null">
+				<mat-icon
+					class="text-secondary_default icon"
+					[svgIcon]="Icons.InfoOutline"
+					[doPopoverTrigger]="tooltip.template"
+					position="below"
+				></mat-icon>
+				<do-work-time-changed-tooltip #tooltip [tooltipData]="$any(row)"></do-work-time-changed-tooltip>
+			</ng-container>
 		</div>
 	`,
 	styles: [

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
 import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
@@ -12,7 +11,7 @@ import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
 import { LeaveTimeType } from '../models/leave-time-type';
-import { LeaveTime, UserStat } from '../models/user-stat';
+import { LeaveTime, UserStat, WorkTime } from '../models/user-stat';
 import { ColumnDef, TableOptions } from '../../table/models';
 import { TimeListDataSource } from '../models/timelist-datasource';
 import { IconButtonParams } from '../../table/cell-components/icon-button/icon-button.component';
@@ -105,16 +104,16 @@ export class ManagerTimelistTableConfigService {
 								type: 'textCell',
 								headerName: 'Название проекта',
 								columnStyle: { flex: '0 0 40%', overflow: 'hidden' },
-								valueGetter: (wt: WorkTimeInfo) => wt.project?.name || 'Другое',
+								valueGetter: (wt: WorkTime) => wt.project?.name || 'Другое',
 							}),
 							new ColumnDef({
 								field: 'entityHours',
 								type: 'editableTimeCell',
 								headerName: 'Внесённые часы',
-								valueGetter: (wt: WorkTimeInfo) =>
+								valueGetter: (wt: WorkTime) =>
 									wt.managerHours != null ? wt.managerHours : wt.userHours || 0,
 								params: new EditableTextFieldParams({
-									updateRow: (wt: WorkTimeInfo, h: string) => dataSource.updateWorkTimeHours(wt, +h),
+									updateRow: (wt: WorkTime, h: string) => dataSource.updateWorkTimeHours(wt, +h),
 									disabled: !canEdit,
 								}),
 							}),
@@ -122,22 +121,22 @@ export class ManagerTimelistTableConfigService {
 								field: 'comment',
 								type: 'showMoreTextCell',
 								headerName: 'Комментарий сотрудника',
-								valueGetter: (wt: WorkTimeInfo) =>
+								valueGetter: (wt: WorkTime) =>
 									wt.managerDescription != null ? wt.managerDescription : wt.description,
 								params: new ShowMoreTextParams({
 									editEnabled: canEdit,
-									updateRow: (wt: WorkTimeInfo, c: string) => dataSource.updateWorkTimeComment(wt, c),
+									updateRow: (wt: WorkTime, c: string) => dataSource.updateWorkTimeComment(wt, c),
 								}),
 							}),
 							new ColumnDef({
 								field: 'link',
 								type: 'iconButtonCell',
-								valueGetter: (wt: WorkTimeInfo) => wt,
+								valueGetter: (wt: WorkTime) => wt,
 								headerStyle: { flex: '0 0 48px' },
 								columnStyle: { flex: '0 0 auto' },
 								params: {
 									icon: () => Icons.Go,
-									onClickFn: (wt: WorkTimeInfo) =>
+									onClickFn: (wt: WorkTime) =>
 										this.router.navigateByUrl(`/${AppRoutes.Projects}/${wt.project?.id}`),
 								},
 							}),
@@ -226,7 +225,7 @@ export class ManagerTimelistTableConfigService {
 	}
 
 	private countUserHours(stats: UserStat): number {
-		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTimeInfo) => {
+		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTime) => {
 			const hours = wt.managerHours ?? wt.userHours ?? 0;
 			return acc + hours;
 		}, 0);

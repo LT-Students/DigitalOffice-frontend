@@ -1,10 +1,13 @@
-import { UserStatInfo } from '@api/time-service/models/user-stat-info';
-import { ImageInfo } from '@app/models/image.model';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
-import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
-import { WorkTimeMonthLimitInfo } from '@api/time-service/models/work-time-month-limit-info';
-import { LeaveType } from '@api/time-service/models/leave-type';
 import { DateTime } from 'luxon';
+import {
+	LeaveTimeInfo,
+	LeaveType,
+	ProjectInfo,
+	UserStatInfo,
+	WorkTimeInfo,
+	WorkTimeMonthLimitInfo,
+} from '@api/time-service/models';
+import { ImageInfo } from '@app/models/image.model';
 import { TimeDuration } from '@app/services/time-duration.service';
 
 interface UserInfo {
@@ -72,10 +75,38 @@ export class LeaveTimeFactory {
 	}
 }
 
+export interface WorkTime {
+	id: string;
+	userHours: number;
+	description?: string;
+	user: UserInfo;
+	managerHours?: number;
+	managerDescription?: string;
+	manager?: UserInfo;
+	modifiedAtUtc?: string;
+	project?: ProjectInfo;
+}
+
+export class WorkTimeFactory {
+	public static create(wt: WorkTimeInfo, user: UserInfo): WorkTime {
+		return {
+			id: wt.id,
+			userHours: wt.userHours || 0,
+			description: wt.description,
+			user,
+			managerHours: wt.managerHours,
+			managerDescription: wt.managerDescription,
+			manager: wt.manager,
+			modifiedAtUtc: wt.modifiedAtUtc,
+			project: wt.project,
+		};
+	}
+}
+
 export class UserStat {
 	public user: UserInfo;
 	public companyInfo: CompanyInfo;
-	public workTimes: WorkTimeInfo[];
+	public workTimes: WorkTime[];
 	public leaveTimes: LeaveTime[];
 	public limitInfo: WorkTimeMonthLimitInfo;
 
@@ -86,7 +117,7 @@ export class UserStat {
 			contractName: data.companyUser?.contractSubject?.name,
 		};
 		this.limitInfo = data.limitInfo as WorkTimeMonthLimitInfo;
-		this.workTimes = data.workTimes;
+		this.workTimes = data.workTimes.map((wt: WorkTimeInfo) => WorkTimeFactory.create(wt, this.user));
 		this.leaveTimes = data.leaveTimes
 			.filter((lt: LeaveTimeInfo) => lt.isActive)
 			.map((lt: LeaveTimeInfo) => LeaveTimeFactory.create(lt, this.limitInfo, this.companyInfo.rate));
