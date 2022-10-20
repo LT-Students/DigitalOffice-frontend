@@ -1,13 +1,25 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {
+	Component,
+	ChangeDetectionStrategy,
+	ElementRef,
+	ViewChildren,
+	QueryList,
+	OnInit,
+	OnDestroy,
+	ChangeDetectorRef,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { I18nPluralPipe } from '@angular/common';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { DateFilterFn, MatCalendarCellClassFunction, MatDateRangeInput } from '@angular/material/datepicker';
+import { DateFilterFn, MatCalendarCellClassFunction, MatDateRangePicker } from '@angular/material/datepicker';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
+import { UtilitiesService } from '@app/services/utilities.service';
 import { Icons } from '@shared/modules/icons/icons';
-import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
+import { TableCell } from '../../models';
 
 export class EditableDateRangeParams {
 	public minDate?: DateTime;
@@ -48,62 +60,48 @@ interface DateRangeValue {
 	selector: 'do-editable-date-range',
 	template: `
 		<div class="flex flex_ai_center position-relative">
-			<span *ngIf="!isEditMode" class="editable" [class.enabled]="!params.disabled" (click)="enableEditMode()">{{
+			<span *ngIf="!isEditMode" class="editable" [class.enabled]="!params.disabled">{{
 				defaultValue | execute: getLeavePeriodString.bind(this)
 			}}</span>
-			<do-form-field *ngIf="isEditMode" class="range-picker" [formGroup]="form">
-				<mat-form-field>
-					<mat-date-range-input
-						#rangeInput
-						[min]="params.minDate"
-						[max]="params.maxDate"
-						[dateFilter]="params.disableReservedDays"
-						[rangePicker]="$any(picker)"
-						(click)="picker.open()"
-					>
-						<input
-							doAutofocus
-							matStartDate
-							placeholder="ДД/ММ/ГГГГ"
-							formControlName="startDate"
-							data-test="leave-start-date-input"
-							(keydown.enter)="save()"
-							(keydown.escape)="revert()"
-							(blur)="revert($any(rangeInput))"
-						/>
-						<input
-							matEndDate
-							placeholder="ДД/ММ/ГГГГ"
-							formControlName="endDate"
-							data-test="leave-end-date-input"
-							(keydown.enter)="save()"
-							(keydown.escape)="revert()"
-							(blur)="revert($any(rangeInput))"
-						/>
-					</mat-date-range-input>
-					<mat-datepicker-toggle matSuffix [for]="picker" data-test="leave-interval-datepicker">
-						<mat-icon matDatepickerToggleIcon fontSet="material-icons-outlined">date_range</mat-icon>
-					</mat-datepicker-toggle>
-					<mat-date-range-picker
-						#picker
-						[dateClass]="params.dateClass"
-						(closed)="handleDateSelection()"
-					></mat-date-range-picker>
-				</mat-form-field>
-			</do-form-field>
-			<mat-icon
-				*ngIf="row.managerHours != null"
-				class="text-secondary_default icon"
-				[svgIcon]="Icons.InfoOutline"
-				[doPopoverTrigger]="popover"
-				position="below"
-			></mat-icon>
-			<do-popover #popover>
-				<span class="mat-body-2">Автор изменения</span>
-				<p>{{ row.manager ? (row.manager | fullName) : '—' }}</p>
-				<span class="mat-body-2">Часы сотрудника</span>
-				<p>{{ row.userHours || 0 }}</p>
-			</do-popover>
+			<div *ngIf="isEditMode" class="flex">
+				<do-form-field class="range-picker" [formGroup]="form">
+					<mat-form-field>
+						<mat-date-range-input
+							[min]="params.minDate"
+							[max]="params.maxDate"
+							[dateFilter]="params.disableReservedDays"
+							[rangePicker]="$any(picker)"
+						>
+							<input
+								doAutofocus
+								matStartDate
+								placeholder="ДД/ММ/ГГГГ"
+								formControlName="startDate"
+								data-test="leave-start-date-input"
+								(keydown.enter)="save()"
+							/>
+							<input
+								matEndDate
+								placeholder="ДД/ММ/ГГГГ"
+								formControlName="endDate"
+								data-test="leave-end-date-input"
+								(keydown.enter)="save()"
+							/>
+						</mat-date-range-input>
+						<mat-datepicker-toggle matSuffix [for]="picker" data-test="leave-interval-datepicker">
+							<mat-icon matDatepickerToggleIcon fontSet="material-icons-outlined">date_range</mat-icon>
+						</mat-datepicker-toggle>
+						<mat-date-range-picker
+							#picker
+							[dateClass]="params.dateClass"
+							(closed)="handleDateSelection()"
+						></mat-date-range-picker>
+					</mat-form-field>
+				</do-form-field>
+				<button mat-flat-button class="submit" color="primary" (click)="save()">
+					<mat-icon>done</mat-icon>
+				</button>
+			</div>
 		</div>
 	`,
 	styles: [
@@ -115,7 +113,17 @@ interface DateRangeValue {
 			.editable {
 				text-overflow: ellipsis;
 				overflow: hidden;
-				white-space: nowrap;
+				white-space: pre;
+				line-height: 18px;
+			}
+
+			.submit {
+				position: relative;
+				right: 6px;
+				z-index: 1;
+				padding: 0;
+				min-width: 48px;
+				height: 40px;
 			}
 
 			.enabled {
@@ -128,6 +136,8 @@ interface DateRangeValue {
 			}
 
 			.range-picker {
+				position: relative;
+				z-index: 2;
 				max-width: 255px;
 			}
 		`,
@@ -135,8 +145,10 @@ interface DateRangeValue {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [I18nPluralPipe, { provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
-export class EditableDateRangeComponent implements TableCell<DateRangeValue> {
+export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<DateRangeValue> {
 	public readonly Icons = Icons;
+
+	@ViewChildren(MatDateRangePicker) rangePicker!: QueryList<MatDateRangePicker<DateTime>>;
 
 	public form = this.fb.group({
 		startDate: this.fb.control<DateTime | null>(null, [Validators.required]),
@@ -154,8 +166,45 @@ export class EditableDateRangeComponent implements TableCell<DateRangeValue> {
 	}
 	public defaultValue!: DateRangeValue;
 
-	constructor(tableCell: TableCellComponent, private fb: FormBuilder, private pluralPipe: I18nPluralPipe) {
+	private destroy$ = new Subject();
+
+	constructor(
+		tableCell: TableCellComponent,
+		private fb: FormBuilder,
+		private pluralPipe: I18nPluralPipe,
+		private elementRef: ElementRef,
+		private utilities: UtilitiesService,
+		private cdr: ChangeDetectorRef
+	) {
 		this.row = tableCell.row;
+	}
+
+	public ngOnInit(): void {
+		this.utilities.documentClickTarget$.pipe(takeUntil(this.destroy$)).subscribe({
+			next: (target: HTMLElement) => {
+				const clickedInside = this.elementRef.nativeElement.contains(target);
+				const isDatepickerClosed = !this.rangePicker.get(0)?.opened;
+				if (this.isEditMode && !clickedInside && isDatepickerClosed) {
+					this.revert();
+				} else if (!this.isEditMode && clickedInside) {
+					this.enableEditMode();
+				}
+				this.cdr.markForCheck();
+			},
+		});
+		this.utilities.documentEscapePressed$.pipe(takeUntil(this.destroy$)).subscribe({
+			next: () => {
+				const isDatepickerClosed = !this.rangePicker.get(0)?.opened;
+				if (this.isEditMode && isDatepickerClosed) {
+					this.revert();
+				}
+			},
+		});
+	}
+
+	public ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	public enableEditMode(): void {
@@ -179,10 +228,7 @@ export class EditableDateRangeComponent implements TableCell<DateRangeValue> {
 		}
 	}
 
-	public revert(rangeInput?: MatDateRangeInput<DateTime>): void {
-		if (rangeInput?.focused || rangeInput?.rangePicker.opened) {
-			return;
-		}
+	public revert(): void {
 		this.form.patchValue(this.defaultValue);
 		this.isEditMode = false;
 	}
@@ -204,6 +250,6 @@ export class EditableDateRangeComponent implements TableCell<DateRangeValue> {
 			few: '# часа',
 			other: '# часов',
 		});
-		return `${startDate} - ${endDate} (${hoursPlural})`;
+		return `${startDate} - ${endDate}\n(${hoursPlural})`;
 	}
 }
