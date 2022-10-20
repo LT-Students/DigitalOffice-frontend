@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { AlertService } from '@app/services/alert.service';
-import { AddLeaveTimeBaseComponent } from '../../../shared/add-leave-time-base/add-leave-time-base.component';
+import { AddLeaveTimeBaseComponent } from '@shared/modules/shared-time-tracking-system/add-leave-time-base/add-leave-time-base.component';
 
 @Component({
 	selector: 'do-add-leave-hours',

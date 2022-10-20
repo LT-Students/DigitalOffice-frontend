@@ -9,7 +9,11 @@ import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { DoValidators } from '@app/validators/do-validators';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { LoadingState } from '@app/utils/loading-state';
-import { AttendanceService, MAX_FUTURE_DATE, SubmitLeaveTimeValue } from '../../services/attendance.service';
+import {
+	AttendanceService,
+	MAX_FUTURE_DATE,
+	SubmitLeaveTimeValue,
+} from '../../../../modules/time-tracker/services/attendance.service';
 
 @Component({
 	selector: 'do-add-leave-time-base',

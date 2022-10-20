@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { DateTime, Interval } from 'luxon';
+import { AddLeaveTimeBaseComponent } from '@shared/modules/shared-time-tracking-system/add-leave-time-base/add-leave-time-base.component';
 import { LeaveTime } from '../../models/leave-time';
 import { SubmitLeaveTimeValue } from '../../services/attendance.service';
-import { AddLeaveTimeBaseComponent } from '../../shared/add-leave-time-base/add-leave-time-base.component';
 
 @Component({
 	selector: 'do-edit-leave',

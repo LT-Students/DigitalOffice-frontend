@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared/shared.module';
+import { SharedTimeTrackingSystemModule } from '@shared/modules/shared-time-tracking-system/shared-time-tracking-system.module';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { TimeWidgetComponent } from './components/time-widget/time-widget.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
@@ -15,8 +16,6 @@ import { AddLeaveHoursComponent } from './components/add-hours/add-leave-hours/a
 import { AddWorkTimeHoursComponent } from './components/add-hours/add-worktime-hours/add-work-time-hours.component';
 import { LegendComponent } from './components/time-widget/legend/legend.component';
 import { LeaveHoursPipe } from './components/leaves/leave-hours.pipe';
-import { AddLeaveTimeBaseComponent } from './shared/add-leave-time-base/add-leave-time-base.component';
-import { WorkTimeChangedTooltipComponent } from './shared/work-time-changed-tooltip/work-time-changed-tooltip.component';
 
 @NgModule({
 	declarations: [
@@ -33,11 +32,9 @@ import { WorkTimeChangedTooltipComponent } from './shared/work-time-changed-tool
 		AddWorkTimeHoursComponent,
 		LegendComponent,
 		LeaveHoursPipe,
-		AddLeaveTimeBaseComponent,
-		WorkTimeChangedTooltipComponent,
 	],
-	imports: [SharedModule, TimeTrackerRoutingModule],
+	imports: [SharedModule, TimeTrackerRoutingModule, SharedTimeTrackingSystemModule],
 	providers: [],
-	exports: [AddLeaveTimeBaseComponent, WorkTimeChangedTooltipComponent],
+	exports: [],
 })
 export class TimeTrackerModule {}
