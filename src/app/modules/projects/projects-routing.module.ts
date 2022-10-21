@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@app/guards/permission.guard';
 import { UserRights } from '@app/types/user-rights.enum';
+import { TimelistHolidaysResolver } from '../manager-timelist/resolvers/timelist-holidays-resolver.service';
 import { ProjectsTableComponent } from './projects-table/projects-table.component';
 import { ProjectListResolver } from './resolvers/project-list.resolver';
 import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
@@ -56,6 +57,7 @@ const routes: Routes = [
 				canActivate: [TeamStatisticsGuard],
 				resolve: {
 					stats: TeamStatisticsResolver,
+					holidays: TimelistHolidaysResolver,
 				},
 			},
 		],

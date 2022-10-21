@@ -18,6 +18,7 @@ import { DateTime, Interval } from 'luxon';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { UtilitiesService } from '@app/services/utilities.service';
 import { Icons } from '@shared/modules/icons/icons';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { TableCellComponent } from '../../table-cell.component';
 import { TableCell } from '../../models';
 
@@ -168,11 +169,13 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 	}
 	public defaultValue!: DateRangeValue;
 
+	private isConfirmDialogOpened = false;
 	private destroy$ = new Subject();
 
 	constructor(
 		tableCell: TableCellComponent,
 		private fb: FormBuilder,
+		private dialog: DialogService,
 		private pluralPipe: I18nPluralPipe,
 		private elementRef: ElementRef,
 		private utilities: UtilitiesService,
@@ -186,8 +189,8 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 			next: (target: HTMLElement) => {
 				const clickedInside = this.elementRef.nativeElement.contains(target);
 				const isDatepickerClosed = !this.rangePicker.get(0)?.opened;
-				if (this.isEditMode && !clickedInside && isDatepickerClosed) {
-					this.revert();
+				if (this.isEditMode && !clickedInside && isDatepickerClosed && !this.isConfirmDialogOpened) {
+					this.checkIfValueChangedOnCancel();
 				} else if (!this.isEditMode && clickedInside) {
 					this.enableEditMode();
 				}
@@ -197,8 +200,8 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 		this.utilities.documentEscapePressed$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: () => {
 				const isDatepickerClosed = !this.rangePicker.get(0)?.opened;
-				if (this.isEditMode && isDatepickerClosed) {
-					this.revert();
+				if (this.isEditMode && isDatepickerClosed && !this.isConfirmDialogOpened) {
+					this.checkIfValueChangedOnCancel();
 				}
 			},
 		});
@@ -254,6 +257,32 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 			other: '# часов',
 		});
 		return `${startDate} - ${endDate}\n(${hoursPlural})`;
+	}
+
+	private checkIfValueChangedOnCancel(): void {
+		if (
+			+this.defaultValue.startDate !== +(this.form.value.startDate as DateTime) ||
+			+this.defaultValue.endDate !== +(this.form.value.endDate as DateTime)
+		) {
+			this.isConfirmDialogOpened = true;
+			this.dialog
+				.confirm({
+					title: 'Изменение даты отсутствия',
+					message: 'Вы действительно хотите отменить изменение?',
+					confirmText: 'Да',
+				})
+				.closed.subscribe({
+					next: (confirmed?: boolean) => {
+						if (confirmed) {
+							this.revert();
+						}
+						// without setTimeout dialog close event emits before click, so immediately pops up a new dialog
+						setTimeout(() => (this.isConfirmDialogOpened = false));
+					},
+				});
+		} else {
+			this.revert();
+		}
 	}
 
 	private excludeCurrentInterval(): void {

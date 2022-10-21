@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { UtilitiesService } from '@app/services/utilities.service';
 import { Icons } from '@shared/modules/icons/icons';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
 import { EditableTextFieldParams } from './editable-text-field.component';
@@ -97,15 +98,17 @@ export class EditableTimeComponent implements OnInit, OnDestroy, TableCell<numbe
 
 	public set value(v: number) {
 		this.control.setValue(v, { emitEvent: false });
-		this.previousValue = v;
+		this.defaultValue = v;
 	}
-	private previousValue = 0;
+	private defaultValue = 0;
 
+	private isConfirmDialogOpened = false;
 	private destroy$ = new Subject();
 
 	constructor(
 		tableCell: TableCellComponent,
 		private utilities: UtilitiesService,
+		private dialog: DialogService,
 		private elementRef: ElementRef,
 		private cdr: ChangeDetectorRef
 	) {
@@ -116,8 +119,8 @@ export class EditableTimeComponent implements OnInit, OnDestroy, TableCell<numbe
 		this.utilities.documentClickTarget$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: (target: HTMLElement) => {
 				const clickedInside = this.elementRef.nativeElement.contains(target);
-				if (this.isEditMode && !clickedInside) {
-					this.revert();
+				if (this.isEditMode && !clickedInside && !this.isConfirmDialogOpened) {
+					this.checkIfValueChangedOnCancel();
 				} else if (!this.isEditMode && clickedInside) {
 					this.enableEditMode();
 				}
@@ -126,8 +129,8 @@ export class EditableTimeComponent implements OnInit, OnDestroy, TableCell<numbe
 		});
 		this.utilities.documentEscapePressed$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: () => {
-				if (this.isEditMode) {
-					this.revert();
+				if (this.isEditMode && !this.isConfirmDialogOpened) {
+					this.checkIfValueChangedOnCancel();
 				}
 			},
 		});
@@ -151,14 +154,37 @@ export class EditableTimeComponent implements OnInit, OnDestroy, TableCell<numbe
 			return;
 		}
 		this.isEditMode = false;
-		this.previousValue = this.control.value;
+		this.defaultValue = this.control.value;
 		if (this.params.updateRow) {
 			this.params.updateRow(this.row, String(this.control.value));
 		}
 	}
 
 	public revert(): void {
-		this.control.setValue(this.previousValue);
+		this.control.setValue(this.defaultValue);
 		this.isEditMode = false;
+	}
+
+	private checkIfValueChangedOnCancel(): void {
+		if (this.defaultValue !== this.control.value) {
+			this.isConfirmDialogOpened = true;
+			this.dialog
+				.confirm({
+					title: 'Изменение даты отсутствия',
+					message: 'Вы действительно хотите отменить изменение?',
+					confirmText: 'Да',
+				})
+				.closed.subscribe({
+					next: (confirmed?: boolean) => {
+						if (confirmed) {
+							this.revert();
+						}
+						// without setTimeout dialog close event emits before click, so immediately pops up a new dialog
+						setTimeout(() => (this.isConfirmDialogOpened = false));
+					},
+				});
+		} else {
+			this.revert();
+		}
 	}
 }
