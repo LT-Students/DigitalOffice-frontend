@@ -97,8 +97,10 @@ export class TimeApiService {
 		);
 	}
 
-	public createLeaveTime(userId: string, ltValue: SubmitLeaveTimeValue): Observable<unknown> {
-		return this.leaveTimeService.createLeaveTime({ body: { userId, ...ltValue } as any });
+	public createLeaveTime(userId: string, ltValue: SubmitLeaveTimeValue): Observable<string> {
+		return this.leaveTimeService
+			.createLeaveTime({ body: { userId, ...ltValue } as any })
+			.pipe(map((res) => res.body as string));
 	}
 
 	public editLeaveTime(

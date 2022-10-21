@@ -141,10 +141,9 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 			.subscribe();
 	}
 
-	public addLeaveTimeDialog(userId: string, rate: number): void {
+	public addLeaveTimeDialog(userId: string): void {
 		const data: AddLeaveTimeDialogData = {
 			userId,
-			rate,
 		};
 		this.dialog
 			.open<Required<SubmitLeaveTimeValue>>(AddLeaveTimeDialogComponent, {

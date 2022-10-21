@@ -15,13 +15,7 @@
 	[expandedRowTemplate]="details"
 	(rowClick)="handleRowClick($event)"
 >
-	<ng-template
-		#details
-		let-user="user"
-		let-companyInfo="companyInfo"
-		let-workTimes="workTimes"
-		let-leaveTimes="leaveTimes"
-	>
+	<ng-template #details let-user="user" let-workTimes="workTimes" let-leaveTimes="leaveTimes">
 		<div *ngIf="expandedRow$ | async as expandedRow" class="additional-info">
 			<h5 class="header">Детализация по проектам</h5>
 			<do-table [dataSource]="workTimes" [tableOptions]="expandedRow.workTimes">
@@ -31,11 +25,7 @@
 			</do-table>
 			<div class="header flex flex_ai_center">
 				<h5 class="title">Детализация по отсутствиям</h5>
-				<button
-					*ngIf="canAddLeaveTime$ | async"
-					doButton
-					(click)="addLeaveTimeDialog(user.id, companyInfo.rate)"
-				>
+				<button *ngIf="canAddLeaveTime$ | async" doButton (click)="addLeaveTimeDialog(user.id)">
 					<mat-icon [svgIcon]="Icons.Add"></mat-icon>
 				</button>
 			</div>

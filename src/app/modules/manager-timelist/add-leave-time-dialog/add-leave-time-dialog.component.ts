@@ -6,7 +6,6 @@ import { CreateLeaveTimeService } from './create-leave-time.service';
 
 export interface AddLeaveTimeDialogData {
 	userId: string;
-	rate: number;
 }
 
 @Component({
@@ -29,7 +28,15 @@ export interface AddLeaveTimeDialogData {
 			</do-actions>
 		</do-add-leave-time-base>
 	`,
-	styles: [],
+	styles: [
+		`
+			.controls {
+				button {
+					width: 137px;
+				}
+			}
+		`,
+	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [{ provide: CreateLeaveTime, useClass: CreateLeaveTimeService }],
 })
