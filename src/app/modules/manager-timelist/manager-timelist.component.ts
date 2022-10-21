@@ -12,23 +12,30 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { DateTime } from 'luxon';
-import { WorkTimeMonthLimitInfo } from '@api/time-service/models';
+import { DateTime, Interval } from 'luxon';
 import { LoadingState } from '@app/utils/loading-state';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/title-datepicker-v2.component';
+import {
+	CanManageTimeInSelectedDate,
+	LeaveTimeAndDatepickerManagement,
+	SubmitLeaveTimeValue,
+} from '@shared/modules/shared-time-tracking-system/models';
 import { TableComponent } from '../table/table.component';
 import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
-import { AttendanceService, SubmitLeaveTimeValue } from '../time-tracker/services/attendance.service';
-import { ManagerTimelistTableConfigService } from './services/manager-timelist-table-config.service';
-import { TimeService } from './services/time.service';
-import { UserStat } from './models/user-stat';
-import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType } from './models/timelist-entity';
-import { AddLeaveTimeDialogService } from './add-leave-time-dialog/add-leave-time-dialog.service';
-import { TimeListDataSource } from './models/timelist-datasource';
-import { AddLeaveTimeDialogComponent, DialogData } from './add-leave-time-dialog/add-leave-time-dialog.component';
-import { ManagerTimelistService } from './services/manager-timelist.service';
+import {
+	CanManageTimeInSelectedDateService,
+	ReservedDaysStoreService,
+	ManagerTimelistTableConfigService,
+	TimeApiService,
+	TimelistLeaveTimeDatepickerService,
+} from './services';
+import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType, TimeListDataSource, UserStat } from './models';
+import {
+	AddLeaveTimeDialogComponent,
+	AddLeaveTimeDialogData,
+} from './add-leave-time-dialog/add-leave-time-dialog.component';
 
 @Component({
 	selector: 'do-team-statistics',
@@ -36,9 +43,10 @@ import { ManagerTimelistService } from './services/manager-timelist.service';
 	styleUrls: ['./manager-timelist.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
-		ManagerTimelistService,
+		ReservedDaysStoreService,
 		ManagerTimelistTableConfigService,
-		{ provide: AttendanceService, useExisting: AddLeaveTimeDialogService },
+		{ provide: LeaveTimeAndDatepickerManagement, useClass: TimelistLeaveTimeDatepickerService },
+		{ provide: CanManageTimeInSelectedDate, useClass: CanManageTimeInSelectedDateService },
 	],
 })
 export class ManagerTimelistComponent extends LoadingState implements OnInit, AfterViewInit, OnDestroy {
@@ -50,23 +58,24 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 	@ViewChild(DynamicFilterComponent) filter!: DynamicFilterComponent;
 
 	public pageTitle = this.getPageTitle(this.entityInfo.entityType);
-	public canAddLeaveTime$ = this.canManageTimelist.canEdit$;
+	public canAddLeaveTime$ = this.canManageTime.canEdit$;
 
-	public tableData = this.tableConfig.getTableData();
+	public tableOptions = this.tableConfig.getTableOptions();
 	public filterConfig = this.tableConfig.getFilters();
 	public expandedRow$!: ReturnType<ManagerTimelistTableConfigService['getExpandedRowData$']>;
 	public dataSource!: TimeListDataSource;
 
-	private holidays!: (WorkTimeMonthLimitInfo | null)[];
 	private destroy$ = new Subject();
 
 	constructor(
 		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
 		private tableConfig: ManagerTimelistTableConfigService,
-		private canManageTimelist: ManagerTimelistService,
+		private canManageTime: CanManageTimeInSelectedDate,
+		private reservedDaysStore: ReservedDaysStoreService,
+		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement,
 		private route: ActivatedRoute,
 		private dialog: DialogService,
-		private timeService: TimeService,
+		private timeService: TimeApiService,
 		private cdr: ChangeDetectorRef,
 		private vcr: ViewContainerRef
 	) {
@@ -74,10 +83,12 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 	}
 
 	public ngOnInit(): void {
-		// this.timeService.findHolidaysForThreeMonths().subscribe((holidays) => (this.holidays = holidays));
 		this.route.data
 			.pipe(
 				tap((data) => {
+					const holidays = data['holidays'];
+					this.leaveTimeDatepicker.setDatepickerHolidays(holidays);
+
 					const stats = data['stats'];
 					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType);
 					this.expandedRow$ = this.tableConfig.getExpandedRowData$(this.dataSource);
@@ -93,7 +104,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 		merge(
 			sort.sortChange,
 			this.filter.filterChange,
-			this.datepicker.dateSelection.pipe(tap((d: DateTime) => this.canManageTimelist.setNewDate(d)))
+			this.datepicker.dateSelection.pipe(tap((d: DateTime) => this.canManageTime.setNewDate(d)))
 		)
 			.pipe(
 				switchMap(() => {
@@ -111,6 +122,15 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 		this.destroy$.complete();
 	}
 
+	public handleRowClick(s: UserStat): void {
+		this.reservedDaysStore.loadUserReservedDays(s.user.id).subscribe({
+			next: (intervals: Interval[]) => {
+				this.leaveTimeDatepicker.setRate(s.companyInfo.rate);
+				this.leaveTimeDatepicker.setReservedDays(intervals);
+			},
+		});
+	}
+
 	public handleDownload(): void {
 		this.setLoading(true);
 		const { entityType, entityId } = this.entityInfo;
@@ -122,10 +142,9 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 	}
 
 	public addLeaveTimeDialog(userId: string, rate: number): void {
-		const data: DialogData = {
+		const data: AddLeaveTimeDialogData = {
 			userId,
 			rate,
-			holidays: this.holidays,
 		};
 		this.dialog
 			.open<Required<SubmitLeaveTimeValue>>(AddLeaveTimeDialogComponent, {

@@ -1,16 +1,12 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { WorkTimeMonthLimitInfo } from '@api/time-service/models/work-time-month-limit-info';
-import { LeaveTime } from '../../time-tracker/models/leave-time';
-import { TimeService } from '../services/time.service';
-import { AddLeaveTimeBaseComponent } from '../../time-tracker/shared/add-leave-time-base/add-leave-time-base.component';
-import { SubmitLeaveTimeValue } from '../../time-tracker/services/attendance.service';
-import { AddLeaveTimeDialogService } from './add-leave-time-dialog.service';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { DialogRef } from '@angular/cdk/dialog';
+import { AddLeaveTimeBaseComponent } from '@shared/modules/shared-time-tracking-system/add-leave-time-base/add-leave-time-base.component';
+import { CreateLeaveTime, SubmitLeaveTimeValue } from '@shared/modules/shared-time-tracking-system/models';
+import { CreateLeaveTimeService } from './create-leave-time.service';
 
-export interface DialogData {
+export interface AddLeaveTimeDialogData {
 	userId: string;
 	rate: number;
-	holidays: (WorkTimeMonthLimitInfo | null)[];
 }
 
 @Component({
@@ -35,24 +31,12 @@ export interface DialogData {
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: CreateLeaveTime, useClass: CreateLeaveTimeService }],
 })
-export class AddLeaveTimeDialogComponent implements OnInit {
+export class AddLeaveTimeDialogComponent {
 	@ViewChild(AddLeaveTimeBaseComponent, { static: true }) baseComponent!: AddLeaveTimeBaseComponent;
 
-	constructor(
-		@Inject(DIALOG_DATA) private data: DialogData,
-		private dialogRef: DialogRef,
-		private addLeaveTimeDialog: AddLeaveTimeDialogService,
-		private timeService: TimeService
-	) {}
-
-	public ngOnInit(): void {
-		const { userId, rate, holidays } = this.data;
-		this.timeService.findUserLeaveTimes(userId).subscribe({
-			next: (leaveTimes: LeaveTime[]) =>
-				this.addLeaveTimeDialog.setInitialData(leaveTimes, holidays, rate, userId),
-		});
-	}
+	constructor(private dialogRef: DialogRef) {}
 
 	public handleSubmit(): void {
 		this.baseComponent.submit$().subscribe({

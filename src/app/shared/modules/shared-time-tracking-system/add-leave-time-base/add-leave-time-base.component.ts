@@ -11,7 +11,7 @@ import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { LoadingState } from '@app/utils/loading-state';
 import {
 	SubmitLeaveTimeValue,
-	MAX_FUTURE_DATE,
+	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
 	LeaveTimeAndDatepickerManagement,
 	CreateLeaveTime,
 } from '@shared/modules/shared-time-tracking-system/models';
@@ -28,7 +28,7 @@ export class AddLeaveTimeBaseComponent {
 	@Input() hideLeaveTypeSelect = false;
 
 	public readonly minDate = getMinDateToFillHours();
-	public readonly maxDate = MAX_FUTURE_DATE;
+	public readonly maxDate = MAX_FUTURE_DATE_FOR_LEAVE_TIME;
 
 	public form = this.fb.group({
 		leaveType: this.fb.control<LeaveType | null>(null, [DoValidators.required]),

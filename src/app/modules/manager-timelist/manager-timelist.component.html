@@ -9,7 +9,12 @@
 	</button>
 </div>
 <do-dynamic-filter [filters]="filterConfig"></do-dynamic-filter>
-<do-table [dataSource]="dataSource" [tableOptions]="tableData" [expandedRowTemplate]="details">
+<do-table
+	[dataSource]="dataSource"
+	[tableOptions]="tableOptions"
+	[expandedRowTemplate]="details"
+	(rowClick)="handleRowClick($event)"
+>
 	<ng-template
 		#details
 		let-user="user"

@@ -7,29 +7,31 @@ import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
 import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '@shared/component/dialog/dialog.service';
+import { getMinDateToFillHours } from '@shared/modules/shared-time-tracking-system/utils';
+import {
+	CanManageTimeInSelectedDate,
+	LeaveTimeAndDatepickerManagement,
+	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
+} from '@shared/modules/shared-time-tracking-system/models';
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
-import { LeaveTimeType } from '../models/leave-time-type';
-import { LeaveTime, UserStat, WorkTime } from '../models/user-stat';
+import { LeaveTimeType, LeaveTime, UserStat, WorkTime, TimeListDataSource } from '../models';
 import { ColumnDef, TableOptions } from '../../table/models';
-import { TimeListDataSource } from '../models/timelist-datasource';
 import { IconButtonParams } from '../../table/cell-components/icon-button/icon-button.component';
 import { ShowMoreTextParams } from '../../table/cell-components/show-more-text/show-more-text.component';
 import { EditableDateRangeParams } from '../../table/cell-components/editable-text-field/editable-date-range.component';
-import { TimeService } from './time.service';
-import { ManagerTimelistService } from './manager-timelist.service';
 
 @Injectable()
 export class ManagerTimelistTableConfigService {
 	constructor(
 		private router: Router,
 		private dialog: DialogService,
-		private timeService: TimeService,
-		private timelistService: ManagerTimelistService
+		private canManageTime: CanManageTimeInSelectedDate,
+		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement
 	) {}
 
-	public getTableData(): TableOptions {
+	public getTableOptions(): TableOptions {
 		return {
 			sortActive: 'username',
 			sortDirection: 'asc',
@@ -92,7 +94,7 @@ export class ManagerTimelistTableConfigService {
 	public getExpandedRowData$(
 		dataSource: TimeListDataSource
 	): Observable<{ workTimes: TableOptions; leaveTimes: TableOptions }> {
-		return this.timelistService.canEdit$.pipe(
+		return this.canManageTime.canEdit$.pipe(
 			map((canEdit: boolean) => {
 				return {
 					workTimes: {
@@ -165,8 +167,12 @@ export class ManagerTimelistTableConfigService {
 								valueGetter: (lt: LeaveTime) => lt,
 								params: new EditableDateRangeParams({
 									disabled: !canEdit,
-									minDate: this.timelistService.getMinDate(),
-									maxDate: DateTime.now().plus({ month: 1 }).endOf('month'),
+									minDate: getMinDateToFillHours(),
+									maxDate: MAX_FUTURE_DATE_FOR_LEAVE_TIME,
+									dateClass: this.leaveTimeDatepicker.colorWeekends.bind(this.leaveTimeDatepicker),
+									disableReservedDays: this.leaveTimeDatepicker.disableReservedDays.bind(
+										this.leaveTimeDatepicker
+									),
 									updateRow: (
 										lt: LeaveTime,
 										interval: { startDate: DateTime; endDate: DateTime; hours: number }

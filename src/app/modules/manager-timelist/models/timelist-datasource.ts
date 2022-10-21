@@ -5,14 +5,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { LeaveTimePath, PatchDocument } from '@app/types/edit-request';
-import { TimeService } from '../services/time.service';
+import { TimeApiService } from '../services';
 import { LeaveTime, LeaveTimeFactory, UserStat, WorkTime } from './user-stat';
 import { TimelistEntityType } from './timelist-entity';
 
 export class TimeListDataSource extends DataSource<UserStat> {
 	private data = new BehaviorSubject<UserStat[]>([]);
 
-	constructor(data: UserStat[], private apiService: TimeService, private entityType: TimelistEntityType) {
+	constructor(data: UserStat[], private apiService: TimeApiService, private entityType: TimelistEntityType) {
 		super();
 		this.data.next(data);
 	}

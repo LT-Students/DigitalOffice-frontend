@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DateTime } from 'luxon';
-import { MAX_FUTURE_DATE, CanManageTimeInSelectedDate } from '@shared/modules/shared-time-tracking-system/models';
+import {
+	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
+	CanManageTimeInSelectedDate,
+} from '@shared/modules/shared-time-tracking-system/models';
 import { AttendanceStoreService } from '../../services';
 
 @Component({
@@ -11,7 +14,7 @@ import { AttendanceStoreService } from '../../services';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTasksComponent {
-	public readonly maxDate = MAX_FUTURE_DATE;
+	public readonly maxDate = MAX_FUTURE_DATE_FOR_LEAVE_TIME;
 	public selectedDate$ = this.canManageTime.selectedDate$;
 	public activities$ = this.attendanceStore.activities$;
 	public canEdit$ = this.canManageTime.canEdit$;

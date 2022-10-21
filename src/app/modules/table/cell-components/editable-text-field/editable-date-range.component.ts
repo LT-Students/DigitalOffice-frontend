@@ -14,7 +14,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { DateFilterFn, MatCalendarCellClassFunction, MatDateRangePicker } from '@angular/material/datepicker';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { UtilitiesService } from '@app/services/utilities.service';
 import { Icons } from '@shared/modules/icons/icons';
@@ -22,10 +22,10 @@ import { TableCellComponent } from '../../table-cell.component';
 import { TableCell } from '../../models';
 
 export class EditableDateRangeParams {
-	public minDate?: DateTime;
-	public maxDate?: DateTime;
-	public disableReservedDays: any;
-	public dateClass: any;
+	public minDate: DateTime | null = null;
+	public maxDate: DateTime | null = null;
+	public disableReservedDays?: DateFilterFn<DateTime>;
+	public dateClass?: MatCalendarCellClassFunction<DateTime>;
 	public updateRow?: (o: any, v: DateRangeValue) => void;
 	public disabled?: boolean;
 
@@ -40,8 +40,8 @@ export class EditableDateRangeParams {
 		}>
 	) {
 		if (params) {
-			this.minDate = params.minDate;
-			this.maxDate = params.maxDate;
+			this.minDate = params.minDate || null;
+			this.maxDate = params.maxDate || null;
 			this.disableReservedDays = params.disableReservedDays;
 			this.dateClass = params.dateClass;
 			this.disabled = params.disabled;
@@ -69,7 +69,7 @@ interface DateRangeValue {
 						<mat-date-range-input
 							[min]="params.minDate"
 							[max]="params.maxDate"
-							[dateFilter]="params.disableReservedDays"
+							[dateFilter]="disableReservedDays"
 							[rangePicker]="$any(picker)"
 						>
 							<input
@@ -93,7 +93,7 @@ interface DateRangeValue {
 						</mat-datepicker-toggle>
 						<mat-date-range-picker
 							#picker
-							[dateClass]="params.dateClass"
+							[dateClass]="params.dateClass || dateClass"
 							(closed)="handleDateSelection()"
 						></mat-date-range-picker>
 					</mat-form-field>
@@ -159,6 +159,8 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 	public row: any;
 
 	public isEditMode = false;
+	public disableReservedDays: DateFilterFn<DateTime> = () => true;
+	public dateClass: MatCalendarCellClassFunction<DateTime> = () => '';
 
 	public set value(v: DateRangeValue) {
 		this.form.patchValue(v, { emitEvent: false });
@@ -211,6 +213,7 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 		if (this.params.disabled) {
 			return;
 		}
+		this.excludeCurrentInterval();
 		this.isEditMode = true;
 	}
 
@@ -251,5 +254,20 @@ export class EditableDateRangeComponent implements OnInit, OnDestroy, TableCell<
 			other: '# часов',
 		});
 		return `${startDate} - ${endDate}\n(${hoursPlural})`;
+	}
+
+	private excludeCurrentInterval(): void {
+		const disableReservedDaysFn = this.params.disableReservedDays;
+		if (!disableReservedDaysFn) {
+			return;
+		}
+		const { startDate, endDate } = this.defaultValue;
+		const currentInterval = Interval.fromDateTimes(startDate, endDate.plus({ day: 1 }));
+		this.disableReservedDays = (date: DateTime | null) => {
+			if (date && currentInterval.contains(date)) {
+				return true;
+			}
+			return disableReservedDaysFn(date);
+		};
 	}
 }

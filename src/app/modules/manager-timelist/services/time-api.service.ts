@@ -9,17 +9,15 @@ import {
 	WorkTimeApiService,
 	WorkTimeMonthLimitApiService,
 } from '@api/time-service/services';
-import { UserStatInfo } from '@api/time-service/models';
+import { LeaveTimeInfo, UserStatInfo } from '@api/time-service/models';
 import { LeaveTimePath, PatchDocument } from '@app/types/edit-request';
-import { UserStat } from '../models/user-stat';
-import { TimelistEntityType } from '../models/timelist-entity';
-import { SubmitLeaveTimeValue } from '../../time-tracker/services/attendance.service';
-import { LeaveTime } from '../../time-tracker/models/leave-time';
+import { Holidays, HolidaysFactory, SubmitLeaveTimeValue } from '@shared/modules/shared-time-tracking-system/models';
+import { UserStat, TimelistEntityType } from '../models';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class TimeService {
+export class TimeApiService {
 	constructor(
 		private statService: StatApiService,
 		private importService: ImportApiService,
@@ -81,22 +79,25 @@ export class TimeService {
 		);
 	}
 
-	public findUserLeaveTimes(userId: string): Observable<any[]> {
+	public findUserLeaveTimes(userId: string): Observable<LeaveTimeInfo[]> {
 		const startTime = DateTime.now().minus({ month: 1 }).startOf('month').toSQL();
 		const endTime = DateTime.now().plus({ month: 1 }).endOf('month').toSQL();
 
 		return this.leaveTimeService
 			.findLeaveTimes({ userid: userId, starttime: startTime, endtime: endTime, skipCount: 0, takeCount: 30 })
-			.pipe(map((res) => (res.body || []).map((lt) => new LeaveTime(lt.leaveTime))));
+			.pipe(map((res) => (res.body || []).map((lt) => lt.leaveTime)));
 	}
 
-	public findMonthLimit(month: number, year: number) {
-		return this.monthLimitService
-			.findWorkTimeMonthLimits({ takeCount: 1, skipCount: 0, month, year })
-			.pipe(map((res) => (res.body && res.body[0] ? res.body[0] : null)));
+	public findHolidays(month: number, year: number): Observable<Holidays> {
+		return this.monthLimitService.findWorkTimeMonthLimits({ takeCount: 1, skipCount: 0, month, year }).pipe(
+			map((res) => {
+				const limit = res.body?.[0];
+				return HolidaysFactory.create(limit);
+			})
+		);
 	}
 
-	public addLeaveTime(userId: string, ltValue: SubmitLeaveTimeValue): Observable<unknown> {
+	public createLeaveTime(userId: string, ltValue: SubmitLeaveTimeValue): Observable<unknown> {
 		return this.leaveTimeService.createLeaveTime({ body: { userId, ...ltValue } as any });
 	}
 
