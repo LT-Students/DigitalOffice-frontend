@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { isGUIDEmpty } from '@app/utils/utils';
 import { EditProjectComponent } from '../../dialogs/edit-project/edit-project.component';
-import { WorkTime } from '../../models/work-time';
+import { WorkTime } from '../../models';
 
 @Component({
 	selector: 'do-projects',

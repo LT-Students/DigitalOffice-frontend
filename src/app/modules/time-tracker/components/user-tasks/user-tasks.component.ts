@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DateTime } from 'luxon';
-import { AttendanceService, MAX_FUTURE_DATE } from '../../services/attendance.service';
+import { MAX_FUTURE_DATE, CanManageTimeInSelectedDate } from '@shared/modules/shared-time-tracking-system/models';
+import { AttendanceStoreService } from '../../services';
 
 @Component({
 	selector: 'do-user-tasks',
@@ -11,13 +12,13 @@ import { AttendanceService, MAX_FUTURE_DATE } from '../../services/attendance.se
 })
 export class UserTasksComponent {
 	public readonly maxDate = MAX_FUTURE_DATE;
-	public selectedDate$ = this.attendanceService.selectedDate$;
-	public activities$ = this.attendanceService.activities$;
-	public canEdit$ = this.attendanceService.canEdit$;
+	public selectedDate$ = this.canManageTime.selectedDate$;
+	public activities$ = this.attendanceStore.activities$;
+	public canEdit$ = this.canManageTime.canEdit$;
 
-	constructor(private attendanceService: AttendanceService) {}
+	constructor(private attendanceStore: AttendanceStoreService, private canManageTime: CanManageTimeInSelectedDate) {}
 
 	public chosenMonthHandler(date: DateTime): void {
-		this.attendanceService.setNewDate(date);
+		this.canManageTime.setNewDate(date);
 	}
 }

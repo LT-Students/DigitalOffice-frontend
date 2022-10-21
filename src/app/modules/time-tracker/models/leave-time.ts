@@ -2,19 +2,7 @@ import { LeaveType } from '@api/time-service/models/leave-type';
 import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
 import { DateTime } from 'luxon';
 
-interface ILeaveTime {
-	comment?: string;
-	createdAt: DateTime;
-	createdBy: string;
-	endTime: DateTime;
-	id: string;
-	isActive: boolean;
-	leaveType: LeaveType;
-	minutes: number;
-	startTime: DateTime;
-}
-
-export class LeaveTime implements ILeaveTime {
+export class LeaveTime {
 	public id: string;
 	public createdAt: DateTime;
 	public createdBy: string;

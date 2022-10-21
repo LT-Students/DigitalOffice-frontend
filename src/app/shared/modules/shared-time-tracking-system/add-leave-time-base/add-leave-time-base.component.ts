@@ -10,10 +10,12 @@ import { DoValidators } from '@app/validators/do-validators';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { LoadingState } from '@app/utils/loading-state';
 import {
-	AttendanceService,
-	MAX_FUTURE_DATE,
 	SubmitLeaveTimeValue,
-} from '../../../../modules/time-tracker/services/attendance.service';
+	MAX_FUTURE_DATE,
+	LeaveTimeAndDatepickerManagement,
+	CreateLeaveTime,
+} from '@shared/modules/shared-time-tracking-system/models';
+import { getMinDateToFillHours } from '@shared/modules/shared-time-tracking-system/utils/utils';
 
 @Component({
 	selector: 'do-add-leave-time-base',
@@ -25,7 +27,7 @@ import {
 export class AddLeaveTimeBaseComponent {
 	@Input() hideLeaveTypeSelect = false;
 
-	public readonly minDate = this.attendanceService.getMinDate();
+	public readonly minDate = getMinDateToFillHours();
 	public readonly maxDate = MAX_FUTURE_DATE;
 
 	public form = this.fb.group({
@@ -36,8 +38,8 @@ export class AddLeaveTimeBaseComponent {
 	});
 	public leaveTypes = LeaveTypeModel.getAllLeaveTypes();
 
-	public disableReservedDays = this.attendanceService.disableReservedDays;
-	public dateClass = this.attendanceService.colorWeekends;
+	public disableReservedDays = this.leaveTimeDatepicker.disableReservedDays;
+	public dateClass = this.leaveTimeDatepicker.colorWeekends;
 
 	public selectedIntervalDurationInHours$ = new BehaviorSubject(0);
 
@@ -45,7 +47,8 @@ export class AddLeaveTimeBaseComponent {
 
 	constructor(
 		private fb: FormBuilder,
-		protected attendanceService: AttendanceService,
+		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement,
+		private createLeaveTimeService: CreateLeaveTime,
 		private cdr: ChangeDetectorRef
 	) {}
 
@@ -60,7 +63,7 @@ export class AddLeaveTimeBaseComponent {
 		if (startTime > definitelyAssignedEndTime) {
 			return;
 		}
-		const duration = this.attendanceService.getLeaveDuration(startTime, definitelyAssignedEndTime);
+		const duration = this.leaveTimeDatepicker.getLeaveDuration(startTime, definitelyAssignedEndTime);
 		this.selectedIntervalDurationInHours$.next(duration);
 	}
 
@@ -84,7 +87,7 @@ export class AddLeaveTimeBaseComponent {
 				const offset = submitValue.startTime.offset;
 				submitValue.startTime = submitValue.startTime.toUTC().plus({ minute: offset });
 				submitValue.endTime = submitValue.endTime.toUTC().plus({ minute: offset });
-				return this.attendanceService.submitLeaveTime(submitValue, initialValue).pipe(
+				return this.createLeaveTimeService.createLeaveTime(submitValue, initialValue).pipe(
 					map((leaveTimeId: string) => ({
 						...submitValue,
 						leaveTimeId,

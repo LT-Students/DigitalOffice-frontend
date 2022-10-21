@@ -11,21 +11,22 @@ import {
 import { DateTime } from 'luxon';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { first, map, switchMap } from 'rxjs/operators';
+import {
+	WorkTimeResponse,
+	LeaveTimeResponse,
+	CreateWorkTimeRequest,
+	CreateLeaveTimeRequest,
+	WorkTimeMonthLimitInfo,
+} from '@api/time-service/models';
 import { User } from '@app/models/user/user.model';
-import { WorkTimeResponse } from '@api/time-service/models/work-time-response';
-import { LeaveTimeResponse } from '@api/time-service/models/leave-time-response';
 import { EditRequest, LeaveTimePath, WorkTimePath } from '@app/types/edit-request';
-import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
-import { CreateLeaveTimeRequest } from '@api/time-service/models/create-leave-time-request';
-import { WorkTimeMonthLimitInfo } from '@api/time-service/models/work-time-month-limit-info';
-import { WorkTime } from '../models/work-time';
-import { LeaveTime } from '../models/leave-time';
-import { SubmitLeaveTimeValue } from './attendance.service';
+import { SubmitLeaveTimeValue } from '@shared/modules/shared-time-tracking-system/models';
+import { LeaveTime, WorkTime } from '../models';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class TimeService {
+export class TimeApiService {
 	constructor(
 		private currentUser: CurrentUserService,
 		private workTimeService: WorkTimeApiService,
