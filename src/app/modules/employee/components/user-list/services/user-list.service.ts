@@ -78,12 +78,7 @@ export class UserListService {
 	public removeFromList(userId: string): boolean {
 		let isRemoved = false;
 		this.statusChange$.pipe(first()).subscribe({
-			next: (status: Status) => {
-				isRemoved = status !== 'archive';
-				if (isRemoved) {
-					this.removeUser$.next(userId);
-				}
-			},
+			next: () => this.removeUser$.next(userId),
 		});
 		return isRemoved;
 	}
