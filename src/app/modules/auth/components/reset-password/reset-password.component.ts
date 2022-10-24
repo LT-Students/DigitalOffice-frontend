@@ -1,12 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import {
-	UntypedFormBuilder,
-	UntypedFormControl,
-	UntypedFormGroup,
-	FormGroupDirective,
-	NgForm,
-	Validators,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, NgForm } from '@angular/forms';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, finalize, map, startWith, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -53,10 +46,10 @@ export class ResetPasswordComponent extends LoadingState implements OnInit {
 		super();
 		this.resetForm = this._fb.group(
 			{
-				login: ['', [Validators.required]],
-				password: ['', [Validators.required, DoValidators.password]],
-				repeatPassword: ['', [Validators.required, DoValidators.password]],
-				secret: ['', [Validators.required]],
+				login: ['', [DoValidators.required]],
+				password: ['', [DoValidators.required, DoValidators.password]],
+				repeatPassword: ['', [DoValidators.required, DoValidators.password]],
+				secret: ['', [DoValidators.required]],
 			},
 			{ validators: [DoValidators.matchControls('password', 'repeatPassword')] }
 		);
