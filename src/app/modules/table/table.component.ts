@@ -8,6 +8,7 @@ import {
 	OnInit,
 	Output,
 	TemplateRef,
+	TrackByFunction,
 	ViewChild,
 	ViewEncapsulation,
 } from '@angular/core';
@@ -63,6 +64,7 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 			this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
 			this.sortActive = options.sortActive || this.sortActive;
 			this.sortDirection = options.sortDirection || this.sortDirection;
+			this.trackByFn = options.trackByFn || this.trackByFn;
 		}
 	}
 
@@ -115,6 +117,7 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 	@Input() isRowExpandable: (index: number, rowData: T) => boolean = () => false;
 	@Input() expandedRowComparator: ([expandedRow, row]: [T | null, T]) => boolean = ([expandedRow, row]) =>
 		expandedRow === row;
+	@Input() trackByFn: TrackByFunction<any> = (index: number, row: T) => row;
 
 	constructor() {}
 
@@ -133,9 +136,5 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 		if (this.expandedRowTemplate) {
 			this.expandedElement = this.expandedRowComparator([this.expandedElement, row]) ? null : row;
 		}
-	}
-
-	public trackByFn(index: number, row: T): any {
-		return row;
 	}
 }

@@ -9,11 +9,13 @@ import {
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { merge, Subject } from 'rxjs';
+import { ActivatedRoute, Data } from '@angular/router';
+import { combineLatest, merge, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DateTime, Interval } from 'luxon';
 import { LoadingState } from '@app/utils/loading-state';
+import { User } from '@app/models/user/user.model';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/title-datepicker-v2.component';
@@ -74,6 +76,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 		private reservedDaysStore: ReservedDaysStoreService,
 		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement,
 		private route: ActivatedRoute,
+		private currentUser: CurrentUserService,
 		private dialog: DialogService,
 		private timeService: TimeApiService,
 		private cdr: ChangeDetectorRef,
@@ -83,20 +86,19 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 	}
 
 	public ngOnInit(): void {
-		this.route.data
-			.pipe(
-				tap((data) => {
+		combineLatest([this.route.data, this.currentUser.user$])
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: ([data, u]: [Data, User]) => {
 					const holidays = data['holidays'];
 					this.leaveTimeDatepicker.setDatepickerHolidays(holidays);
 
 					const stats = data['stats'];
-					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType);
+					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType, u.id);
 					this.expandedRow$ = this.tableConfig.getExpandedRowData$(this.dataSource);
 					this.cdr.markForCheck();
-				}),
-				takeUntil(this.destroy$)
-			)
-			.subscribe();
+				},
+			});
 	}
 
 	public ngAfterViewInit(): void {

@@ -12,7 +12,12 @@ import { TimelistEntityType } from './timelist-entity';
 export class TimeListDataSource extends DataSource<UserStat> {
 	private data = new BehaviorSubject<UserStat[]>([]);
 
-	constructor(data: UserStat[], private apiService: TimeApiService, private entityType: TimelistEntityType) {
+	constructor(
+		data: UserStat[],
+		private apiService: TimeApiService,
+		private entityType: TimelistEntityType,
+		private currentUserId: string
+	) {
 		super();
 		this.data.next(data);
 	}
@@ -50,9 +55,15 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			if (wt) {
 				return {
 					...s,
-					workTimes: s.workTimes.map((wt: WorkTime) =>
-						wt.id === workTime.id ? { ...wt, userHours: hours, managerHours: hours } : wt
-					),
+					workTimes: s.workTimes.map((wt: WorkTime) => {
+						if (wt.id !== workTime.id) {
+							return wt;
+						}
+						return {
+							...wt,
+							...(wt.user.id === this.currentUserId ? { userHours: hours } : { managerHours: hours }),
+						};
+					}),
 				};
 			}
 			return s;

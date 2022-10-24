@@ -16,7 +16,7 @@ import { MonthNormService } from './month-norm.service';
 export interface SubmitWorkTimeValue {
 	workTimeId: string;
 	time: number;
-	comment: string | null;
+	comment: string;
 	initialValue?: WorkTime;
 }
 
@@ -40,7 +40,7 @@ export class AttendanceService {
 				year,
 				offset: offset / 60,
 				hours: time,
-				description: comment || undefined,
+				description: comment,
 			};
 			action = this.timeApi.createWorkTime(createRequest);
 		} else {

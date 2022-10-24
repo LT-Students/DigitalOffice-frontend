@@ -103,7 +103,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		return this.fb.group({
 			time: ['', [DoValidators.required, DoValidators.min(0), DoValidators.max(744), DoValidators.intNum]],
 			project: [null, DoValidators.required],
-			comment: [null],
+			comment: [''],
 		});
 	}
 

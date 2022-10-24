@@ -88,6 +88,7 @@ export class ManagerTimelistTableConfigService {
 			isRowExpandable: () => true,
 			expandedRowComparator: ([expandedRow, row]: [UserStat | null, UserStat]) =>
 				expandedRow?.user.id === row.user.id,
+			trackByFn: (index: number, item: UserStat) => JSON.stringify(item),
 		};
 	}
 
