@@ -63,7 +63,7 @@ export class PopoverTriggerDirective implements OnInit, OnDestroy {
 	}
 
 	private createOverlay(): void {
-		const scrollStrategy = this.overlay.scrollStrategies.block();
+		const scrollStrategy = this.overlay.scrollStrategies.noop();
 		const positionStrategy = this.overlay
 			.position()
 			.flexibleConnectedTo(this.elementRef)

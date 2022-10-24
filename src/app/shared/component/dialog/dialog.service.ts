@@ -15,6 +15,10 @@ export const enum ModalWidth {
 	providedIn: 'root',
 })
 export class DialogService {
+	public get openDialogs(): readonly DialogRef<any, any>[] {
+		return this.dialog.openDialogs;
+	}
+
 	constructor(private dialog: Dialog) {}
 
 	public open<R = unknown, D = unknown, C = unknown>(
@@ -26,6 +30,7 @@ export class DialogService {
 			...config,
 		});
 	}
+
 	public confirm<R = any>(confirmData: ConfirmDialogData): DialogRef<R, ConfirmDialogComponent> {
 		return this.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.S });
 	}
@@ -36,5 +41,9 @@ export class DialogService {
 
 	public closeAll(): void {
 		this.dialog.closeAll();
+	}
+
+	public getDialogById(id: string): DialogRef | undefined {
+		return this.dialog.getDialogById(id);
 	}
 }

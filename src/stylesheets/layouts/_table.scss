@@ -127,5 +127,9 @@ do-table {
 		&:nth-child(2n) {
 			background: variables.$light_1;
 		}
+
+		.mat-form-field-outline * {
+			background: variables.$light_1;
+		}
 	}
 }

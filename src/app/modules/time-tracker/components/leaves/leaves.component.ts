@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
 
-import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { Icons } from '@shared/modules/icons/icons';
-import { LeaveTime } from '../../models/leave-time';
-import { AttendanceService } from '../../services/attendance.service';
+import { CanManageTimeInSelectedDate } from '@shared/modules/shared-time-tracking-system/models';
+import { LeaveTime } from '../../models';
+import { AttendanceService } from '../../services';
 import { EditLeaveComponent } from '../../dialogs/edit-leave/edit-leave.component';
 
 @Component({
@@ -16,13 +17,15 @@ import { EditLeaveComponent } from '../../dialogs/edit-leave/edit-leave.componen
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeavesComponent {
-	@Input() leaves: LeaveTime[] = [];
 	public readonly Icons = Icons;
 
-	public canEdit$ = this.attendanceService.canEdit$;
+	@Input() leaves: LeaveTime[] = [];
+
+	public canEdit$ = this.canManageTime.canEdit$;
 
 	constructor(
 		private dialogService: DialogService,
+		private canManageTime: CanManageTimeInSelectedDate,
 		private attendanceService: AttendanceService,
 		private viewContainerRef: ViewContainerRef
 	) {}

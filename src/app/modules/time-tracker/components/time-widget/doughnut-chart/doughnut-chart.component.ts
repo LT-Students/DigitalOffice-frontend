@@ -9,16 +9,19 @@ import {
 	Output,
 	ViewChild,
 } from '@angular/core';
-import { Chart, registerables, TooltipItem } from 'chart.js';
 import { Subject } from 'rxjs';
 import { takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Chart, registerables, TooltipItem } from 'chart.js';
+import { DateTime } from 'luxon';
 import { LeaveType } from '@api/time-service/models';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { isGUIDEmpty } from '@app/utils/utils';
-import { DateTime } from 'luxon';
-import { LeaveTime } from '../../../models/leave-time';
-import { Activities, AttendanceService } from '../../../services/attendance.service';
-import { WorkTime } from '../../../models/work-time';
+import {
+	CanManageTimeInSelectedDate,
+	LeaveTimeAndDatepickerManagement,
+} from '@shared/modules/shared-time-tracking-system/models';
+import { LeaveTime, WorkTime } from '../../../models';
+import { Activities, AttendanceStoreService, MonthNormService } from '../../../services';
 import { ChartLeaveTime } from './chart-leave-time';
 
 Chart.register(...registerables);
@@ -60,27 +63,33 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private chart?: Chart<'doughnut'>;
 	private destroy$ = new Subject<void>();
 
-	constructor(private attendanceService: AttendanceService, private cdr: ChangeDetectorRef) {}
+	constructor(
+		private attendanceStore: AttendanceStoreService,
+		private monthNormService: MonthNormService,
+		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement,
+		private canManageTime: CanManageTimeInSelectedDate,
+		private cdr: ChangeDetectorRef
+	) {}
 
 	ngOnInit(): void {
 		const ctx = this.canvas?.nativeElement.getContext('2d');
 		this.chart = this.buildChart(ctx);
 
-		this.attendanceService.monthNorm$.pipe(takeUntil(this.destroy$)).subscribe({
+		this.monthNormService.monthNorm$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: (monthNorm: number) => (this.monthNorm = monthNorm),
 		});
 
-		this.attendanceService.activities$
-			.pipe(withLatestFrom(this.attendanceService.selectedDate$), takeUntil(this.destroy$))
+		this.attendanceStore.activities$
+			.pipe(withLatestFrom(this.canManageTime.selectedDate$), takeUntil(this.destroy$))
 			.subscribe({
-				next: ([{ workTimes, leaves }, selectedDate]: [Activities, DateTime]) => {
+				next: ([{ workTimes, leaveTimes }, selectedDate]: [Activities, DateTime]) => {
 					this.workTimes = workTimes;
-					this.leaveTimes = leaves.map(
+					this.leaveTimes = leaveTimes.map(
 						(lt: LeaveTime) =>
 							new ChartLeaveTime(
 								lt,
 								selectedDate,
-								this.attendanceService.getLeaveDuration.bind(this.attendanceService)
+								this.leaveTimeDatepicker.getLeaveDuration.bind(this.leaveTimeDatepicker)
 							)
 					);
 					this.userHours = this.countUserHours();

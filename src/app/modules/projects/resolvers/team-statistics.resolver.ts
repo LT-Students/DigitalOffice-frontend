@@ -3,15 +3,14 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { DateTime } from 'luxon';
 import { MAX_INT32 } from '@app/utils/utils';
-import { UserStat } from '../../manager-timelist/models/user-stat';
-import { TimeService } from '../../manager-timelist/services/time.service';
-import { TimelistEntityType } from '../../manager-timelist/models/timelist-entity';
+import { UserStat, TimelistEntityType } from '../../manager-timelist/models';
+import { TimeApiService } from '../../manager-timelist/services';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TeamStatisticsResolver implements Resolve<UserStat[]> {
-	constructor(private timeService: TimeService) {}
+	constructor(private timeService: TimeApiService) {}
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<UserStat[]> {
 		const projectId = route.params['id'];

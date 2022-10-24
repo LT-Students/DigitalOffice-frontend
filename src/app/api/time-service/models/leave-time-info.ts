@@ -19,6 +19,7 @@ export interface LeaveTimeInfo {
 	 */
 	id: string;
 	isActive: boolean;
+	isClosed: boolean;
 	leaveType: LeaveType;
 	minutes: number;
 

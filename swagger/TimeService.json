@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7.8",
+    "version": "1.1.8.0",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -1053,8 +1053,8 @@
         "type": "object",
         "required": [
           "UserId",
-          "StartLeave",
-          "EndTime",
+          "Minutes",
+          "StartTime",
           "LeaveType"
         ],
         "properties": {
@@ -1082,18 +1082,10 @@
             "example": "2021-06-23T09:07:21+07:00"
           },
           "LeaveType": {
-            "description": "The reason for which lost time.",
-            "type": "string",
-            "enum": [
-              "Vacation",
-              "SickLeave",
-              "Training",
-              "Idle"
-            ],
-            "example": "Vacation"
+            "$ref": "#/components/schemas/LeaveType"
           },
           "Comment": {
-            "description": "Description for alloted time.",
+            "description": "Description for alloted time. Required if leaveType is Prolonged",
             "type": "string"
           }
         }
@@ -1148,6 +1140,7 @@
               "/EndTime",
               "/LeaveType",
               "/Comment",
+              "/IsClosed",
               "/IsActive"
             ]
           },
@@ -1162,7 +1155,8 @@
         "required": [
           "Year",
           "Month",
-          "Offset"
+          "Offset",
+          "Description"
         ],
         "properties": {
           "Hours": {
@@ -1533,6 +1527,7 @@
           "CreatedBy",
           "Minutes",
           "LeaveType",
+          "IsClosed",
           "IsActive"
         ],
         "properties": {
@@ -1577,6 +1572,9 @@
             "description": "Description for alloted time.",
             "type": "string"
           },
+          "IsClosed": {
+            "type": "boolean"
+          },
           "IsActive": {
             "type": "boolean"
           }
@@ -1589,7 +1587,8 @@
           "Vacation",
           "SickLeave",
           "Training",
-          "Idle"
+          "Idle",
+          "Prolonged"
         ],
         "example": "Vacation"
       },

@@ -17,6 +17,7 @@ import { ImportApiService } from '@api/time-service/services/import-api.service'
 import { OperationResultResponseByteArray } from '@api/time-service/models/operation-result-response-byte-array';
 import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
 import { FindResultResponseUserStatInfo } from '@api/time-service/models/find-result-response-user-stat-info';
+import { LeaveType } from '@api/time-service/models/leave-type';
 
 export interface IFindWorkTimesRequest {
 	userid?: string;
@@ -80,9 +81,9 @@ export interface IGetImport {
 export interface ICreateLeaveTimeRequest {
 	comment?: string;
 	endTime: string;
-	leaveType: 'Vacation' | 'SickLeave' | 'Training' | 'Idle';
+	leaveType: LeaveType;
 	minutes: number;
-	startTime?: string;
+	startTime: string;
 	userId: string;
 }
 

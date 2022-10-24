@@ -1,20 +1,31 @@
 import {
 	Component,
-	OnInit,
 	ChangeDetectionStrategy,
 	AfterViewChecked,
-	ViewChild,
 	ElementRef,
 	Inject,
 	ChangeDetectorRef,
+	ViewChildren,
+	QueryList,
+	AfterViewInit,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { TableCell } from '../../models';
+import { TableCellComponent } from '../../table-cell.component';
 
 export class ShowMoreTextParams {
 	public numberOfLines?: number;
+	public editEnabled?: boolean;
+	public updateRow?: (o: any, v: string) => void;
 
-	constructor(params: { numberOfLines?: number }) {}
+	constructor(
+		params?: Partial<{ numberOfLines: number; updateRow: (o: any, v: string) => void; editEnabled: boolean }>
+	) {
+		this.numberOfLines = params?.numberOfLines;
+		this.editEnabled = params?.editEnabled;
+		this.updateRow = params?.updateRow;
+	}
 }
 
 const DEFAULT_NUMBER_OF_LINES = 3;
@@ -22,13 +33,15 @@ const DEFAULT_NUMBER_OF_LINES = 3;
 @Component({
 	selector: 'do-show-more-text',
 	template: `
-		<div>
+		<div *ngIf="!isEditMode">
 			<div
 				#expandableText
 				class="text break-word"
+				[class.enabled]="params.editEnabled"
 				[ngStyle]="textCollapsed ? { 'max-height': collapsedHeight + 'px', overflow: 'hidden' } : null"
+				(click)="enableEditMode()"
 			>
-				{{ value | placeholder: '—' }}
+				{{ defaultValue | placeholder: '--' }}
 			</div>
 			<ng-container *ngIf="buttonShowed">
 				<button *ngIf="textCollapsed" doButton class="button" (click)="textCollapsed = false">
@@ -41,6 +54,24 @@ const DEFAULT_NUMBER_OF_LINES = 3;
 				</button>
 			</ng-container>
 		</div>
+		<div *ngIf="isEditMode">
+			<do-form-field>
+				<mat-form-field>
+					<textarea
+						matInput
+						doAutofocus
+						cdkTextareaAutosize
+						maxlength="500"
+						[formControl]="control"
+						[cdkAutosizeMinRows]="2"
+						[cdkAutosizeMaxRows]="3"
+						(keydown.enter)="save()"
+						(keydown.escape)="revert()"
+						(blur)="revert()"
+					></textarea>
+				</mat-form-field>
+			</do-form-field>
+		</div>
 	`,
 	styles: [
 		`
@@ -51,41 +82,85 @@ const DEFAULT_NUMBER_OF_LINES = 3;
 			.button {
 				padding: 0;
 			}
+			.enabled {
+				cursor: pointer;
+			}
 		`,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShowMoreTextComponent implements OnInit, AfterViewChecked, TableCell<string> {
-	@ViewChild('expandableText', { static: true }) text!: ElementRef<HTMLSpanElement>;
+export class ShowMoreTextComponent implements AfterViewInit, AfterViewChecked, TableCell<string> {
+	@ViewChildren('expandableText') expandableText!: QueryList<ElementRef<HTMLSpanElement>>;
 
-	public value = '';
-	public set params(params: ShowMoreTextParams | undefined) {
-		this.numberOfLines = params?.numberOfLines || DEFAULT_NUMBER_OF_LINES;
+	public row: any;
+
+	public set value(value: string) {
+		this.control.setValue(value);
+		this.defaultValue = value;
 	}
+	public control = new FormControl('', { nonNullable: true });
+	public defaultValue = '';
+
+	public params!: ShowMoreTextParams;
 
 	public textCollapsed = true;
 	public buttonShowed = false;
+	public isEditMode = false;
 
-	public numberOfLines = DEFAULT_NUMBER_OF_LINES;
 	public lineHeight = 22;
 
 	public collapsedHeight = 0;
 
-	constructor(@Inject(DOCUMENT) private document: Document, private cdr: ChangeDetectorRef) {}
+	constructor(
+		@Inject(DOCUMENT) private document: Document,
+		private cdr: ChangeDetectorRef,
+		tableCell: TableCellComponent
+	) {
+		this.row = tableCell.row;
+	}
 
-	public ngOnInit(): void {
+	public ngAfterViewInit(): void {
 		this.lineHeight = parseFloat(
-			this.document.defaultView?.getComputedStyle(this.text.nativeElement).getPropertyValue('line-height') || '22'
+			this.document.defaultView
+				?.getComputedStyle(this.expandableText.first.nativeElement)
+				.getPropertyValue('line-height') || '22'
 		);
 	}
 
 	public ngAfterViewChecked(): void {
-		this.checkHeight();
+		if (!this.isEditMode) {
+			this.checkHeight();
+		}
+	}
+
+	public enableEditMode(): void {
+		if (!this.params?.editEnabled) {
+			return;
+		}
+		this.isEditMode = true;
+	}
+
+	public save(): void {
+		if (this.control.invalid) {
+			this.control.markAsTouched();
+			return;
+		}
+		this.isEditMode = false;
+		this.defaultValue = this.control.value || '';
+		if (this.params.updateRow) {
+			this.params.updateRow(this.row, this.control.value);
+		}
+	}
+
+	public revert(): void {
+		this.control.setValue(this.defaultValue);
+		this.isEditMode = false;
 	}
 
 	private checkHeight(): void {
-		this.collapsedHeight = this.lineHeight * this.numberOfLines;
-		this.buttonShowed = this.text.nativeElement.scrollHeight > this.collapsedHeight;
+		const numberOfLines = this.params?.numberOfLines || DEFAULT_NUMBER_OF_LINES;
+		this.collapsedHeight = this.lineHeight * numberOfLines;
+		this.buttonShowed = this.expandableText.first.nativeElement.scrollHeight > this.collapsedHeight;
 
 		this.cdr.detectChanges();
 	}

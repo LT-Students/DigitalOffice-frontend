@@ -6,8 +6,12 @@ import { filter, finalize, map, takeUntil, withLatestFrom } from 'rxjs/operators
 import { DoValidators } from '@app/validators/do-validators';
 import { EMPTY_GUID, isGUIDEmpty } from '@app/utils/utils';
 import { LoadingState } from '@app/utils/loading-state';
-import { AttendanceService, LAST_DAY_TO_FILL_HOURS, SubmitWorkTimeValue } from '../../../services/attendance.service';
-import { WorkTime } from '../../../models/work-time';
+import {
+	CanManageTimeInSelectedDate,
+	LAST_DAY_TO_FILL_HOURS,
+} from '@shared/modules/shared-time-tracking-system/models';
+import { AttendanceService, AttendanceStoreService, SubmitWorkTimeValue } from '../../../services';
+import { WorkTime } from '../../../models';
 
 interface ProjectOption {
 	id: string;
@@ -34,7 +38,12 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		return this.addHoursForm.get('project')?.value as ProjectOption;
 	}
 
-	constructor(private fb: UntypedFormBuilder, private attendanceService: AttendanceService) {
+	constructor(
+		private fb: UntypedFormBuilder,
+		private attendanceService: AttendanceService,
+		private attendanceStore: AttendanceStoreService,
+		private canManageTime: CanManageTimeInSelectedDate
+	) {
 		super();
 	}
 
@@ -55,8 +64,8 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 	}
 
 	private getProjectOptions$(): Observable<ProjectOption[]> {
-		return this.attendanceService.workTimes$.pipe(
-			withLatestFrom(this.attendanceService.selectedDate$),
+		return this.attendanceStore.workTimes$.pipe(
+			withLatestFrom(this.canManageTime.selectedDate$),
 			filter(([_, selectedDate]: [WorkTime[], DateTime]) => this.canEditWorkTime(selectedDate)),
 			map(([workTimes, _]: [WorkTime[], DateTime]) => workTimes),
 			map((workTimes: WorkTime[]) => {
@@ -94,7 +103,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		return this.fb.group({
 			time: ['', [DoValidators.required, DoValidators.min(0), DoValidators.max(744), DoValidators.intNum]],
 			project: [null, DoValidators.required],
-			comment: [null],
+			comment: [''],
 		});
 	}
 
@@ -103,7 +112,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 	}
 
 	public changeDate(date: DateTime): void {
-		this.attendanceService.setNewDate(date);
+		this.canManageTime.setNewDate(date);
 	}
 
 	public onSubmit(): void {

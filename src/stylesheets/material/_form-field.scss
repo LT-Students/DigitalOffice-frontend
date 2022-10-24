@@ -41,6 +41,14 @@ do-form-field mat-form-field.mat-form-field-appearance-outline {
 		}
 	}
 
+	&:not(.mat-form-field-disabled) .mat-form-field-flex:hover {
+		& .mat-form-field-outline {
+			opacity: 1;
+
+			transition: none;
+		}
+	}
+
 	&.mat-focused .mat-form-field-flex .mat-form-field-outline-thick {
 		color: variables.$secondary_active;
 	}

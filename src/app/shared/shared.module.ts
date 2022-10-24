@@ -34,7 +34,6 @@ import { ButtonLoadingDirective } from './directives/button-loading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { ValidationHintComponent } from './component/validation-hint/validation-hint.component';
 import { TruncateTooltipDirective } from './directives/truncate-tooltip.directive';
-import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 import { FormFieldComponent } from './component/form-row/form-field.component';
 import { SelectDirective } from './directives/select.directive';
@@ -95,7 +94,6 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		TransformNameDirective,
 		ValidationHintComponent,
 		TruncateTooltipDirective,
-		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		PlaceholderPipe,
@@ -179,7 +177,6 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		TransformNameDirective,
 		ValidationHintComponent,
 		TruncateTooltipDirective,
-		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		PlaceholderPipe,
