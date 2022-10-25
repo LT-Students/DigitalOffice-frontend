@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { LeaveTimePath, PatchDocument } from '@app/types/edit-request';
+import { User } from '@app/models/user/user.model';
 import { TimeApiService } from '../services';
 import { LeaveTime, LeaveTimeFactory, UserStat, WorkTime } from './user-stat';
 import { TimelistEntityType } from './timelist-entity';
@@ -16,7 +17,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		data: UserStat[],
 		private apiService: TimeApiService,
 		private entityType: TimelistEntityType,
-		private currentUserId: string
+		private currentUser: User
 	) {
 		super();
 		this.data.next(data);
@@ -61,7 +62,9 @@ export class TimeListDataSource extends DataSource<UserStat> {
 						}
 						return {
 							...wt,
-							...(wt.user.id === this.currentUserId ? { userHours: hours } : { managerHours: hours }),
+							...(wt.user.id === this.currentUser.id
+								? { userHours: hours }
+								: { managerHours: hours, manager: this.currentUser }),
 						};
 					}),
 				};

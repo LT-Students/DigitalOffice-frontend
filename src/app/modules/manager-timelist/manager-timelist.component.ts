@@ -94,7 +94,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 					this.leaveTimeDatepicker.setDatepickerHolidays(holidays);
 
 					const stats = data['stats'];
-					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType, u.id);
+					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType, u);
 					this.expandedRow$ = this.tableConfig.getExpandedRowData$(this.dataSource);
 					this.cdr.markForCheck();
 				},
