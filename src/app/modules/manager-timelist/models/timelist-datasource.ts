@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { LeaveTimePath, PatchDocument } from '@app/types/edit-request';
+import { User } from '@app/models/user/user.model';
 import { TimeApiService } from '../services';
 import { LeaveTime, LeaveTimeFactory, UserStat, WorkTime } from './user-stat';
 import { TimelistEntityType } from './timelist-entity';
@@ -16,7 +17,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		data: UserStat[],
 		private apiService: TimeApiService,
 		private entityType: TimelistEntityType,
-		private currentUserId: string
+		private currentUser: User
 	) {
 		super();
 		this.data.next(data);
@@ -27,6 +28,15 @@ export class TimeListDataSource extends DataSource<UserStat> {
 	}
 
 	disconnect(collectionViewer: CollectionViewer): void {}
+
+	// TODO this is a temporary fix for scroll after updating timelist. Need to somehow refactor table to apply changes
+	// in place
+	private setDataWithScroll(data: UserStat[]): void {
+		const scrollContainer = document.querySelector('.content-container') as HTMLElement;
+		const scrollTop = scrollContainer.scrollTop;
+		this.data.next(data);
+		setTimeout(() => scrollContainer.scroll({ top: scrollTop }));
+	}
 
 	public loadStats(
 		entityId: string,
@@ -61,15 +71,19 @@ export class TimeListDataSource extends DataSource<UserStat> {
 						}
 						return {
 							...wt,
-							...(wt.user.id === this.currentUserId ? { userHours: hours } : { managerHours: hours }),
+							...(wt.user.id === this.currentUser.id
+								? { userHours: hours }
+								: { managerHours: hours, manager: this.currentUser }),
 						};
 					}),
 				};
 			}
 			return s;
 		});
-		this.data.next(newData);
-		this.apiService.editWorkTime(workTime.id, hours, '/Hours').subscribe({ error: () => this.data.next(oldData) });
+		this.setDataWithScroll(newData);
+		this.apiService
+			.editWorkTime(workTime.id, hours, '/Hours')
+			.subscribe({ error: () => this.setDataWithScroll(oldData) });
 	}
 
 	public updateWorkTimeComment(workTime: WorkTime, comment: string): void {
@@ -86,10 +100,10 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			}
 			return s;
 		});
-		this.data.next(newData);
+		this.setDataWithScroll(newData);
 		this.apiService
 			.editWorkTime(workTime.id, comment, '/Description')
-			.subscribe({ error: () => this.data.next(oldData) });
+			.subscribe({ error: () => this.setDataWithScroll(oldData) });
 	}
 
 	public addLeaveTime(userId: string, leaveTime: LeaveTime): void {
@@ -103,7 +117,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			}
 			return s;
 		});
-		this.data.next(newData);
+		this.setDataWithScroll(newData);
 	}
 
 	public updateLeaveTimeDates(
@@ -132,7 +146,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			return s;
 		});
 
-		this.data.next(newData);
+		this.setDataWithScroll(newData);
 		const editRequest = [];
 		if (isStartDateChanged) {
 			editRequest.push(new PatchDocument(getUTCWithOffset(startDate), LeaveTimePath.START_TIME));
@@ -146,7 +160,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		if (editRequest.length) {
 			this.apiService
 				.editLeaveTime(leaveTime.id, editRequest)
-				.subscribe({ error: () => this.data.next(oldData) });
+				.subscribe({ error: () => this.setDataWithScroll(oldData) });
 		}
 	}
 
@@ -162,10 +176,10 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			}
 			return s;
 		});
-		this.data.next(newData);
+		this.setDataWithScroll(newData);
 		this.apiService
 			.editLeaveTime(leaveTime.id, new PatchDocument(comment, LeaveTimePath.COMMENT))
-			.subscribe({ error: () => this.data.next(oldData) });
+			.subscribe({ error: () => this.setDataWithScroll(oldData) });
 	}
 
 	public deleteLeaveTime(leaveTimeId: string): void {
@@ -180,8 +194,8 @@ export class TimeListDataSource extends DataSource<UserStat> {
 			}
 			return s;
 		});
-		this.data.next(newData);
-		this.apiService.deleteLeaveTime(leaveTimeId).subscribe({ error: () => this.data.next(oldData) });
+		this.setDataWithScroll(newData);
+		this.apiService.deleteLeaveTime(leaveTimeId).subscribe({ error: () => this.setDataWithScroll(oldData) });
 	}
 
 	private getSortOrder(sort: SortDirection): boolean {
