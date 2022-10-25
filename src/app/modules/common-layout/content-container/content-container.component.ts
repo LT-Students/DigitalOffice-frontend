@@ -12,7 +12,7 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentContainerComponent implements AfterViewInit, OnDestroy {
-	@ViewChild('scroll') scroll?: ElementRef<HTMLElement>;
+	@ViewChild('scrollContainer') scroll?: ElementRef<HTMLElement>;
 
 	public isWideScreen$ = this.responsive
 		.observe(Breakpoints.XLarge)

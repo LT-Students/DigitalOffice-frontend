@@ -29,13 +29,17 @@ export class TimeListDataSource extends DataSource<UserStat> {
 
 	disconnect(collectionViewer: CollectionViewer): void {}
 
-	// TODO this is a temporary fix for scroll after updating timelist. Need to somehow refactor table to apply changes
-	// in place
+	// TODO this is a temporary fix for scroll going to top after updating timelist. Need to somehow refactor the table
+	//  to apply changes in place or maybe
 	private setDataWithScroll(data: UserStat[]): void {
 		const scrollContainer = document.querySelector('.content-container') as HTMLElement;
-		const scrollTop = scrollContainer.scrollTop;
+		const { scrollTop, scrollHeight } = scrollContainer;
+		scrollContainer.style.height = scrollHeight + 'px';
 		this.data.next(data);
-		setTimeout(() => scrollContainer.scroll({ top: scrollTop }));
+		setTimeout(() => {
+			scrollContainer.scroll({ top: scrollTop });
+		});
+		setTimeout(() => (scrollContainer.style.height = ''));
 	}
 
 	public loadStats(

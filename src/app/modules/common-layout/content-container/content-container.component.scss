@@ -1,17 +1,13 @@
 @use '../../../../stylesheets/base/variables';
 
 .content-container {
-	padding: 0 32px;
+	margin: 0 auto;
+	padding: 48px 32px;
 
 	overflow: auto;
 
-	.wrapper {
-		margin: 0 auto;
-		padding: 48px 0;
-
-		width: 100%;
-		max-width: 1440px;
-	}
+	width: 100%;
+	max-width: 1440px;
 }
 
 .sidenav-container {
