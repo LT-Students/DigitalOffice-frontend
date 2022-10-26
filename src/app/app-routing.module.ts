@@ -44,11 +44,11 @@ const routes: Routes = [
 				canActivate: [AdminGuard],
 				loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
 			},
-			{
-				path: AppRoutes.News,
-				canLoad: [AuthGuard, PortalGuard],
-				loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
-			},
+			// {
+			// 	path: AppRoutes.News,
+			// 	canLoad: [AuthGuard, PortalGuard],
+			// 	loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
+			// },
 			{
 				path: AppRoutes.Projects,
 				canLoad: [AuthGuard, PortalGuard],
