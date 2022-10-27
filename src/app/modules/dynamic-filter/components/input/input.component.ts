@@ -11,7 +11,8 @@ import { Filter, InputFilterParams } from '../../models';
 				<input
 					matInput
 					[placeholder]="params?.placeholder || ''"
-					type="text"
+					type="search"
+					name="search"
 					autocomplete="off"
 					[formControl]="control"
 				/>

@@ -2,7 +2,7 @@ import { Injectable, ViewContainerRef } from '@angular/core';
 import { DialogRef } from '@angular/cdk/dialog';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { AddUsersDialogComponent } from '../add-users-dialog.component';
-import { AddUsersDialogData } from '../models/models';
+import { AddUsersDialogData } from '../models';
 
 @Injectable({
 	providedIn: 'root',

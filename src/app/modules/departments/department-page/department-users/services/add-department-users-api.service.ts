@@ -5,7 +5,7 @@ import { DepartmentUserApiService } from '@api/department-service/services/depar
 import { UserInfo } from '@api/filter-service/models/user-info';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { FilterService } from '@app/services/filter/filter.service';
-import { AddUsersApiBase } from '../../../../add-users-dialog/services/add-users-api.service';
+import { AddUsersApiBase } from '../../../../add-users-dialog/services';
 import { NewDepartmentUser } from '../models/new-department-user';
 import { DepartmentRoleInfo } from '../models/department-role-info';
 
@@ -30,9 +30,9 @@ export class AddDepartmentUsersApiService extends AddUsersApiBase {
 		});
 	}
 
-	public loadUsers(name: string): Observable<NewDepartmentUser[]> {
+	public loadUsers(filter: { name: string; departmentId: string }): Observable<NewDepartmentUser[]> {
 		return super
-			.findUsers(name)
+			.findUsers(filter)
 			.pipe(map((users: UserInfo[]) => users.map((u: UserInfo) => new NewDepartmentUser(u))));
 	}
 }
