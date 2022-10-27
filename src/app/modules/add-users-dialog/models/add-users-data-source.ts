@@ -2,7 +2,8 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SelectionModel } from '@app/utils/selection-model';
-import { AddUsersApiBase } from '../services/add-users-api.service';
+import { AddUsersApiBase } from '../services';
+import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
 import { NewUserBase } from './models';
 
 export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements DataSource<T> {
@@ -19,14 +20,15 @@ export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements 
 
 	disconnect(collectionViewer: CollectionViewer): void {}
 
-	public loadUsers(search: string): void {
+	public loadUsers(filter: FilterEvent): void {
 		let users$: Observable<T[]>;
-		if (search) {
-			users$ = this.apiService.loadUsers(search).pipe(map(this.mapUsersToSelected.bind(this)));
+		console.log(filter, Object.values(filter), this.isFilterEmpty(filter));
+		if (!this.isFilterEmpty(filter)) {
+			users$ = this.apiService.loadUsers(filter).pipe(map(this.mapUsersToSelected.bind(this)));
 		} else {
 			users$ = of(this.selection.selected);
 		}
-		users$.subscribe({ next: (users) => this.data.next(users) });
+		users$.subscribe({ next: (users: T[]) => this.data.next(users) });
 	}
 
 	public updateRow(id: string, newValue: T): void {
@@ -43,5 +45,9 @@ export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements 
 			const user = this.selection.selected.find((selected: T) => u.id === selected.id);
 			return { ...(user || u) };
 		});
+	}
+
+	private isFilterEmpty(filter: FilterEvent): boolean {
+		return !Object.values(filter).some(Boolean);
 	}
 }

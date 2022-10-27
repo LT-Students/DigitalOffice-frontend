@@ -4,12 +4,12 @@ import { map, switchMap } from 'rxjs/operators';
 import { UserInfo } from '@api/filter-service/models/user-info';
 import { UserRequest } from '@api/project-service/models';
 import { FilterService } from '@app/services/filter/filter.service';
-import { AddUsersApiService } from '../../../../add-users-dialog/services/add-users-api.service';
+import { AddUsersApiBase } from '../../../../add-users-dialog/services';
 import { ProjectService } from '../../../project.service';
 import { NewProjectUser } from '../models';
 
 @Injectable()
-export class AddProjectUsersApiService extends AddUsersApiService {
+export class AddProjectUsersApiService extends AddUsersApiBase {
 	constructor(filterService: FilterService, private projectService: ProjectService) {
 		super(filterService);
 	}
@@ -29,9 +29,9 @@ export class AddProjectUsersApiService extends AddUsersApiService {
 			);
 	}
 
-	public loadUsers(name: string): Observable<NewProjectUser[]> {
+	public loadUsers(filter: { name: string; departmentId: string }): Observable<NewProjectUser[]> {
 		return super
-			.findUsers(name)
+			.findUsers(filter)
 			.pipe(map((users: UserInfo[]) => users.map((u: UserInfo) => new NewProjectUser(u))));
 	}
 }

@@ -6,4 +6,5 @@ export interface FilterDef {
 	initialValue?: any;
 	params?: FilterParams;
 	width?: number;
+	style?: { [key: string]: any };
 }
