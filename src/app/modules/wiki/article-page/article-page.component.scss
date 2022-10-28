@@ -1,0 +1,17 @@
+.container {
+	display: grid;
+	grid-template-columns: 298px 1fr;
+	grid-gap: 32px;
+}
+
+.tree {
+	height: 430px;
+
+	background: #add8e6ff;
+}
+
+.article {
+	height: 600px;
+
+	background: #ffb6c1ff;
+}
