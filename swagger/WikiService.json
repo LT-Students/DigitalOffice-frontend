@@ -1,0 +1,791 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0.0",
+    "title": "WikiService",
+    "description": "WikiService is an API that intended to search for background information."
+  },
+  "servers": [
+    {
+      "url": "https://wiki.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://wiki.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/rubric/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Rubric"
+        ],
+        "operationId": "createRubric",
+        "description": "Creating new rubric. The user must have access right - Add/Edit/Remove Wiki.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRubricRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully create the rubric.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultCreateRubricResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultCreateRubricResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultCreateRubricResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rubric/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/rubricId"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Rubric"
+        ],
+        "operationId": "editRubric",
+        "description": "Editing specific rubric by Id. The user must have access right - Add/Edit/Remove Wiki.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditRubricRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully edit the rubric.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulEditRubricResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulEditRubricResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulEditRubricResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Article"
+        ],
+        "operationId": "createArticle",
+        "description": "Creating new article. The user must have access right - Add/Edit/Remove Wiki.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateArticleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully create the article.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultCreateArticleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultCreateArticleResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultCreateArticleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "articleId",
+          "in": "query",
+          "description": "Article global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "79f21f93-3928-4fb6-bc0f-9ffD633bb294"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Article"
+        ],
+        "operationId": "getArticle",
+        "description": "Get an article by its Id",
+        "responses": {
+          "200": {
+            "description": "The article was returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulGetArticleResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulGetArticleResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulGetArticleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/edit":{
+      "patch":{
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          },
+          {
+            "name": "articleId",
+            "in": "query",
+            "description": "unique article identifier",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "Article"
+        ],
+        "operationId": "editArticle",
+        "description": "update article properties",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditArticleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK. \n* Update article operation success (boolean) status will be in response Body property.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulEditArticleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema":  {
+                  "$ref": "#/components/schemas/ActionResulEditArticleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wikiTree/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "includedeactivated",
+          "in": "query",
+          "description": "If true - returns deactivated rubrics, false or null - returns only active rubrics",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "WikiTree"
+        ],
+        "operationId": "getWiki",
+        "description": "Get wiki tree",
+        "responses": {
+          "200": {
+            "description": "The wiki was returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResultWikiTreeResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas":{
+      "CreateRubricRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Rubric name.",
+            "type": "string",
+            "example": "Digital Office"
+          },
+          "ParentId": {
+            "description": "Unique parent rubric identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "79f21f93-3928-4fb6-bc0f-9ffD633bb294"
+          }
+        }
+      },
+      "EditRubricRequest": {
+        "type": "array",
+        "minItems": 1,
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "items": {
+          "$ref": "#/components/schemas/RubricPatchDocument"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "type": "string",
+              "description": "new name"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/parentId",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "new parentId"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/isActive",
+            "value": {
+              "type": "boolean",
+              "description": "new status"
+            }
+          }
+        ]
+      },
+      "RubricPatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/name",
+              "/parentId",
+              "/isActive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RubricInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "IsActive",
+          "HasChild"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "HasChild": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateArticleRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "Content",
+          "RubricId"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Article name.",
+            "type": "string"
+          },
+          "Content": {
+            "description": "Article's content",
+            "format": "string"
+          },
+          "RubricId": {
+            "description": "Unique rubric identifier? from which article is inherited.",
+            "format": "uuid",
+            "example": "79f21f93-3928-4fb6-bc0f-9ffD633bb294"
+          },
+          "Files": {}
+        }
+      },
+      "ArticleResponse": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Content",
+          "IsActive",
+          "RubricId"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "RubricId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Files": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "EditArticleRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "new article name",
+              "type": "string",
+              "example": "My article"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchArticleDocument"
+        }
+      },
+      "PatchArticleDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/name",
+              "/content",
+              "/isActive",
+              "/rubricId"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "ActionResultWikiTreeResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RubricData"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ActionResultCreateArticleResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ActionResulGetArticleResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "object",
+            "items": {
+              "$ref": "#/components/schemas/ArticleResponse"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ActionResulEditArticleResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "boolean"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ActionResultCreateRubricResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ActionResulEditRubricResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "boolean"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RubricData": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "IsActive",
+          "ArticlesNames",
+          "Children"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ArticlesNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RubricData"
+            }
+          }
+        }
+      },
+      "ArticleInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      },
+      "rubricId": {
+        "name": "ribricId",
+        "in": "query",
+        "description": "Rubric global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      }
+    }
+  }
+}

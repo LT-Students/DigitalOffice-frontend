@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/WikiService.json",
+  "output": "src/app/api/wiki-service",
+  "templates": "swagger/templates",
+  "module": "WikiApiModule",
+  "excludeParameters": ["token"],
+  "serviceSuffix": "ApiService"
+}

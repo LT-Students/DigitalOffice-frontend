@@ -28,6 +28,7 @@
     "generate.rights": "ng-openapi-gen -c swagger/config/rights.json",
     "generate.time": "ng-openapi-gen -c swagger/config/time.json",
     "generate.user": "ng-openapi-gen -c swagger/config/user.json",
+    "generate.wiki": "ng-openapi-gen -c swagger/config/wiki.json",
     "generate-api": "node swagger/generate.js",
     "prepare": "husky install"
   },
