@@ -21,6 +21,7 @@ import { AdminApiModule } from '@api/admin-service/admin-api.module';
 import { FilterApiModule } from '@api/filter-service/filter-api.module';
 import { FeedbackApiModule } from '@api/feedback-service/feedback-api.module';
 import { GatewayApiModule } from '@api/gateway-service/gateway-api.module';
+import { WikiApiModule } from '@api/wiki-service/wiki-api.module';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -48,6 +49,7 @@ import { environment } from '../../environments/environment';
 		TimeApiModule.forRoot({ rootUrl: `https://time.${environment.apiUrl}` }),
 		UserApiModule.forRoot({ rootUrl: `https://user.${environment.apiUrl}` }),
 		OfficeApiModule.forRoot({ rootUrl: `https://office.${environment.apiUrl}` }),
+		WikiApiModule.forRoot({ rootUrl: `https://wiki.${environment.apiUrl}` }),
 	],
 })
 export class CoreModule {}
