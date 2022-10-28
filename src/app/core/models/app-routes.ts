@@ -8,4 +8,5 @@ export enum AppRoutes {
 	Installer = 'installer',
 	TimeTrack = 'time',
 	Feedback = 'feedback',
+	Wiki = 'wiki',
 }

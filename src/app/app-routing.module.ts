@@ -69,6 +69,11 @@ const routes: Routes = [
 				canLoad: [AuthGuard, PortalGuard],
 				loadChildren: () => import('./modules/feedback/feedback.module').then((m) => m.FeedbackModule),
 			},
+			{
+				path: AppRoutes.Wiki,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/wiki/wiki.module').then((m) => m.WikiModule),
+			},
 		],
 	},
 	{
