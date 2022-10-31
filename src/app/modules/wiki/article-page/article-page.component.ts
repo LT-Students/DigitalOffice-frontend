@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { WikiTreeService } from '../services/wiki-tree.service';
 
 @Component({
 	selector: 'do-article-page',
@@ -7,5 +8,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticlePageComponent {
-	constructor() {}
+	public tree$ = this.wikiTree.getWikiTree();
+
+	constructor(private wikiTree: WikiTreeService) {}
 }

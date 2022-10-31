@@ -159,6 +159,7 @@ $input-theme: create-theme(mat.define-palette($do-grey), mat.define-palette($do-
 
 	.mat-card {
 		@include mat.elevation(0);
+		border-radius: 10px;
 		box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 	}
 

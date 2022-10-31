@@ -1,0 +1,19 @@
+<cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
+	<cdk-tree-node
+		*cdkTreeNodeDef="let node"
+		cdkTreeNodePadding
+		[cdkTreeNodePaddingIndent]="TREE_PADDING"
+		class="navigation-tree-node"
+	>
+		<div
+			cdkTreeNodeToggle
+			class="node-body"
+			[class.active]="node.id === activeArticleId"
+			(click)="setActiveArticle(node)"
+		>
+			<mat-icon class="node-icon" [svgIcon]="node.type === 'rubric' ? Icons.Section : Icons.Article"></mat-icon>
+			<span class="node-name">{{ node.name }}</span>
+		</div>
+		<ng-container *ngIf="treeControl.isExpanded(node)" cdkTreeNodeOutlet></ng-container>
+	</cdk-tree-node>
+</cdk-tree>

@@ -1,8 +1,36 @@
 @use '@angular/material' as mat;
 @use 'base/variables' as variables;
 @use '../theme' as theme;
+@use 'sass:map';
 
 $typography: mat.get-typography-config(theme.$custom-typography);
+
+$primary: (
+	'default': variables.$secondary_default,
+	'hover': variables.$secondary_hover,
+	'active': variables.$secondary_active,
+);
+
+$accent: (
+	'default': variables.$accent_controls_default,
+	'hover': variables.$accent_controls_hover,
+	'active': variables.$accent_controls_active,
+);
+
+@mixin button-colors($theme) {
+	color: map.get($theme, 'default');
+
+	&:hover:not(:disabled, [disabled]) {
+		color: map.get($theme, 'hover');
+	}
+
+	&:active,
+	&:focus:active {
+		&:not(:disabled, [disabled]) {
+			color: map.get($theme, 'active');
+		}
+	}
+}
 
 .do-button {
 	margin: 0;
@@ -28,7 +56,6 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 	cursor: pointer;
 	user-select: none;
 
-	color: variables.$secondary_default;
 	background: none;
 	border: none;
 	border-radius: 5px;
@@ -37,17 +64,6 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 
 	> * {
 		vertical-align: middle;
-	}
-
-	&:hover:not(:disabled, [disabled]) {
-		color: variables.$secondary_hover;
-	}
-
-	&:active,
-	&:focus:active {
-		&:not(:disabled, [disabled]) {
-			color: variables.$secondary_active;
-		}
 	}
 
 	&:disabled,
@@ -63,4 +79,12 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 		color: variables.$accent_controls_default;
 		outline: 2px solid variables.$accent_controls_default;
 	}
+}
+
+.do-button-primary {
+	@include button-colors($primary);
+}
+
+.do-button-accent {
+	@include button-colors($accent);
 }

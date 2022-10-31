@@ -1,16 +1,31 @@
-.container {
-	display: grid;
-	grid-template-columns: 298px 1fr;
-	grid-gap: 32px;
-}
+.navigation {
+	position: fixed;
+	top: 104px;
+	bottom: 48px;
 
-.tree {
-	height: 430px;
+	display: flex;
+	flex-direction: column;
 
-	background: #add8e6ff;
+	width: 298px;
+
+	.back-button {
+		margin-bottom: 24px;
+		padding: 8px 4px;
+	}
+
+	.card {
+		padding: 16px 16px 16px 6px;
+
+		overflow: auto;
+
+		min-height: 429px;
+		max-height: 100%;
+	}
 }
 
 .article {
+	margin-left: 330px;
+
 	height: 600px;
 
 	background: #ffb6c1ff;

@@ -1,4 +1,11 @@
-<div class="container">
-	<div class="tree"></div>
+<div class="position-relative">
 	<div class="article"></div>
+	<div class="navigation">
+		<mat-card class="back-button">
+			<do-back-navigation></do-back-navigation>
+		</mat-card>
+		<mat-card class="card">
+			<do-navigation-tree [tree]="(tree$ | async) || []" [activeArticleId]="'12'"></do-navigation-tree>
+		</mat-card>
+	</div>
 </div>

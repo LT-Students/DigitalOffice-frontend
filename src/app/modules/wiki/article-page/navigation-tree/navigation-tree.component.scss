@@ -1,0 +1,47 @@
+@use 'base/variables' as variables;
+
+:host {
+	display: block;
+}
+
+.navigation-tree-node {
+	display: block;
+
+	cursor: pointer;
+	user-select: none;
+
+	&:not(:last-child) {
+		margin-bottom: 4px;
+	}
+
+	.node-body {
+		padding: 4px 8px;
+
+		display: flex;
+
+		border-radius: 10px;
+
+		&:hover {
+			background: variables.$light_1;
+		}
+
+		.node-icon {
+			margin-right: 12px;
+
+			color: variables.$secondary_default;
+		}
+
+		.node-name {
+			display: -webkit-box;
+			overflow: hidden;
+			flex: 1;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+		}
+	}
+}
+
+.active {
+	color: variables.$accent_controls_default;
+	background: variables.$light_1;
+}
