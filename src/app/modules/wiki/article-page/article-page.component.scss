@@ -13,7 +13,7 @@
 		padding: 8px 4px;
 	}
 
-	.card {
+	.tree-wrapper {
 		padding: 16px 16px 16px 6px;
 
 		overflow: auto;
@@ -26,7 +26,15 @@
 .article {
 	margin-left: 330px;
 
-	height: 600px;
+	.article-wrapper {
+		padding: 16px 30px;
+	}
+}
 
-	background: #ffb6c1ff;
+.article-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	height: 56px;
 }

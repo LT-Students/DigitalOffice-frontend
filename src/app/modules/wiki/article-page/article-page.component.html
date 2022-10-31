@@ -1,10 +1,20 @@
 <div class="position-relative">
-	<div class="article"></div>
+	<div class="article">
+		<mat-card class="article-wrapper">
+			<div class="article-header">
+				<do-breadcrumbs
+					[paths]="[{ title: 'Важное о компании' }, { title: 'История компании' }]"
+				></do-breadcrumbs>
+				<do-article-actions></do-article-actions>
+			</div>
+			<do-article-body></do-article-body>
+		</mat-card>
+	</div>
 	<div class="navigation">
 		<mat-card class="back-button">
 			<do-back-navigation></do-back-navigation>
 		</mat-card>
-		<mat-card class="card">
+		<mat-card class="tree-wrapper">
 			<do-navigation-tree [tree]="(tree$ | async) || []" [activeArticleId]="'12'"></do-navigation-tree>
 		</mat-card>
 	</div>
