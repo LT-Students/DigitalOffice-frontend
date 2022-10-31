@@ -57,6 +57,7 @@
     "@editorjs/underline": "^1.0.0",
     "@ngx-loading-bar/core": "^6.0.2",
     "@ngx-loading-bar/router": "^6.0.2",
+    "@tinymce/tinymce-angular": "^7.0.0",
     "@types/luxon": "^2.3.0",
     "bootstrap": "^4.5.2",
     "browser-image-compression": "^2.0.0",
