@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { FilterDef } from './models';
@@ -16,6 +17,12 @@ export interface FilterEvent {
 })
 export class DynamicFilterComponent implements OnInit, OnDestroy {
 	@Output() filterChange = new EventEmitter<FilterEvent>();
+
+	@Input()
+	set debounceTime(n: any) {
+		this._debounceTime = coerceNumberProperty(n);
+	}
+	private _debounceTime = 500;
 
 	@Input()
 	set filters(filters: FilterDef[] | null) {
@@ -42,7 +49,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
 		);
 		this.form = this.fb.group(group);
 
-		this.filterSubscription = this.form.valueChanges.pipe(debounceTime(500)).subscribe({
+		this.filterSubscription = this.form.valueChanges.pipe(debounceTime(this._debounceTime)).subscribe({
 			next: (value: FilterEvent) => {
 				value = this.filterBlankProps(value);
 				this.filterChange.emit(value);

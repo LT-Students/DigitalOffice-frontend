@@ -1,6 +1,6 @@
 <h2 class="dialog-title" doUnderline>Добавить сотрудника в команду</h2>
 <h5 class="entity-name" *ngIf="data?.entityName as name">{{ name }}</h5>
-<do-dynamic-filter class="filter" [filters]="filterConfig"></do-dynamic-filter>
+<do-dynamic-filter class="filter" [debounceTime]="0" [filters]="filterConfig"></do-dynamic-filter>
 <div class="flex user-count">
 	<h5 class="text-accent_controls_default">Выделено {{ table.selection.selected.length }} сотрудников</h5>
 	<mat-slide-toggle class="toggle" color="primary" [formControl]="toggleControl"
