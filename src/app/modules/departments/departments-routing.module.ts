@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PermissionGuard } from '@app/guards/permission.guard';
 import { UserRights } from '@app/types/user-rights.enum';
+import { TimelistHolidaysResolver } from '../manager-timelist/resolvers/timelist-holidays-resolver.service';
 import { DepartmentListResolver } from './resolvers/department-list.resolver';
 import { DepartmentPageComponent } from './department-page/department-page.component';
 import { DepartmentPageResolver } from './resolvers/department-page.resolver';
@@ -49,6 +50,7 @@ const routes: Routes = [
 					{
 						path: '',
 						redirectTo: DepartmentsRoutes.Users,
+						pathMatch: 'full',
 					},
 					{
 						path: DepartmentsRoutes.Users,
@@ -76,6 +78,7 @@ const routes: Routes = [
 				canActivate: [TimeListGuard],
 				resolve: {
 					stats: TimelistResolver,
+					holidays: TimelistHolidaysResolver,
 				},
 			},
 		],

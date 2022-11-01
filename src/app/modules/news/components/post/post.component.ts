@@ -4,7 +4,6 @@ import { EMPTY, Observable } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { NewsService } from '@app/services/news/news.service';
-import { OperationResultStatusType } from '@api/news-service/models';
 import { DialogService } from '@app/services/dialog.service';
 import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { Icons } from '@shared/modules/icons/icons';
@@ -81,9 +80,7 @@ export class PostComponent {
 					return EMPTY;
 				})
 			)
-			.subscribe((result) => {
-				this.closeModal(newsId);
-			});
+			.subscribe(() => this.closeModal(newsId));
 	}
 
 	public closeModal(newsId?: string): void {

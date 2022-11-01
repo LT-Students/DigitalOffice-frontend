@@ -1,31 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
+import { LeaveType } from './leave-type';
 export interface CreateLeaveTimeRequest {
+	/**
+	 * Description for alloted time. Required if leaveType is Prolonged
+	 */
+	comment?: string;
 
-  /**
-   * Description for alloted time.
-   */
-  comment?: string;
+	/**
+	 * End time leave from task with timezone offset.
+	 */
+	endTime?: string;
+	leaveType: LeaveType;
+	minutes: number;
 
-  /**
-   * End time leave from task with timezone offset.
-   */
-  endTime: string;
+	/**
+	 * Start time leave from task with timezone offset.
+	 */
+	startTime: string;
 
-  /**
-   * The reason for which lost time.
-   */
-  leaveType: 'Vacation' | 'SickLeave' | 'Training' | 'Idle';
-  minutes?: number;
-
-  /**
-   * Start time leave from task with timezone offset.
-   */
-  startTime?: string;
-
-  /**
-   * User working on the current project.
-   */
-  userId: string;
+	/**
+	 * User working on the current project.
+	 */
+	userId: string;
 }
-

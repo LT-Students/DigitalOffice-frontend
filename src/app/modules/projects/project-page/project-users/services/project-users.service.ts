@@ -4,7 +4,7 @@ import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { combineLatest, Observable } from 'rxjs';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { Router } from '@angular/router';
@@ -14,12 +14,12 @@ import { CurrentUserService } from '@app/services/current-user.service';
 import { User } from '@app/models/user/user.model';
 import { UserRights } from '@app/types/user-rights.enum';
 import { ProjectUserInfo } from '@api/project-service/models/project-user-info';
-import { ProjectService } from '../../project.service';
-import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
-import { ColumnDef } from '../../../table/models';
-import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
-import { UserInfoParams } from '../../../table/cell-components/user-info/user-info.component';
-import { SelectCellParams } from '../../../table/cell-components/select/select.component';
+import { ProjectService } from '../../../project.service';
+import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../../dynamic-filter/models';
+import { ColumnDef } from '../../../../table/models';
+import { SelectedProjectService } from '../../../project-id-route-container/selected-project.service';
+import { UserInfoParams } from '../../../../table/cell-components/user-info/user-info.component';
+import { SelectCellParams } from '../../../../table/cell-components/select/select.component';
 
 @Injectable()
 export class ProjectUsersService {

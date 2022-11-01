@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { CompanyPath, InitialDataEditRequest } from '@app/types/edit-request';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CurrentCompanyService } from '@app/services/current-company.service';
@@ -7,7 +7,7 @@ import { finalize, switchMap, tap } from 'rxjs/operators';
 import { createEditRequest } from '@app/utils/utils';
 import { CompanyService } from '@app/services/company/company.service';
 import { Company } from '@app/models/company';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
 	selector: 'do-edit-company',
@@ -18,16 +18,16 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class EditCompanyComponent implements OnInit {
 	public EditPath = CompanyPath;
 
-	public companyForm: FormGroup;
+	public companyForm: UntypedFormGroup;
 	public loading$$: BehaviorSubject<boolean>;
 	public company$!: Observable<Company>;
 	private _companyInfo!: InitialDataEditRequest<CompanyPath>;
 
 	constructor(
-		private _fb: FormBuilder,
+		private _fb: UntypedFormBuilder,
 		private _companyService: CompanyService,
 		private _currentCompany: CurrentCompanyService,
-		private _dialogRef: MatDialogRef<EditCompanyComponent>
+		private _dialogRef: DialogRef
 	) {
 		this.companyForm = this._fb.group({
 			[CompanyPath.COMPANY_NAME]: [null, Validators.required],

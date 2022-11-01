@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
 import { AppRoutes } from '@app/models/app-routes';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { TableComponent } from '../../../table/table.component';
 import { DynamicFilterComponent } from '../../../dynamic-filter/dynamic-filter.component';
@@ -22,9 +22,9 @@ import { TransferProjectsDialogComponent } from './transfer-projects-dialog/tran
 	providers: [TableConfigsService],
 })
 export class DepartmentProjectsComponent implements OnInit {
-	public readonly Icons = Icons;
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<ProjectInfo>;
 	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
+	public readonly Icons = Icons;
 
 	public filterConfig = this.tableConfigs.getFilterConfig();
 	public tableOptions = this.tableConfigs.getTableOptions();
@@ -46,6 +46,23 @@ export class DepartmentProjectsComponent implements OnInit {
 		this.dataSource = this.createDataSource();
 	}
 
+	public transferProjects(): void {
+		this.dialog
+			.open<boolean>(TransferProjectsDialogComponent, {
+				width: ModalWidth.M,
+				viewContainerRef: this.viewContainerRef,
+				disableClose: true,
+			})
+			.closed.pipe(
+				switchMap((shouldRefresh?: boolean) => (shouldRefresh ? this.dataSource.refetchData() : EMPTY))
+			)
+			.subscribe();
+	}
+
+	public navigateToProject(p: ProjectInfo): void {
+		this.router.navigate([AppRoutes.Projects, p.id]);
+	}
+
 	private createDataSource(): DoTableDataSource<ProjectInfo> {
 		const initialData = this.route.snapshot.data['projects'];
 		const dataSource = new DoTableDataSource<ProjectInfo>(initialData);
@@ -65,21 +82,5 @@ export class DepartmentProjectsComponent implements OnInit {
 			projectstatus: params['status'],
 			isascendingsort: params.direction === 'asc',
 		};
-	}
-
-	public transferProjects(): void {
-		this.dialog
-			.open<boolean>(TransferProjectsDialogComponent, {
-				width: ModalWidth.M,
-				viewContainerRef: this.viewContainerRef,
-				disableClose: true,
-			})
-			.afterClosed()
-			.pipe(switchMap((shouldRefresh?: boolean) => (shouldRefresh ? this.dataSource.refetchData() : EMPTY)))
-			.subscribe();
-	}
-
-	public navigateToProject(p: ProjectInfo): void {
-		this.router.navigate([AppRoutes.Projects, p.id]);
 	}
 }

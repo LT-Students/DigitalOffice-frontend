@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { BaseImageInfo } from '@app/models/image.model';
 import { UploadImageService } from './upload-image.service';
@@ -17,10 +17,7 @@ export class UploadImageComponent {
 
 	public imageSaving$ = new BehaviorSubject(false);
 
-	constructor(
-		private uploadImageService: UploadImageService,
-		private dialogRef: MatDialogRef<UploadImageComponent>
-	) {}
+	constructor(private uploadImageService: UploadImageService, private dialogRef: DialogRef<UploadImageComponent>) {}
 
 	public uploadFile(image: BaseImageInfo): void {
 		this.uploadImageService.setUploadImage(image);

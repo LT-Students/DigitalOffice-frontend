@@ -64,7 +64,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": false,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -86,7 +85,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -180,7 +178,6 @@
       }
     }
   },
-  "defaultProject": "DigitalOffice-frontend",
   "cli": {
     "analytics": "b9acfdf8-e7dd-4c29-8c52-f140c5a3acbf"
   }

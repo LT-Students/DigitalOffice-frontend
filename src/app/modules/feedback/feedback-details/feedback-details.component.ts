@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
 import { finalize, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
@@ -19,7 +19,7 @@ export class FeedbackDetailsComponent extends LoadingState implements OnInit {
 	public feedback!: FeedbackInfo;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) private data: { feedback: FeedbackInfo; images?: ImageContent[] },
+		@Inject(DIALOG_DATA) private data: { feedback: FeedbackInfo; images?: ImageContent[] },
 		private feedbackService: FeedbackService
 	) {
 		super();

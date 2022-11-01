@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { RightInfo, RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
@@ -8,6 +7,7 @@ import { DoValidators } from '@app/validators/do-validators';
 import { BehaviorSubject, iif, Observable } from 'rxjs';
 import { finalize, map, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
 	selector: 'do-new-role',
@@ -17,7 +17,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 })
 export class AddEditRoleComponent implements OnInit {
 	public rights$!: Observable<RightInfo[]>;
-	public roleForm: FormGroup;
+	public roleForm: UntypedFormGroup;
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	public readonly roleInfo?: RoleInfo;
@@ -25,10 +25,10 @@ export class AddEditRoleComponent implements OnInit {
 	public readonly MAX_DESCRIPTION_LENGTH = 300;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) roleInfo: RoleInfo,
+		@Inject(DIALOG_DATA) roleInfo: RoleInfo,
 		private _rightsService: RightsService,
-		private _dialogRef: MatDialogRef<AddEditRoleComponent>,
-		private _fb: FormBuilder
+		private _dialogRef: DialogRef,
+		private _fb: UntypedFormBuilder
 	) {
 		this.isEditMode = !!roleInfo;
 		this.loading$$ = new BehaviorSubject<boolean>(false);
@@ -47,9 +47,9 @@ export class AddEditRoleComponent implements OnInit {
 		this.rights$ = this._rightsService.findRights().pipe(
 			map((response) => response.body ?? []),
 			tap((rights) => {
-				const rightsGroup = this.roleForm.get('rights') as FormGroup;
+				const rightsGroup = this.roleForm.get('rights') as UntypedFormGroup;
 				rights.forEach((r) => {
-					rightsGroup.addControl(r.rightId + '', new FormControl(false));
+					rightsGroup.addControl(r.rightId + '', new UntypedFormControl(false));
 				});
 
 				if (this.isEditMode) {
@@ -90,7 +90,7 @@ export class AddEditRoleComponent implements OnInit {
 	}
 
 	private _retrieveRightIdsArray(): number[] {
-		const rightsGroup = this.roleForm?.get('rights') as FormGroup;
+		const rightsGroup = this.roleForm?.get('rights') as UntypedFormGroup;
 
 		return Object.keys(rightsGroup.controls)
 			.filter((k) => rightsGroup.get(k)?.value)

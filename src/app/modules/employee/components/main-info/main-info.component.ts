@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewContainerRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, ViewContainerRef } from '@angular/core';
 import { DateFormat } from '@app/types/date.enum';
 import { ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
@@ -8,6 +7,7 @@ import { UserRights } from '@app/types/user-rights.enum';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppRoutes } from '@app/models/app-routes';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
 import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
 import { EmployeePageService } from '../../services/employee-page.service';
@@ -18,7 +18,7 @@ import { EmployeePageService } from '../../services/employee-page.service';
 	styleUrls: ['./main-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainInfoComponent implements OnInit {
+export class MainInfoComponent {
 	public readonly Icons = Icons;
 	public readonly DateFormat = DateFormat;
 	public readonly AppRoutes = AppRoutes;
@@ -34,11 +34,9 @@ export class MainInfoComponent implements OnInit {
 	constructor(
 		private employeePage: EmployeePageService,
 		private permission: PermissionService,
-		private dialog: MatDialog,
+		private dialog: DialogService,
 		private viewContainer: ViewContainerRef
 	) {}
-
-	public ngOnInit(): void {}
 
 	public editUser(): void {
 		this.dialog.open(EditInfoComponent, {

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationService } from '@app/services/navigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { finalize } from 'rxjs/operators';
 import { AppRoutes } from '@app/models/app-routes';
@@ -22,7 +22,7 @@ export class CreateDepartmentComponent extends LoadingState implements OnInit {
 	});
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private navigation: NavigationService,
 		private route: ActivatedRoute,
 		private router: Router,

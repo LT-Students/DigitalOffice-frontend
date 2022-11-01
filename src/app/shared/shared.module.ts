@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
@@ -11,6 +10,7 @@ import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IconsModule } from '@shared/modules/icons/icons.module';
 import { OptionComponent } from '@shared/component/option/option.component';
+import { PortalModule } from '@angular/cdk/portal';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -34,7 +34,6 @@ import { ButtonLoadingDirective } from './directives/button-loading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { ValidationHintComponent } from './component/validation-hint/validation-hint.component';
 import { TruncateTooltipDirective } from './directives/truncate-tooltip.directive';
-import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 import { FormFieldComponent } from './component/form-row/form-field.component';
 import { SelectDirective } from './directives/select.directive';
@@ -67,6 +66,10 @@ import { JoinPipe } from './pipes/join.pipe';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-spaces.directive';
+import { PopoverComponent } from './component/popover/popover.component';
+import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
+import { DialogComponent } from './component/dialog/dialog.component';
+import { DialogCloseDirective } from './component/dialog/dialog-close.directive';
 
 @NgModule({
 	declarations: [
@@ -91,7 +94,6 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		TransformNameDirective,
 		ValidationHintComponent,
 		TruncateTooltipDirective,
-		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		PlaceholderPipe,
@@ -129,6 +131,10 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ImageViewerComponent,
 		SafeImageUrlPipe,
 		RemoveRedundantSpacesDirective,
+		PopoverComponent,
+		PopoverTriggerDirective,
+		DialogComponent,
+		DialogCloseDirective,
 	],
 	imports: [
 		CommonModule,
@@ -137,9 +143,9 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ReactiveFormsModule,
 		MaterialModule,
 		InfiniteScrollModule,
-		MdePopoverModule,
 		ImageCropperModule,
 		IconsModule,
+		PortalModule,
 	],
 	exports: [
 		CommonModule,
@@ -147,7 +153,6 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		MaterialModule,
 		IconsModule,
 		InfiniteScrollModule,
-		MdePopoverModule,
 		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,
@@ -172,7 +177,6 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		TransformNameDirective,
 		ValidationHintComponent,
 		TruncateTooltipDirective,
-		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		PlaceholderPipe,
@@ -206,6 +210,9 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ImageViewerComponent,
 		SafeImageUrlPipe,
 		RemoveRedundantSpacesDirective,
+		PopoverComponent,
+		PopoverTriggerDirective,
+		DialogCloseDirective,
 	],
 })
 export class SharedModule {}

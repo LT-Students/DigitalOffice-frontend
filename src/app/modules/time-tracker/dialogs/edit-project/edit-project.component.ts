@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';
@@ -21,9 +21,9 @@ export class EditProjectComponent extends LoadingState implements OnInit {
 	public workTimeDate = DateTime.fromObject({ year: this.workTime.year, month: this.workTime.month });
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public workTime: WorkTime,
-		private fb: FormBuilder,
-		private dialogRef: MatDialogRef<EditProjectComponent>,
+		@Inject(DIALOG_DATA) public workTime: WorkTime,
+		private fb: UntypedFormBuilder,
+		private dialogRef: DialogRef<EditProjectComponent>,
 		private attendanceService: AttendanceService
 	) {
 		super();
@@ -31,13 +31,13 @@ export class EditProjectComponent extends LoadingState implements OnInit {
 
 	public ngOnInit(): void {
 		if (isGUIDEmpty(this.workTime.project.id)) {
-			const description = this.editForm.get('description') as FormControl;
+			const description = this.editForm.get('description') as UntypedFormControl;
 			description.setValidators([DoValidators.required]);
 			description.updateValueAndValidity();
 		}
 	}
 
-	private initFormGroup(): FormGroup {
+	private initFormGroup(): UntypedFormGroup {
 		return this.fb.group({
 			userHours: [
 				this.workTime.userHours,

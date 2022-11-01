@@ -1,16 +1,13 @@
 @use '../../../../stylesheets/base/variables';
 
 .content-container {
-	padding: 31px 100px 120px;
+	margin: 0 auto;
+	padding: 48px 32px;
 
 	overflow: auto;
 
-	.wrapper {
-		margin: 0 auto;
-
-		width: 100%;
-		max-width: 1440px;
-	}
+	width: 100%;
+	max-width: 1440px;
 }
 
 .sidenav-container {
@@ -27,7 +24,7 @@
 	}
 
 	.header {
-		z-index: 3;
+		z-index: 15;
 
 		box-shadow: 0 1px 2px variables.$light_4;
 	}

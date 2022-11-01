@@ -1,8 +1,5 @@
 <h3 mat-dialog-title class="header">
 	<span class="title">Загрузка новой фотографии</span>
-	<button mat-icon-button mat-dialog-close>
-		<mat-icon class="text-secondary_default">close</mat-icon>
-	</button>
 </h3>
 <do-select-image *ngIf="(image$ | async) === null" (fileSelected)="uploadFile($event)"></do-select-image>
 <do-adjust-image

@@ -3,6 +3,7 @@ import { SharedModule } from '@shared/shared.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
+import { AddUsersDialogModule } from '../add-users-dialog/add-users-dialog.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsTableComponent } from './projects-table/projects-table.component';
 import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
@@ -17,7 +18,6 @@ import { ProjectDescriptionComponent } from './project-page/project-description/
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 import { ProjectFilesComponent } from './project-page/project-files/project-files.component';
 import { ProjectUsersComponent } from './project-page/project-users/project-users.component';
-import { AddProjectUsersComponent } from './add-project-users/add-project-users.component';
 import { AddFilesComponent } from './add-files/add-files.component';
 import { UploadProgressComponent } from './add-files/upload-progress/upload-progress.component';
 import { UploadItemComponent } from './add-files/upload-progress/upload-item.component';
@@ -40,7 +40,6 @@ import { DownloadItemComponent } from './download-files/download-item.component'
 		ProjectIdRouteContainerComponent,
 		ProjectFilesComponent,
 		ProjectUsersComponent,
-		AddProjectUsersComponent,
 		AddFilesComponent,
 		UploadProgressComponent,
 		UploadItemComponent,
@@ -48,6 +47,13 @@ import { DownloadItemComponent } from './download-files/download-item.component'
 		DownloadFilesComponent,
 		DownloadItemComponent,
 	],
-	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule, MatProgressBarModule],
+	imports: [
+		SharedModule,
+		ProjectsRoutingModule,
+		TableModule,
+		DynamicFilterModule,
+		MatProgressBarModule,
+		AddUsersDialogModule,
+	],
 })
 export class ProjectsModule {}

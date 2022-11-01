@@ -1,13 +1,10 @@
 <form class="auth" [formGroup]="loginForm" (ngSubmit)="signUp()" autocomplete="off">
 	<do-form-field
+		#trigger="doPopoverTrigger"
 		class="auth-input"
 		label="Придумай логин"
-		#trigger="mdePopoverTrigger"
-		[mdePopoverTriggerFor]="popover"
-		mdePopoverTriggerOn="none"
-		mdePopoverPositionX="before"
-		[mdePopoverOffsetX]="200"
-		[mdePopoverOffsetY]="-40"
+		[doPopoverTrigger]="popover"
+		position="after"
 	>
 		<mat-form-field>
 			<input
@@ -18,8 +15,8 @@
 				placeholder="Новый логин"
 				formControlName="login"
 				autocomplete="off"
-				(focusin)="trigger.openPopover()"
-				(focusout)="trigger.closePopover(); login.blur()"
+				(focusin)="trigger.show()"
+				(focusout)="trigger.hide(); login.blur()"
 			/>
 		</mat-form-field>
 	</do-form-field>
@@ -39,6 +36,6 @@
 		Войти
 	</button>
 </form>
-<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+<do-popover #popover>
 	<do-validation-hint [validations]="hintValidations$ | async"></do-validation-hint>
-</mde-popover>
+</do-popover>

@@ -11,12 +11,12 @@ import {
 import EditorJS from '@editorjs/editorjs';
 import { finalize, first, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
 import { CreateNewsRequest } from '@api/news-service/models/create-news-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogService } from '@app/services/dialog.service';
 import { OperationResultResponseNewsResponse } from '@api/news-service/models/operation-result-response-news-response';
 import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
@@ -42,7 +42,7 @@ interface NewsDraft {
 	encapsulation: ViewEncapsulation.None,
 })
 export class NewsEditorComponent implements OnInit, OnDestroy {
-	public articleSubject: FormControl;
+	public articleSubject: UntypedFormControl;
 	public loading$$: BehaviorSubject<boolean>;
 
 	public isEditorContentEmpty: BehaviorSubject<boolean>;
@@ -67,7 +67,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		this.isEdit = Boolean(this.data._newsId);
 		this.isEditorContentEmpty = new BehaviorSubject<boolean>(!this.isEdit);
 
-		this.articleSubject = new FormControl('', [Validators.required, DoValidators.noWhitespaces]);
+		this.articleSubject = new UntypedFormControl('', [Validators.required, DoValidators.noWhitespaces]);
 
 		this._destroy$ = new ReplaySubject<void>(1);
 	}

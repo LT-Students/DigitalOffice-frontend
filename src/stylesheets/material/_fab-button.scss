@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 
 @mixin color($theme) {
 	$color-config: mat.get-color-config($theme);
@@ -9,6 +9,10 @@
 		color: mat.get-color-from-palette($primary-palette, 400);
 
 		background-color: mat.get-color-from-palette($primary-palette, 100);
+
+		.mat-button-wrapper {
+			line-height: 1;
+		}
 	}
 }
 

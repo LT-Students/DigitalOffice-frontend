@@ -78,9 +78,7 @@
 							<p
 								class="mat-body"
 								[class.link]="user?.department"
-								[routerLink]="
-									user?.department ? ['/', AppRoutes.Departments, user?.department?.id] : null
-								"
+								[routerLink]="user?.department && ['/', AppRoutes.Departments, user?.department?.id]"
 							>
 								{{ user.department?.name | placeholder }}
 							</p>

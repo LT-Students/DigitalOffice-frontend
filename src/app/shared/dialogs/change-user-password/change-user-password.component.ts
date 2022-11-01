@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { FormBuilder, FormControl, FormGroupDirective, NgForm } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { finalize, map, startWith } from 'rxjs/operators';
 import { ChangePasswordRequest } from '@api/user-service/models/change-password-request';
@@ -12,7 +12,7 @@ import { LoadingState } from '@app/utils/loading-state';
 import { HintValidation } from '@shared/component/validation-hint/validation-hint.component';
 
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
-	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		return !!(control?.dirty || control?.touched) && !!form?.hasError('noMatch');
 	}
 }
@@ -36,16 +36,16 @@ export class ChangeUserPasswordComponent implements OnInit {
 	public hintValidations$!: Observable<HintValidation[]>;
 
 	constructor(
-		private fb: FormBuilder,
-		private dialogRef: MatDialogRef<ChangeUserPasswordComponent>,
+		private fb: UntypedFormBuilder,
+		private dialogRef: DialogRef,
 		private passwordService: PasswordService
 	) {}
 
 	public ngOnInit(): void {
-		this.hintValidations$ = (this.form.get('newPassword') as FormControl).valueChanges.pipe(
+		this.hintValidations$ = (this.form.get('newPassword') as UntypedFormControl).valueChanges.pipe(
 			startWith(''),
 			map((value: string) => [
-				{ label: 'от 8 до 14 символов', valid: value.length >= 8 && value.length <= 14 },
+				{ label: 'от 8 до 50 символов', valid: value.length >= 8 && value.length <= 50 },
 				{ label: 'заглавные буквы', valid: /[A-Z]/u.test(value) },
 				{ label: 'строчные буквы', valid: /[a-z]/u.test(value) },
 				{ label: 'минимум 1 цифра', valid: /\d/.test(value) },

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from '@app/models/user/user.model';
 import { DoValidators } from '@app/validators/do-validators';
 import { DateFormat } from '@app/types/date.enum';
@@ -21,7 +21,7 @@ import { EmployeePageService } from '../../../services/employee-page.service';
 	styleUrls: ['./edit-personal-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditPersonalInfoComponent extends LoadingState implements OnInit {
+export class EditPersonalInfoComponent extends LoadingState {
 	public readonly Icons = Icons;
 	public user$: Observable<User>;
 	public isEditMode = false;
@@ -36,8 +36,8 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 	public readonly MAX_ABOUT_LENGTH = 150;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) data: Observable<User>,
-		private fb: FormBuilder,
+		@Inject(DIALOG_DATA) data: Observable<User>,
+		private fb: UntypedFormBuilder,
 		private userService: UserService,
 		private employeePage: EmployeePageService,
 		private permission: PermissionService,
@@ -47,9 +47,7 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 		this.user$ = data;
 	}
 
-	ngOnInit(): void {}
-
-	private initForm(): FormGroup {
+	private initForm(): UntypedFormGroup {
 		return this.fb.group({
 			[UserPath.FIRST_NAME]: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			[UserPath.LAST_NAME]: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],

@@ -1,8 +1,8 @@
 import { Injectable, ViewContainerRef } from '@angular/core';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { DialogRef } from '@angular/cdk/dialog';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { AddUsersDialogComponent } from '../add-users-dialog.component';
-import { AddUsersDialogData } from '../models/models';
+import { AddUsersDialogData } from '../models';
 
 @Injectable({
 	providedIn: 'root',
@@ -13,7 +13,7 @@ export class AddUsersDialogService {
 	public open<R = unknown>(
 		data: AddUsersDialogData,
 		viewContainerRef?: ViewContainerRef
-	): MatDialogRef<AddUsersDialogComponent, R> {
+	): DialogRef<R, AddUsersDialogComponent> {
 		return this.dialog.open(AddUsersDialogComponent, {
 			width: ModalWidth.M,
 			data,

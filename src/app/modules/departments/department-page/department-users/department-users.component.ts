@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
-import { first, switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { UserRights } from '@app/types/user-rights.enum';
 import { Icons } from '@shared/modules/icons/icons';
 import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
@@ -13,7 +13,7 @@ import { AddUsersTableConfigService } from '../../../add-users-dialog/services/a
 import { AddUsersApiBase } from '../../../add-users-dialog/services/add-users-api.service';
 import { DepartmentPermissionService } from '../../services/department-permission.service';
 import { Department } from '../department';
-import { TableOptions } from '../../../table/models/table-options';
+import { TableOptions } from '../../../table/models';
 import { TableConfigsService } from './services/table-configs.service';
 import { AddDepartmentUsersApiService } from './services/add-department-users-api.service';
 import { AddDepartmentUsersDialogTableConfigService } from './services/add-department-users-dialog-table-config.service';
@@ -37,7 +37,9 @@ export class DepartmentUsersComponent implements OnInit {
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<DepartmentUser>;
 	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
 
-	public canManageUsers$ = this.departmentPermissions.canManageDepartment$(this.departmentState.department$);
+	public canManageUsers$ = this.departmentPermissions.canManageUsers$(
+		this.departmentState.department$.pipe(map((d: Department) => d.id))
+	);
 	public filterData = this.tableConfigs.getFilterConfig();
 	public tableOptions$!: Observable<TableOptions>;
 	public dataSource!: DoTableDataSource<DepartmentUser>;
@@ -88,9 +90,10 @@ export class DepartmentUsersComponent implements OnInit {
 				first(),
 				switchMap((d: Department) => {
 					const users = d.users.map((u) => ({ ...u, id: u.id }));
-					return this.addUsersDialog
-						.open({ entityId: d.id, entityName: d.name, existingUsers: users }, this.viewContainerRef)
-						.afterClosed();
+					return this.addUsersDialog.open(
+						{ entityId: d.id, entityName: d.name, existingUsers: users },
+						this.viewContainerRef
+					).closed;
 				}),
 				switchMap(() => this.dataSource.refetchData())
 			)

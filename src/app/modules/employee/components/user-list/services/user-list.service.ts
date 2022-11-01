@@ -19,8 +19,8 @@ import { FilterService } from '@app/services/filter/filter.service';
 import { UserService } from '@app/services/user/user.service';
 import { WithPagination } from '@app/types/find-request.interface';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { FormControl } from '@angular/forms';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
+import { UntypedFormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
 interface FindUsersParams extends WithPagination {
@@ -37,7 +37,7 @@ export class UserListService {
 
 	private statusChange = new BehaviorSubject<Status>('active');
 	public statusChange$ = this.statusChange.asObservable();
-	public nameControl = new FormControl('');
+	public nameControl = new UntypedFormControl('');
 
 	private skipCount$ = new BehaviorSubject<number>(0);
 
@@ -67,8 +67,7 @@ export class UserListService {
 			.open(NewEmployeeComponent, {
 				width: ModalWidth.M,
 			})
-			.afterClosed()
-			.pipe(withLatestFrom(this.statusChange$))
+			.closed.pipe(withLatestFrom(this.statusChange$))
 			.subscribe(([_, status]: [any, Status]) => {
 				if (status !== 'active') {
 					this.refreshCount();
@@ -79,12 +78,7 @@ export class UserListService {
 	public removeFromList(userId: string): boolean {
 		let isRemoved = false;
 		this.statusChange$.pipe(first()).subscribe({
-			next: (status: Status) => {
-				isRemoved = status !== 'archive';
-				if (isRemoved) {
-					this.removeUser$.next(userId);
-				}
-			},
+			next: () => this.removeUser$.next(userId),
 		});
 		return isRemoved;
 	}

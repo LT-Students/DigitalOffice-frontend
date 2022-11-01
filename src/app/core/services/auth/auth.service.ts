@@ -19,7 +19,7 @@ import { Company } from '@app/models/company';
 import { CompanyService } from '@app/services/company/company.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { AuthTokenService } from '@app/services/auth-token.service';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 
 @Injectable({

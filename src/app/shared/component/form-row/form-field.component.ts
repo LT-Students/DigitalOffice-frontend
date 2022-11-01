@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ContentChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ContentChild } from '@angular/core';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -8,7 +8,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 	styleUrls: ['./form-field.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormFieldComponent implements OnInit {
+export class FormFieldComponent {
 	@ContentChild(MatFormFieldControl) control?: MatFormFieldControl<any>;
 
 	@Input() label = '';
@@ -23,6 +23,4 @@ export class FormFieldComponent implements OnInit {
 	private _required = false;
 
 	constructor() {}
-
-	ngOnInit(): void {}
 }

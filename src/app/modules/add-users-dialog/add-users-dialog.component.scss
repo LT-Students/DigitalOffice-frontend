@@ -3,7 +3,7 @@
 	margin-bottom: 16px;
 }
 
-.search,
+.filter,
 .user-count {
 	margin-bottom: 18px;
 }
@@ -13,7 +13,12 @@
 }
 
 .list {
-	height: 50vh;
+	margin: 0 -10px;
+	padding: 0 10px 10px;
+
+	overflow-y: auto;
+
+	height: 45vh;
 
 	.table {
 		padding: 0 0 12px;

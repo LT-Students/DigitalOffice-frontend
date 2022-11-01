@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, forwardRef, Optional, Self, HostBinding, Input } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormBuilder, UntypedFormControl, NgControl } from '@angular/forms';
 import { CommunicationTypeModel } from '@app/models/communication.model';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -23,7 +23,7 @@ import { tap } from 'rxjs/operators';
 export class PhoneInputComponent implements MatFormFieldControl<number>, ControlValueAccessor {
 	private static _uniqueId = 0;
 
-	public control: FormControl;
+	public control: UntypedFormControl;
 
 	public get value(): number {
 		return this.control.value;
@@ -91,7 +91,7 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 	@HostBinding('attr.aria-describedby')
 	public userAriaDescribedBy?: string | undefined;
 
-	constructor(private _fb: FormBuilder, @Optional() @Self() public ngControl: NgControl | null) {
+	constructor(private _fb: UntypedFormBuilder, @Optional() @Self() public ngControl: NgControl | null) {
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
 		}

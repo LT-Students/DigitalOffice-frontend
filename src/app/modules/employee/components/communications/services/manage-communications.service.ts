@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { pipe } from 'rxjs';
+import { first, switchMap, tap } from 'rxjs/operators';
 import { CommunicationApiService } from '@api/user-service/services/communication-api.service';
 import { CommunicationType } from '@api/user-service/models/communication-type';
-import { pipe } from 'rxjs';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { first, switchMap, tap } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { EditContactComponent } from '../edit-contact/edit-contact.component';
 import { AddContactComponent } from '../add-contact/add-contact.component';
 import { EmployeePageService } from '../../../services/employee-page.service';
@@ -22,13 +22,12 @@ export class ManageCommunicationsService {
 		this.employeePage.selectedUser$
 			.pipe(
 				first(),
-				switchMap((user: User) =>
-					this.dialog
-						.open<Pick<CommunicationInfo, 'type' | 'value'>>(AddContactComponent, {
+				switchMap(
+					(user: User) =>
+						this.dialog.open<Pick<CommunicationInfo, 'type' | 'value'>>(AddContactComponent, {
 							width: ModalWidth.M,
 							data: user.id,
-						})
-						.afterClosed()
+						}).closed
 				),
 				tap((communication?: Pick<CommunicationInfo, 'type' | 'value'>) => {
 					if (communication?.type === CommunicationType.Email) {
@@ -43,8 +42,7 @@ export class ManageCommunicationsService {
 	public editCommunicationValue(communication: CommunicationInfo): void {
 		this.dialog
 			.open(EditContactComponent, { width: ModalWidth.M, data: communication })
-			.afterClosed()
-			.pipe(this.updateCommunications())
+			.closed.pipe(this.updateCommunications())
 			.subscribe();
 	}
 
@@ -59,7 +57,7 @@ export class ManageCommunicationsService {
 			}),
 		};
 
-		this.dialog.confirm(data).afterClosed().pipe(this.updateCommunications()).subscribe();
+		this.dialog.confirm(data).closed.pipe(this.updateCommunications()).subscribe();
 	}
 
 	public resendBaseConfirmation(communication: CommunicationInfo): void {
@@ -75,8 +73,7 @@ export class ManageCommunicationsService {
 				message: 'Вы действительно хотите удалить контакт?',
 				action$: this.communicationApi.removeCommunication({ communicationId: communication.id }),
 			})
-			.afterClosed()
-			.pipe(this.updateCommunications())
+			.closed.pipe(this.updateCommunications())
 			.subscribe();
 	}
 

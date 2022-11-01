@@ -1,7 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { User } from '@app/models/user/user.model';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'do-edit-info',
@@ -9,8 +6,6 @@ import { Observable } from 'rxjs';
 	styleUrls: ['./edit-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditInfoComponent implements OnInit {
-	constructor(@Inject(MAT_DIALOG_DATA) data: Observable<User>) {}
-
-	ngOnInit(): void {}
+export class EditInfoComponent {
+	constructor() {}
 }

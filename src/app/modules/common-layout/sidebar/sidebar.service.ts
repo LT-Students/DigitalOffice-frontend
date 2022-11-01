@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { DepartmentUserRole } from '@api/user-service/models/department-user-role';
 import { AdminRoutes } from '../../admin/models/admin-routes';
@@ -14,7 +14,6 @@ import { Link } from './sidebar-types';
 @Injectable()
 export class SidebarService {
 	public links$: Observable<Link[]> = this.currentUser.user$.pipe(
-		first(),
 		map((user: User) => {
 			return [
 				// {

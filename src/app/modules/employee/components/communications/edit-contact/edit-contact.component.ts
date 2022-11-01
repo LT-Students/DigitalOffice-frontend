@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { UntypedFormControl } from '@angular/forms';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { parsePhoneNumber } from 'libphonenumber-js';
@@ -18,7 +18,7 @@ import { LoadingState } from '@app/utils/loading-state';
 export class EditContactComponent extends LoadingState {
 	public readonly Type = CommunicationType;
 
-	public control = new FormControl(
+	public control = new UntypedFormControl(
 		this.isTypeStartingWithAt(this.communication.type)
 			? this.communication.value.slice(1)
 			: this.communication.value,
@@ -27,8 +27,8 @@ export class EditContactComponent extends LoadingState {
 	public contactType = this.communication.type;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public communication: CommunicationInfo,
-		private dialogRef: MatDialogRef<EditContactComponent>,
+		@Inject(DIALOG_DATA) public communication: CommunicationInfo,
+		private dialogRef: DialogRef<EditContactComponent>,
 		private communicationService: CommunicationService
 	) {
 		super();

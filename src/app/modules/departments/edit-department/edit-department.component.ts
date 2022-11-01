@@ -1,14 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DoValidators } from '@app/validators/do-validators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NavigationService } from '@app/services/navigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from '@app/services/dialog.service';
 import { finalize, first, switchMap, switchMapTo } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
 import { booleanGuard } from '@app/utils/utils';
 import { LoadingState } from '@app/utils/loading-state';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 import { DepartmentPageStateService } from '../department-id-route-container/department-page-state.service';
 import { Department } from '../department-page/department';
 import { DepartmentService } from '../services/department.service';
@@ -26,7 +26,7 @@ interface FormValue {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditDepartmentComponent extends LoadingState implements OnInit {
-	public form!: FormGroup;
+	public form!: UntypedFormGroup;
 
 	public department$ = this.departmentPageState.department$;
 	get departmentFirstValue$(): Observable<Department> {
@@ -34,7 +34,7 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 	}
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		private navigation: NavigationService,
 		private route: ActivatedRoute,
 		private router: Router,
@@ -105,7 +105,7 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 								confirmText: 'Восстановить',
 								action$,
 						  };
-					return this.dialog.confirm(confirmConfig).afterClosed();
+					return this.dialog.confirm(confirmConfig).closed;
 				})
 			)
 			.subscribe();

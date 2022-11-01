@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PositionService } from '@app/services/position/position.service';
 import { DoValidators } from '@app/validators/do-validators';
 import { InitialDataEditRequest, PositionPath } from '@app/types/edit-request';
@@ -10,6 +9,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { createEditRequest } from '@app/utils/utils';
 import { PositionInfo } from '@api/position-service/models/position-info';
 import { finalize } from 'rxjs/operators';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
 	selector: 'do-new-position',
@@ -20,7 +20,7 @@ import { finalize } from 'rxjs/operators';
 export class AddEditPositionComponent {
 	public EditPath = PositionPath;
 
-	public positionForm: FormGroup;
+	public positionForm: UntypedFormGroup;
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	private readonly _positionInfo?: InitialDataEditRequest<PositionPath> & { id: UUID };
@@ -28,10 +28,10 @@ export class AddEditPositionComponent {
 	public readonly MAX_DESCRIPTION_LENGTH = 350;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) positionInfo: Required<PositionInfo>,
-		private _fb: FormBuilder,
+		@Inject(DIALOG_DATA) positionInfo: Required<PositionInfo>,
+		private _fb: UntypedFormBuilder,
 		private _positionService: PositionService,
-		private _dialogRef: MatDialogRef<AddEditPositionComponent>
+		private _dialogRef: DialogRef
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.isEditMode = !!positionInfo;

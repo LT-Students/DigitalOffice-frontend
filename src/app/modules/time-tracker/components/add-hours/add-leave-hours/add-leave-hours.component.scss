@@ -1,31 +1,7 @@
-.add-hours {
-	&__form {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-	}
+.submit {
+	margin-top: 20px;
 
-	&__time-wrapper {
-		display: flex;
-	}
-
-	&__absence-time {
-		margin-left: 32px;
-
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-
-		h3 {
-			margin-bottom: 0;
-		}
-	}
-
-	&__absence-submit {
-		margin-top: 20px;
-
-		width: 100%;
-		max-width: 192px;
-		align-self: center;
-	}
+	width: 100%;
+	max-width: 192px;
+	align-self: center;
 }

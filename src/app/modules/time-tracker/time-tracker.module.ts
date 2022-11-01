@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared/shared.module';
+import { SharedTimeTrackingSystemModule } from '@shared/modules/shared-time-tracking-system/shared-time-tracking-system.module';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { TimeWidgetComponent } from './components/time-widget/time-widget.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
@@ -32,7 +33,7 @@ import { LeaveHoursPipe } from './components/leaves/leave-hours.pipe';
 		LegendComponent,
 		LeaveHoursPipe,
 	],
-	imports: [SharedModule, TimeTrackerRoutingModule],
+	imports: [SharedModule, TimeTrackerRoutingModule, SharedTimeTrackingSystemModule],
 	providers: [],
 	exports: [],
 })

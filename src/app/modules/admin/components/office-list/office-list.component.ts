@@ -1,14 +1,13 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { OfficeInfo } from '@api/office-service/models';
-import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { OfficeInfo } from '@api/office-service/models';
 import { OfficeService } from '@app/services/company/office.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
@@ -19,18 +18,18 @@ import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-of
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements AfterViewInit {
-	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	public readonly Icons = Icons;
 
 	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
-	public filters: FormGroup;
+	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: DialogService,
+		private dialog: DialogService,
 		private _officeService: OfficeService,
 		private _route: ActivatedRoute,
-		private _fb: FormBuilder
+		private _fb: UntypedFormBuilder
 	) {
 		this.filters = this._fb.group({
 			showDeactivated: [false],
@@ -59,48 +58,43 @@ export class OfficeListComponent implements AfterViewInit {
 	}
 
 	public onAddEditOffice(officeInfo?: OfficeInfo): void {
-		this._modalService
-			.openModal<AddEditOfficeComponent>(AddEditOfficeComponent, ModalWidth.M, officeInfo)
-			.afterClosed()
-			.subscribe({
-				next: (result) => {
-					this._refreshCurrentPage$$.next(true);
-				},
-			});
+		this.dialog.open(AddEditOfficeComponent, { width: ModalWidth.M, data: officeInfo }).closed.subscribe({
+			next: () => {
+				this._refreshCurrentPage$$.next(true);
+			},
+		});
 	}
 
 	public onDeleteOffice(officeInfo: OfficeInfo): void {
-		this._modalService
+		this.dialog
 			.confirm({
 				confirmText: `Да, удалить`,
 				message: `Вы действительно хотите удалить офис ${officeInfo.name}?`,
 				title: `Удаление офиса ${officeInfo.name}`,
 			})
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirm) => {
 					return iif(() => !!confirm, this._officeService.deleteOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
 
 	public onRestoreOffice(officeInfo: OfficeInfo): void {
-		this._modalService
+		this.dialog
 			.confirm({
 				confirmText: `Да, восстановить`,
 				message: `Вы действительно хотите восстановить офис ${officeInfo.name}?`,
 				title: `Восстановление офиса ${officeInfo.name}`,
 			})
-			.afterClosed()
-			.pipe(
+			.closed.pipe(
 				switchMap((confirm) => {
 					return iif(() => !!confirm, this._officeService.restoreOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}

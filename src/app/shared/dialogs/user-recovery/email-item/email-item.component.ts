@@ -11,7 +11,7 @@ import {
 	ChangeDetectorRef,
 	OnDestroy,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl, Validators } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NgControl, Validators } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -44,7 +44,7 @@ export class EmailItemComponent implements OnInit, OnDestroy, ControlValueAccess
 	@Output() emailChange = new EventEmitter<void>();
 	public value!: EmailValue;
 	public isEditMode = false;
-	public emailControl = new FormControl('', [Validators.required, DoValidators.email]);
+	public emailControl = new UntypedFormControl('', [Validators.required, DoValidators.email]);
 
 	private destroy$ = new Subject<void>();
 

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
 import { CommunicationType, ContractTerm, CreateCommunicationRequest } from '@api/user-service/models';
@@ -24,7 +23,8 @@ import { getUTCWithOffset } from '@app/utils/utils';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { LoadingState } from '@app/utils/loading-state';
 import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogRef } from '@angular/cdk/dialog';
+import { DialogService } from '@shared/component/dialog/dialog.service';
 
 @Component({
 	selector: 'do-new-employee',
@@ -45,9 +45,9 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		private _formBuilder: FormBuilder,
+		private _formBuilder: UntypedFormBuilder,
 		private _userService: UserService,
-		private dialogRef: MatDialogRef<any>,
+		private dialogRef: DialogRef<any>,
 		private _rightsService: RightsService,
 		private _positionService: PositionService,
 		private _departmentService: DepartmentService,
@@ -93,13 +93,6 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 		this.warningOnClose.beforeClose(this.isFormDirty());
 	}
 
-	private isFormDirty(): boolean {
-		const initialForm = this.initForm();
-		return Object.keys(initialForm.controls).some(
-			(k: string) => this.userForm.controls[k].value !== initialForm.controls[k].value
-		);
-	}
-
 	public createEmployee(): void {
 		this.setLoading(true);
 
@@ -117,7 +110,14 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 			});
 	}
 
-	private initForm(): FormGroup {
+	private isFormDirty(): boolean {
+		const initialForm = this.initForm();
+		return Object.keys(initialForm.controls).some(
+			(k: string) => this.userForm.controls[k].value !== initialForm.controls[k].value
+		);
+	}
+
+	private initForm(): UntypedFormGroup {
 		return this._formBuilder.group({
 			lastName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			firstName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],

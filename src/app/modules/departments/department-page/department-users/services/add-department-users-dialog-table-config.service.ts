@@ -23,7 +23,7 @@ export class AddDepartmentUsersDialogTableConfigService extends AddUsersTableCon
 					const existingUser = existingUsers.find((u) => u.id === user.id);
 					return existingUser?.role || user.role;
 				},
-				columnStyle: { flex: '0 0 auto' },
+				columnStyle: { flex: '0 0 32%' },
 				params: {
 					options: DepartmentRoleInfo.getAllRoles(),
 					displayValueGetter: (role: DepartmentRole) => DepartmentRoleInfo.getRoleInfoByRole(role).label,

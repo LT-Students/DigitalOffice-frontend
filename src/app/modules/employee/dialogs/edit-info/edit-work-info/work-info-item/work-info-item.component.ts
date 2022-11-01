@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { finalize, switchMap } from 'rxjs/operators';
 import { LoadingState } from '@app/utils/loading-state';
 import { WorkInfoConfigService } from '../work-info-config.service';
@@ -17,7 +17,7 @@ export class WorkInfoItemComponent extends LoadingState implements OnInit {
 
 	@ViewChild('edit') editTemplate?: ElementRef;
 	@Input() config!: WorkInfoConfig;
-	public control = new FormControl(null);
+	public control = new UntypedFormControl(null);
 
 	public isEditMode = false;
 

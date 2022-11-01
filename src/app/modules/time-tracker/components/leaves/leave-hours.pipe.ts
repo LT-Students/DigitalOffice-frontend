@@ -2,17 +2,23 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
-import { AttendanceService } from '../../services/attendance.service';
-import { LeaveTime } from '../../models/leave-time';
+import {
+	CanManageTimeInSelectedDate,
+	LeaveTimeAndDatepickerManagement,
+} from '@shared/modules/shared-time-tracking-system/models';
+import { LeaveTime } from '../../models';
 
 @Pipe({
 	name: 'leaveHours',
 })
 export class LeaveHoursPipe implements PipeTransform {
-	constructor(private attendance: AttendanceService) {}
+	constructor(
+		private canManageTime: CanManageTimeInSelectedDate,
+		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement
+	) {}
 
 	transform({ startTime, endTime }: LeaveTime): Observable<number> {
-		return this.attendance.selectedDate$.pipe(
+		return this.canManageTime.selectedDate$.pipe(
 			map((selectedDate: DateTime) => {
 				if (startTime.month !== selectedDate.month || startTime.year !== selectedDate.year) {
 					startTime = selectedDate.startOf('month');
@@ -21,7 +27,7 @@ export class LeaveHoursPipe implements PipeTransform {
 					endTime = selectedDate.endOf('month');
 				}
 
-				return this.attendance.getLeaveDuration(startTime, endTime);
+				return this.leaveTimeDatepicker.getLeaveDuration(startTime, endTime);
 			})
 		);
 	}

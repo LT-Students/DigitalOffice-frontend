@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { debounceTime, map, takeUntil, tap } from 'rxjs/operators';
 import { FilterService, FilterUsersRequest } from '@app/services/filter/filter.service';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 export enum OpenAddEmployeeModalFrom {
@@ -43,9 +43,9 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 	constructor(
 		private filterService: FilterService,
 		private cdr: ChangeDetectorRef,
-		private dialogRef: MatDialogRef<AddEmployeeComponent>,
-		private fb: FormBuilder,
-		@Inject(MAT_DIALOG_DATA)
+		private dialogRef: DialogRef<unknown, AddEmployeeComponent>,
+		private fb: UntypedFormBuilder,
+		@Inject(DIALOG_DATA)
 		private _data: { idToHide: string[]; pageId: string; openFrom: OpenAddEmployeeModalFrom; moduleName: string }
 	) {
 		this.isAllReceived = false;

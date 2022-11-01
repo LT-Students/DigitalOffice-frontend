@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Filter } from '../../models';
 
@@ -39,7 +39,7 @@ export class SlideToggleParams implements ISlideToggleParams {
 })
 export class SlideToggleComponent implements OnInit, OnDestroy, Filter<SlideToggleParams> {
 	public params!: SlideToggleParams;
-	public control = new FormControl(false);
+	public control = new UntypedFormControl(false);
 	private subscription?: Subscription;
 
 	constructor() {}

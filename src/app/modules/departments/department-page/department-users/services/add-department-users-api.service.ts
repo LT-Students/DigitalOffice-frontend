@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FilterUserApiService } from '@api/filter-service/services/filter-user-api.service';
 import { DepartmentUserApiService } from '@api/department-service/services/department-user-api.service';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { AddUsersApiBase } from '../../../../add-users-dialog/services/add-users-api.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { FilterService } from '@app/services/filter/filter.service';
+import { AddUsersApiBase } from '../../../../add-users-dialog/services';
 import { NewDepartmentUser } from '../models/new-department-user';
 import { DepartmentRoleInfo } from '../models/department-role-info';
 
 @Injectable()
 export class AddDepartmentUsersApiService extends AddUsersApiBase {
-	constructor(private filterService: FilterUserApiService, private departmentUsersApi: DepartmentUserApiService) {
-		super();
+	constructor(filterService: FilterService, private departmentUsersApi: DepartmentUserApiService) {
+		super(filterService);
 	}
 
 	public addUsers(entityId: string, users: NewDepartmentUser[]): Observable<OperationResultResponse> {
@@ -30,13 +30,9 @@ export class AddDepartmentUsersApiService extends AddUsersApiBase {
 		});
 	}
 
-	public findUsers(name: string): Observable<NewDepartmentUser[]> {
-		return this.filterService
-			.filterUser({ skipCount: 0, takeCount: 50, fullnameincludesubstring: name })
-			.pipe(
-				map((res: OperationResultResponse<UserInfo[]>) =>
-					(res.body || []).map((u: UserInfo) => new NewDepartmentUser(u))
-				)
-			);
+	public loadUsers(filter: { name: string; departmentId: string }): Observable<NewDepartmentUser[]> {
+		return super
+			.findUsers(filter)
+			.pipe(map((users: UserInfo[]) => users.map((u: UserInfo) => new NewDepartmentUser(u))));
 	}
 }

@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @use 'base/palettes' as *;
 @use 'base/variables' as variables;
 
@@ -125,6 +125,10 @@ do-table {
 		}
 
 		&:nth-child(2n) {
+			background: variables.$light_1;
+		}
+
+		.mat-form-field-outline * {
 			background: variables.$light_1;
 		}
 	}

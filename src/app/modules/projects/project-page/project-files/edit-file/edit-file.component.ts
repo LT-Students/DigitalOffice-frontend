@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { FileAccessType } from '@api/file-service/models/file-access-type';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { forkJoin, of } from 'rxjs';
@@ -23,13 +23,13 @@ export class EditFileComponent extends LoadingState implements OnInit {
 		{ value: FileAccessType.Manager, label: 'Только менеджеру' },
 	];
 
-	public form!: FormGroup;
+	public form!: UntypedFormGroup;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) private file: FileInfo,
-		private fb: FormBuilder,
+		@Inject(DIALOG_DATA) private file: FileInfo,
+		private fb: UntypedFormBuilder,
 		private fileService: FileService,
-		private dialogRef: MatDialogRef<EditFileComponent>,
+		private dialogRef: DialogRef,
 		private route: ActivatedRoute
 	) {
 		super();

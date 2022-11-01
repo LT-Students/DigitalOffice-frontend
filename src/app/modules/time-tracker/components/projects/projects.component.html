@@ -20,31 +20,28 @@
 	<tbody>
 		<tr *ngFor="let workTime of workTimes" class="row">
 			<td class="cell">
-				<span>{{ workTime.project.name }}</span>
+				<span>{{ workTime.project.shortName }}</span>
 			</td>
 			<td class="cell">
+				<!--eslint-disable-next-line @angular-eslint/template/eqeqeq-->
 				<span *ngIf="workTime?.managerHours == null; else managerHours">{{ workTime.userHours }}</span>
 				<ng-template #managerHours>
 					<div class="flex flex_ai_center">
-						<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
+						<span>{{ workTime.managerHours }}&nbsp;&nbsp;</span>
 						<span class="mat-body-2 text-secondary_default flex flex_ai_center">
 							Изменено&nbsp;
 							<mat-icon
 								[style.width.px]="16"
 								[style.height.px]="16"
 								[svgIcon]="Icons.InfoOutline"
-								[mdePopoverTriggerFor]="popover"
-								mdePopoverPositionY="above"
-								[mdePopoverOffsetX]="-12"
+								[doPopoverTrigger]="tooltip.template"
 							></mat-icon>
 						</span>
 					</div>
-					<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
-						<span class="mat-body-2">Автор изменения</span>
-						<p>{{ workTime.managerInfo ? (workTime.managerInfo | fullName) : '—' }}</p>
-						<span class="mat-body-2">Часы сотрудника</span>
-						<p>{{ workTime.userHours }}</p>
-					</mde-popover>
+					<do-work-time-changed-tooltip
+						#tooltip
+						[tooltipData]="$any(workTime)"
+					></do-work-time-changed-tooltip>
 				</ng-template>
 			</td>
 			<td class="cell">

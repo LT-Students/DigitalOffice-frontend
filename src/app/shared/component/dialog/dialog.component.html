@@ -1,0 +1,16 @@
+<div #backdrop class="backdrop" (click)="handleBackdropClick($event, backdrop)">
+	<div #container class="container" [style.padding]="(isIncreasedPadding | async) ? '48px 0' : '10px 0'">
+		<div class="dialog-content" [style.width]="_config.width">
+			<button
+				doButton
+				class="close-dialog"
+				tabindex="-1"
+				data-test="close-dialog-button"
+				(click)="handleCrossClick()"
+			>
+				<mat-icon>close</mat-icon>
+			</button>
+			<ng-template cdkPortalOutlet></ng-template>
+		</div>
+	</div>
+</div>

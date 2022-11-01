@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 
 export interface InfoDialogData {
 	title: string;
@@ -18,7 +18,7 @@ export class InfoDialogComponent {
 	public message: string;
 	public buttonText: string;
 
-	constructor(@Inject(MAT_DIALOG_DATA) { title, message, buttonText }: InfoDialogData) {
+	constructor(@Inject(DIALOG_DATA) { title, message, buttonText }: InfoDialogData) {
 		this.title = title;
 		this.message = message;
 		this.buttonText = buttonText;

@@ -1,23 +1,31 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { Icons } from '@shared/modules/icons/icons';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { UserInfo } from '@api/project-service/models/user-info';
-import { Observable, Subject } from 'rxjs';
 import { UserRights } from '@app/types/user-rights.enum';
-import { AddEmployeeDialogData, AddProjectUsersComponent } from '../../add-project-users/add-project-users.component';
+import { Icons } from '@shared/modules/icons/icons';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
 import { DynamicFilterComponent } from '../../../dynamic-filter/dynamic-filter.component';
 import { TableComponent } from '../../../table/table.component';
-import { ProjectUsersService } from './project-users.service';
+import { AddUsersDialogService } from '../../../add-users-dialog/services/add-users-dialog.service';
+import { AddUsersDialogData } from '../../../add-users-dialog/models/models';
+import { AddUsersApiBase } from '../../../add-users-dialog/services/add-users-api.service';
+import { AddUsersTableConfigService } from '../../../add-users-dialog/services/add-users-table-config.service';
+import { ProjectUsersService } from './services/project-users.service';
+import { AddProjectUsersApiService } from './services/add-project-users-api.service';
+import { AddProjectUsersDialogTableConfigService } from './services/add-project-users-dialog-table-config.service';
 
 @Component({
 	selector: 'do-project-users',
 	templateUrl: './project-users.component.html',
 	styleUrls: ['./project-users.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [ProjectUsersService],
+	providers: [
+		ProjectUsersService,
+		{ provide: AddUsersApiBase, useClass: AddProjectUsersApiService },
+		{ provide: AddUsersTableConfigService, useClass: AddProjectUsersDialogTableConfigService },
+	],
 })
 export class ProjectUsersComponent implements OnInit {
 	public readonly Icons = Icons;
@@ -34,7 +42,8 @@ export class ProjectUsersComponent implements OnInit {
 	constructor(
 		private usersService: ProjectUsersService,
 		private selectedProject: SelectedProjectService,
-		private dialog: DialogService
+		private addUsersDialog: AddUsersDialogService,
+		private vcr: ViewContainerRef
 	) {}
 
 	ngOnInit(): void {
@@ -88,14 +97,12 @@ export class ProjectUsersComponent implements OnInit {
 			.pipe(
 				first(),
 				switchMap((p: ProjectResponse) => {
-					const data: AddEmployeeDialogData = {
+					const data: AddUsersDialogData = {
 						entityId: p.id,
 						entityName: p.name,
-						usersToHide: p.users?.map((u) => ({ id: u.userId, role: u.role })) || [],
+						existingUsers: p.users?.map((u) => ({ id: u.userId, role: u.role })) || [],
 					};
-					return this.dialog
-						.open<[UserInfo[], ProjectResponse]>(AddProjectUsersComponent, { width: ModalWidth.M, data })
-						.afterClosed();
+					return this.addUsersDialog.open<[UserInfo[], ProjectResponse]>(data, this.vcr).closed;
 				})
 			)
 			.subscribe({

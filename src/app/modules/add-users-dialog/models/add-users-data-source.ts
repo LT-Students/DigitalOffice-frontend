@@ -1,8 +1,9 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { SelectionModel } from '@app/utils/selection-model';
-import { AddUsersApiBase } from '../services/add-users-api.service';
+import { AddUsersApiBase } from '../services';
+import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
 import { NewUserBase } from './models';
 
 export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements DataSource<T> {
@@ -11,22 +12,28 @@ export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements 
 		return this.data.asObservable();
 	}
 
+	private destroy$ = new Subject();
+
 	constructor(private apiService: AddUsersApiBase<T>, private selection: SelectionModel<T>) {}
 
 	connect(collectionViewer: CollectionViewer): Observable<T[]> {
 		return this.data.asObservable();
 	}
 
-	disconnect(collectionViewer: CollectionViewer): void {}
+	disconnect(collectionViewer: CollectionViewer): void {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
 
-	public loadUsers(search: string): void {
+	public loadUsers(filter: FilterEvent): void {
 		let users$: Observable<T[]>;
-		if (search) {
-			users$ = this.apiService.findUsers(search).pipe(map(this.mapUsersToSelected.bind(this)));
+		if (!this.isFilterEmpty(filter)) {
+			users$ = this.apiService.loadUsers(filter).pipe(map(this.mapUsersToSelected.bind(this)));
 		} else {
 			users$ = of(this.selection.selected);
 		}
-		users$.subscribe({ next: (users) => this.data.next(users) });
+		this.destroy$.next();
+		users$.pipe(takeUntil(this.destroy$)).subscribe({ next: (users: T[]) => this.data.next(users) });
 	}
 
 	public updateRow(id: string, newValue: T): void {
@@ -43,5 +50,9 @@ export class AddUsersDataSource<T extends NewUserBase = NewUserBase> implements 
 			const user = this.selection.selected.find((selected: T) => u.id === selected.id);
 			return { ...(user || u) };
 		});
+	}
+
+	private isFilterEmpty(filter: FilterEvent): boolean {
+		return !Object.values(filter).some(Boolean);
 	}
 }

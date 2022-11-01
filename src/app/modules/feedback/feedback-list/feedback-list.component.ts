@@ -99,18 +99,15 @@ export class FeedbackListComponent implements OnInit {
 			queryParams: { id: report.id },
 			queryParamsHandling: 'merge',
 		});
-		this.feedbackDialog
-			.openReportDetails(report, images)
-			.afterClosed()
-			.subscribe({
-				next: () => {
-					this.router.navigate([], {
-						relativeTo: this.route,
-						queryParams: { id: null },
-						queryParamsHandling: 'merge',
-					});
-				},
-			});
+		this.feedbackDialog.openReportDetails(report, images).closed.subscribe({
+			next: () => {
+				this.router.navigate([], {
+					relativeTo: this.route,
+					queryParams: { id: null },
+					queryParamsHandling: 'merge',
+				});
+			},
+		});
 	}
 
 	public archiveFeedback(): void {

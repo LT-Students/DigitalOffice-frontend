@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DateTime } from 'luxon';
-import { AttendanceService, MAX_FUTURE_DATE } from '../../services/attendance.service';
+import { Icons } from '@shared/modules/icons/icons';
+import {
+	CanManageTimeInSelectedDate,
+	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
+} from '@shared/modules/shared-time-tracking-system/models';
 import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 
 @Component({
@@ -11,16 +15,17 @@ import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeWidgetComponent {
-	public readonly maxDate = MAX_FUTURE_DATE;
+	public readonly Icons = Icons;
+	public readonly maxDate = MAX_FUTURE_DATE_FOR_LEAVE_TIME;
 
-	public selectedDate$ = this.attendanceService.selectedDate$;
+	public selectedDate$ = this.canManageTime.selectedDate$;
 	public chartData: ChartLegend = { colors: [], labels: [] };
 	public nextMonthButtonDisabled = false;
 
-	constructor(private attendanceService: AttendanceService) {}
+	constructor(private canManageTime: CanManageTimeInSelectedDate) {}
 
 	private changeMonth(date: DateTime): void {
-		this.attendanceService.setNewDate(date);
+		this.canManageTime.setNewDate(date);
 		this.nextMonthButtonDisabled = date.plus({ month: 1 }) > this.maxDate;
 	}
 

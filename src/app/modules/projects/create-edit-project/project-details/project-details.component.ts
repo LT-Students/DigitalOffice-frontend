@@ -12,8 +12,9 @@ import { Icons } from '@shared/modules/icons/icons';
 import {
 	AbstractControl,
 	ControlValueAccessor,
-	FormBuilder,
-	FormControl,
+	UntypedFormBuilder,
+	UntypedFormControl,
+	FormGroupDirective,
 	NgControl,
 	ValidationErrors,
 	ValidatorFn,
@@ -23,7 +24,14 @@ import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { ProjectStatus } from '../../models/project-status';
+
+class EndDateErrorMatcher implements ErrorStateMatcher {
+	public isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | null): boolean {
+		return !!control?.invalid || !!form?.hasError('invalidDuration');
+	}
+}
 
 function validateDuration(startDateField: string, endDateField: string): ValidatorFn {
 	return (group: AbstractControl): ValidationErrors | null => {
@@ -31,7 +39,7 @@ function validateDuration(startDateField: string, endDateField: string): Validat
 		const endDate = group.get(endDateField)?.value as DateTime | null;
 
 		return startDate && endDate && startDate.startOf('day') > endDate.startOf('day')
-			? { invalidDuration: true }
+			? { invalidDuration: { message: 'Дата завершения не может быть меньше даты запуска' } }
 			: null;
 	};
 }
@@ -54,6 +62,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 
 	@Input() isEditMode = false;
 
+	public endDateErrorMatcher = new EndDateErrorMatcher();
+
 	public form = this.fb.group(
 		{
 			startDate: [DateTime.now().startOf('day'), DoValidators.required],
@@ -64,14 +74,14 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 	);
 	private initialEndDate: DateTime | null = null;
 
-	private get endDateControl(): FormControl {
-		return this.form.get('endDate') as FormControl;
+	private get endDateControl(): UntypedFormControl {
+		return this.form.get('endDate') as UntypedFormControl;
 	}
 
 	private destroy$ = new Subject<void>();
 
 	constructor(
-		private fb: FormBuilder,
+		private fb: UntypedFormBuilder,
 		@Optional() @Self() private ngControl: NgControl,
 		private cdr: ChangeDetectorRef
 	) {
