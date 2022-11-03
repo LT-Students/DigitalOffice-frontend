@@ -1,20 +1,19 @@
-import { ComponentFactoryResolver, ComponentRef, Injectable } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { DynamicComponentHostDirective } from '@shared/directives/dynamic-component-host.directive';
 import { ComponentType } from '@angular/cdk/overlay';
-import { Filter, FILTER_TYPES, FilterTypes } from './models/filter';
+import { Filter, FILTER_TYPES, FilterTypes } from './models';
 
 @Injectable()
 export class FilterFactoryService {
 	private componentRef?: ComponentRef<any>;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+	constructor() {}
 
 	public createFilter(filterType: FilterTypes, filterHost: DynamicComponentHostDirective): ComponentRef<Filter<any>> {
 		const component = this.getFilterComponentByType(filterType);
-		const componentFactory = this.componentFactoryResolver.resolveComponentFactory<Filter<any>>(component);
 		const viewContainerRef = filterHost.viewContainerRef;
 		viewContainerRef.clear();
-		this.componentRef = viewContainerRef.createComponent(componentFactory);
+		this.componentRef = viewContainerRef.createComponent(component);
 		return this.componentRef;
 	}
 

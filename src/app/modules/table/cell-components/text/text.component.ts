@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
@@ -17,14 +17,7 @@ export class TextCellParams {
 
 @Component({
 	selector: 'do-text',
-	template: `<div
-		class="text"
-		doTruncateTooltip
-		[matTooltip]="value"
-		matTooltipShowDelay="300"
-		matTooltipPosition="above"
-		[style.-webkit-line-clamp]="lineClamp"
-	>
+	template: `<div class="text" [style.-webkit-line-clamp]="lineClamp">
 		<mat-icon
 			*ngIf="prefixIcon as iconGetter"
 			class="text-secondary_default icon prefix"
@@ -63,7 +56,7 @@ export class TextCellParams {
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextComponent implements OnInit, TableCell<string> {
+export class TextComponent implements TableCell<string> {
 	public value = '';
 	public set params(params: TextCellParams) {
 		this.lineClamp = params?.lineClamp;
@@ -78,6 +71,4 @@ export class TextComponent implements OnInit, TableCell<string> {
 	constructor(tableCell: TableCellComponent) {
 		this.row = tableCell.row;
 	}
-
-	ngOnInit(): void {}
 }

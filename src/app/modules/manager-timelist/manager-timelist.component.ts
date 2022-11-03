@@ -5,7 +5,6 @@ import {
 	Component,
 	Inject,
 	OnDestroy,
-	OnInit,
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
@@ -51,7 +50,7 @@ import {
 		{ provide: CanManageTimeInSelectedDate, useClass: CanManageTimeInSelectedDateService },
 	],
 })
-export class ManagerTimelistComponent extends LoadingState implements OnInit, AfterViewInit, OnDestroy {
+export class ManagerTimelistComponent extends LoadingState implements AfterViewInit, OnDestroy {
 	public readonly Icons = Icons;
 	public readonly maxDate = DateTime.now().plus({ month: 1 });
 
@@ -85,7 +84,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 		super();
 	}
 
-	public ngOnInit(): void {
+	public ngAfterViewInit(): void {
 		combineLatest([this.route.data, this.currentUser.user$])
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
@@ -99,9 +98,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 					this.cdr.markForCheck();
 				},
 			});
-	}
 
-	public ngAfterViewInit(): void {
 		const sort = this.table.sort;
 		merge(
 			sort.sortChange,
