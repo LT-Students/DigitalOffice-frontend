@@ -1,9 +1,10 @@
-<do-profile-image
+<do-user-avatar
 	[class.pointer]="params?.onAvatarClick"
+	[imageId]="user.imageId"
+	[user]="user"
+	size="s"
 	(click)="params?.onAvatarClick(user)"
-	[image]="user.avatar"
-	[userInitials]="user"
-></do-profile-image>
+></do-user-avatar>
 <div class="info">
 	<span class="flex flex_ai_center">
 		<span

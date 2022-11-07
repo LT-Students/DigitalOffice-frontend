@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Subject, timer } from 'rxjs';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { FormControl } from '@angular/forms';
 import { debounce, finalize, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
@@ -26,7 +26,6 @@ export class AddUsersDialogComponent extends LoadingState implements OnInit, OnD
 	public tableData!: TableOptions;
 	public filterConfig = this.filterConfigService.getFilterConfig();
 
-	public searchControl = new FormControl('', { nonNullable: true });
 	public toggleControl = new FormControl(false, { nonNullable: true });
 	private destroy$ = new Subject<void>();
 
@@ -50,6 +49,7 @@ export class AddUsersDialogComponent extends LoadingState implements OnInit, OnD
 			.pipe(
 				startWith({}),
 				tap((f: FilterEvent) => {
+					console.log(f);
 					if (!this.isFilterEmpty(f) && this.toggleControl.value) {
 						this.toggleControl.setValue(false, { emitEvent: false });
 					}
@@ -61,7 +61,7 @@ export class AddUsersDialogComponent extends LoadingState implements OnInit, OnD
 		this.toggleControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
 			next: (isOn: boolean) => {
 				if (isOn) {
-					this.searchControl.setValue('');
+					this.filter.form.reset();
 				}
 			},
 		});

@@ -18,6 +18,8 @@ import { ErrorInterceptor } from '@app/interceptors/error.interceptor';
 import { NavigationService } from '@app/services/navigation.service';
 import { PAGINATOR_DEFAULT_OPTIONS } from '@shared/component/paginator/paginator.component';
 import { LOADING_BAR_CONFIG } from '@ngx-loading-bar/core';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CommonLayoutModule } from './modules/common-layout/common-layout.module';
@@ -32,7 +34,19 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, MatLuxonDateModule, SharedModule, CommonLayoutModule],
+	imports: [
+		AppRoutingModule,
+		CoreModule,
+		MatLuxonDateModule,
+		SharedModule,
+		CommonLayoutModule,
+		ServiceWorkerModule.register('ngsw-worker.js', {
+			enabled: environment.production,
+			// Register the ServiceWorker as soon as the application is stable
+			// or after 30 seconds (whichever comes first).
+			registrationStrategy: 'registerWhenStable:30000',
+		}),
+	],
 	providers: [
 		Title,
 		{

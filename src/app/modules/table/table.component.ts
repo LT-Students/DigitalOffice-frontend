@@ -15,7 +15,6 @@ import {
 import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { SelectionModel } from '@app/utils/selection-model';
 import { CdkNoDataRow, CdkTable } from '@angular/cdk/table';
@@ -29,13 +28,6 @@ import { ColumnDef, TableOptions } from './models';
 	styleUrls: ['./table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	animations: [
-		trigger('detailExpand', [
-			state('collapsed', style({ height: '0px', minHeight: '0' })),
-			state('expanded', style({ height: '*' })),
-			transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-		]),
-	],
 })
 export class TableComponent<T> implements OnInit, AfterContentInit {
 	@ContentChild(CdkNoDataRow) noDataRow?: CdkNoDataRow;

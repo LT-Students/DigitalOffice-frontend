@@ -22,7 +22,6 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
 import { DateTimePipe } from './pipes/date-time';
-import { AddEmployeeComponent } from './dialogs/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
 import { ChangeUserPasswordComponent } from './dialogs/change-user-password/change-user-password.component';
@@ -70,6 +69,7 @@ import { PopoverComponent } from './component/popover/popover.component';
 import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
 import { DialogComponent } from './component/dialog/dialog.component';
 import { DialogCloseDirective } from './component/dialog/dialog-close.directive';
+import { UserAvatarComponent } from './component/user-avatar/user-avatar.component';
 
 @NgModule({
 	declarations: [
@@ -84,7 +84,6 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		BreadcrumbsComponent,
 		ConfirmDialogComponent,
 		TitleDatepickerComponent,
-		AddEmployeeComponent,
 		DateTimePipe,
 		EmptyListComponent,
 		PhoneInputComponent,
@@ -135,6 +134,7 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		PopoverTriggerDirective,
 		DialogComponent,
 		DialogCloseDirective,
+		UserAvatarComponent,
 	],
 	imports: [
 		CommonModule,
@@ -168,7 +168,6 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		BreadcrumbsComponent,
 		TitleDatepickerComponent,
 		DateTimePipe,
-		AddEmployeeComponent,
 		EmptyListComponent,
 		PhoneInputComponent,
 		ChangeUserPasswordComponent,
@@ -213,6 +212,7 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		PopoverComponent,
 		PopoverTriggerDirective,
 		DialogCloseDirective,
+		UserAvatarComponent,
 	],
 })
 export class SharedModule {}

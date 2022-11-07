@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 
 import { SharedModule } from '@shared/shared.module';
-import { ManagerTimelistModule } from '../manager-timelist/manager-timelist.module';
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { AddUsersDialogModule } from '../add-users-dialog/add-users-dialog.module';
@@ -32,13 +31,6 @@ import { DepartmentOverviewComponent } from './department-page/department-overvi
 		TransferFilterComponent,
 		DepartmentOverviewComponent,
 	],
-	imports: [
-		SharedModule,
-		DepartmentsRoutingModule,
-		ManagerTimelistModule,
-		DynamicFilterModule,
-		TableModule,
-		AddUsersDialogModule,
-	],
+	imports: [SharedModule, DepartmentsRoutingModule, DynamicFilterModule, TableModule, AddUsersDialogModule],
 })
 export class DepartmentsModule {}

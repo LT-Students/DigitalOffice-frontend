@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.8.0",
+    "version": "1.1.8.2",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -157,16 +157,6 @@
         "responses": {
           "200": {
             "description": "Successfully find leave times.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -406,16 +396,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FindResultResponseWorkTimeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1524,20 +1504,18 @@
         "type": "object",
         "required": [
           "Id",
-          "CreatedBy",
           "Minutes",
+          "StartTime",
+          "EndTime",
           "LeaveType",
+          "CreatedBy",
+          "CreatedAtUtc",
           "IsClosed",
           "IsActive"
         ],
         "properties": {
           "Id": {
             "description": "The leave time Id.",
-            "type": "string",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          },
-          "CreatedBy": {
             "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
@@ -1559,7 +1537,68 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-06-18T08:23"
           },
-          "CreatedAt": {
+          "CreatedBy": {
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
+          },
+          "LeaveType": {
+            "$ref": "#/components/schemas/LeaveType"
+          },
+          "Comment": {
+            "description": "Description for alloted time.",
+            "type": "string"
+          },
+          "IsClosed": {
+            "type": "boolean"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "ManagerLeaveTime": {
+            "$ref": "#/components/schemas/ManagerLeaveTimeInfo"
+          },
+          "ManagerInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          }
+        }
+      },
+      "ManagerLeaveTimeInfo": {
+        "type": "object",
+        "required": [
+          "Minutes",
+          "StartTime",
+          "EndTime",
+          "LeaveType",
+          "CreatedAtUtc",
+          "IsClosed",
+          "IsActive"
+        ],
+        "properties": {
+          "Minutes": {
+            "type": "integer"
+          },
+          "StartTime": {
+            "description": "Start date task execution.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          },
+          "EndTime": {
+            "description": "Task finish deadline.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
+          },
+          "CreatedAtUtc": {
             "type": "string",
             "format": "date-time",
             "pattern": "YYYY-MM-DDTHH:mm",
@@ -1655,37 +1694,9 @@
           "IsActive": {
             "type": "boolean"
           },
-          "Image": {
-            "$ref": "#/components/schemas/ImageInfo"
-          }
-        }
-      },
-      "ImageInfo": {
-        "type": "object",
-        "description": "Image data",
-        "required": [
-          "Id",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id":{
+          "ImageId": {
             "type": "string",
             "format": "guid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "Content": {
-            "type": "string"
-          },
-          "Extension": {
-            "type": "string"
-          },
-          "Name": {
-            "type": "string"
           }
         }
       },

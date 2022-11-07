@@ -1,5 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ImageInfo } from '@app/models/image.model';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { TableCell } from '../../models';
 
@@ -8,7 +7,7 @@ interface UserInfo {
 	firstName: string;
 	lastName: string;
 	middleName?: string;
-	avatar?: ImageInfo;
+	imageId?: string;
 	position?: { name: string };
 }
 
@@ -37,7 +36,7 @@ export class UserInfoParams {
 	styleUrls: ['./user-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserInfoComponent implements OnInit, TableCell<UserInfo> {
+export class UserInfoComponent implements TableCell<UserInfo> {
 	public set value(user: UserInfo) {
 		this.user = user;
 	}
@@ -46,6 +45,4 @@ export class UserInfoComponent implements OnInit, TableCell<UserInfo> {
 	public params?: UserInfoParams;
 
 	constructor() {}
-
-	ngOnInit(): void {}
 }

@@ -39,8 +39,6 @@ const routes: Routes = [
 		component: DepartmentIdRouteContainerComponent,
 		resolve: {
 			department: DepartmentPageResolver,
-			users: DepartmentUsersResolver,
-			projects: DepartmentProjectsResolver,
 		},
 		children: [
 			{
@@ -55,10 +53,16 @@ const routes: Routes = [
 					{
 						path: DepartmentsRoutes.Users,
 						component: DepartmentUsersComponent,
+						resolve: {
+							users: DepartmentUsersResolver,
+						},
 					},
 					{
 						path: DepartmentsRoutes.Projects,
 						component: DepartmentProjectsComponent,
+						resolve: {
+							projects: DepartmentProjectsResolver,
+						},
 					},
 					{
 						path: DepartmentsRoutes.Overview,

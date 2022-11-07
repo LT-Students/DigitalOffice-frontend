@@ -40,7 +40,7 @@
 	<!-- Expanded row columns -->
 	<ng-container cdkColumnDef="expandedRow">
 		<cdk-cell *cdkCellDef="let row">
-			<div [@detailExpand]="([expandedElement, row] | execute: expandedRowComparator) ? 'expanded' : 'collapsed'">
+			<div *ngIf="[expandedElement, row] | execute: expandedRowComparator">
 				<ng-container *ngTemplateOutlet="expandedRowTemplate; context: row"></ng-container>
 			</div>
 		</cdk-cell>
