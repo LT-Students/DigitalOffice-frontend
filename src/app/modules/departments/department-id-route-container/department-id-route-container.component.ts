@@ -1,10 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-	TIMELIST_ENTITY_INFO,
-	TimelistEntityInfo,
-	TimelistEntityType,
-} from '../../manager-timelist/models/timelist-entity';
+import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType } from '../../manager-timelist/models';
 import { Department } from '../department-page/department';
 import { DepartmentPageStateService } from './department-page-state.service';
 
@@ -18,13 +14,12 @@ function resolveTimelistEntityInfo(route: ActivatedRoute): TimelistEntityInfo {
 	template: `<router-outlet></router-outlet>`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [
-		DepartmentPageStateService,
-		{ provide: TIMELIST_ENTITY_INFO, useFactory: resolveTimelistEntityInfo, deps: [ActivatedRoute] },
-	],
+	providers: [{ provide: TIMELIST_ENTITY_INFO, useFactory: resolveTimelistEntityInfo, deps: [ActivatedRoute] }],
 })
-export class DepartmentIdRouteContainerComponent implements OnInit {
-	constructor() {}
+export class DepartmentIdRouteContainerComponent implements OnDestroy {
+	constructor(private depState: DepartmentPageStateService) {}
 
-	ngOnInit(): void {}
+	public ngOnDestroy(): void {
+		this.depState.clearState();
+	}
 }

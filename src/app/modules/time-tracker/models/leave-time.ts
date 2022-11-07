@@ -15,7 +15,7 @@ export class LeaveTime {
 
 	constructor(leaveTime: LeaveTimeInfo) {
 		this.id = leaveTime.id;
-		this.createdAt = leaveTime.createdAt ? DateTime.fromISO(leaveTime.createdAt) : DateTime.now();
+		this.createdAt = leaveTime.createdAtUtc ? DateTime.fromISO(leaveTime.createdAtUtc) : DateTime.now();
 		this.createdBy = leaveTime.createdBy;
 		this.isActive = leaveTime.isActive;
 		this.startTime = leaveTime.startTime ? DateTime.fromISO(leaveTime.startTime) : DateTime.now();
