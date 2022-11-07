@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { RubricApiService } from './services/rubric-api.service';
 import { ArticleApiService } from './services/article-api.service';
+import { FileApiService } from './services/file-api.service';
 import { WikiTreeApiService } from './services/wiki-tree-api.service';
 
 /**
@@ -15,7 +16,7 @@ import { WikiTreeApiService } from './services/wiki-tree-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [RubricApiService, ArticleApiService, WikiTreeApiService, ApiConfiguration],
+	providers: [RubricApiService, ArticleApiService, FileApiService, WikiTreeApiService, ApiConfiguration],
 })
 export class WikiApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<WikiApiModule> {

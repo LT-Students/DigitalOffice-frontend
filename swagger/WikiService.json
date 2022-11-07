@@ -225,7 +225,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulGetArticleResponse"
+                  "$ref": "#/components/schemas/ActionResultGetArticleResponse"
                 }
               }
             }
@@ -235,7 +235,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulGetArticleResponse"
+                  "$ref": "#/components/schemas/ActionResultGetArticleResponse"
                 }
               }
             }
@@ -245,7 +245,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulGetArticleResponse"
+                  "$ref": "#/components/schemas/ActionResultGetArticleResponse"
                 }
               }
             }
@@ -308,6 +308,136 @@
         }
       }
     },
+    "/file/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of offices to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of offices to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "articleid",
+          "in": "query",
+          "description": "Article Id.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "findFiles",
+        "description": "Find files in articles",
+        "responses": {
+          "200": {
+            "description": "The article was returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulFindFilesResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulFindFilesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulFindFilesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "delete": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "removeFiles",
+        "description": "Remove files from the article",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveFilesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The article was returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulFindFilesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulRemoveFilesResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionResulRemoveFilesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/wikiTree/get": {
       "parameters": [
         {
@@ -348,7 +478,7 @@
     }
   },
   "components": {
-    "schemas":{
+    "schemas": {
       "CreateRubricRequest": {
         "type": "object",
         "required": [
@@ -365,6 +495,29 @@
             "type": "string",
             "format": "uuid",
             "example": "79f21f93-3928-4fb6-bc0f-9ffD633bb294"
+          }
+        }
+      },
+      "RemoveFilesRequest": {
+        "type": "object",
+        "required": [
+          "ArticleId",
+          "FilesIds"
+        ],
+        "properties": {
+          "ArticleId": {
+            "description": "Unique article identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "79f21f93-3928-4fb6-bc0f-9ffD633bb294"
+          },
+          "FilesIds": {
+            "description": "Unique files identifier.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
@@ -630,7 +783,7 @@
           }
         }
       },
-      "ActionResulGetArticleResponse": {
+      "ActionResultGetArticleResponse": {
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
@@ -710,6 +863,44 @@
           }
         }
       },
+      "ActionResulFindFilesResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          }
+        }
+      },
+      "ActionResulRemoveFilesResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Body",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "boolean"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "RubricData": {
         "type": "object",
         "required": [
@@ -761,6 +952,34 @@
           },
           "Name": {
             "type": "string"
+          }
+        }
+      },
+      "FileInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Extension",
+          "Size",
+          "CreatedAtUtc"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Size": {
+            "type": "integer"
+          },
+          "CreatedAtUtc": {
+            "type": "object"
           }
         }
       }
