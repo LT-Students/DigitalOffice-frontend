@@ -70,6 +70,7 @@ import { PopoverComponent } from './component/popover/popover.component';
 import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
 import { DialogComponent } from './component/dialog/dialog.component';
 import { DialogCloseDirective } from './component/dialog/dialog-close.directive';
+import { UserAvatarComponent } from './component/user-avatar/user-avatar.component';
 
 @NgModule({
 	declarations: [
@@ -135,6 +136,7 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		PopoverTriggerDirective,
 		DialogComponent,
 		DialogCloseDirective,
+		UserAvatarComponent,
 	],
 	imports: [
 		CommonModule,
@@ -213,6 +215,7 @@ import { DialogCloseDirective } from './component/dialog/dialog-close.directive'
 		PopoverComponent,
 		PopoverTriggerDirective,
 		DialogCloseDirective,
+		UserAvatarComponent,
 	],
 })
 export class SharedModule {}

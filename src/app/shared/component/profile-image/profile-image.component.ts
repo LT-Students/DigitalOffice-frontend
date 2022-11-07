@@ -14,6 +14,9 @@ const sizeMap: { [key in Size]: number } = {
 	xl: 180,
 };
 
+/**
+ * @deprecated
+ */
 @Component({
 	selector: 'do-profile-image',
 	templateUrl: './profile-image.component.html',
@@ -75,7 +78,7 @@ export class ProfileImageComponent implements OnInit, OnChanges {
 			),
 			this.progressiveImage$.pipe(
 				switchMap((id: string) => this.imageService.getImageUser(id)),
-				map((res) => res.body!)
+				map((res) => res.body as BaseImageInfo)
 			)
 		);
 	}
