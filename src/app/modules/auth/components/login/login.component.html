@@ -4,7 +4,7 @@
 		class="mat-body-2 text-alert"
 		>{{ loginForm.errors?.['login'].message }}</span
 	>
-	<do-form-field class="auth-input" label="Введи логин или корпоративный e-mail">
+	<do-form-field class="auth-input" label="Введите логин или корпоративный e-mail">
 		<mat-form-field>
 			<input
 				(cdkAutofill)="handleAutofill($event)"
@@ -16,7 +16,7 @@
 			/>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field class="auth-input" label="Введи пароль">
+	<do-form-field class="auth-input" label="Введите пароль">
 		<mat-form-field>
 			<do-password placeholder="Пароль" formControlName="password"></do-password>
 		</mat-form-field>
