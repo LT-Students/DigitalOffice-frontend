@@ -1,26 +1,16 @@
 import { Injectable } from '@angular/core';
-import {
-	debounceTime,
-	distinctUntilChanged,
-	filter,
-	first,
-	map,
-	scan,
-	startWith,
-	switchMap,
-	tap,
-	withLatestFrom,
-} from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, merge, Observable, of, Subject } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Data } from '@angular/router';
+import { BehaviorSubject, merge, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, filter, first, map, scan, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { UserInfo } from '@api/user-service/models/user-info';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { FilterService } from '@app/services/filter/filter.service';
 import { UserService } from '@app/services/user/user.service';
 import { WithPagination } from '@app/types/find-request.interface';
+import { LoadingState } from '@app/utils/loading-state';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
-import { UntypedFormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
 interface FindUsersParams extends WithPagination {
@@ -37,9 +27,11 @@ export class UserListService {
 
 	private statusChange = new BehaviorSubject<Status>('active');
 	public statusChange$ = this.statusChange.asObservable();
-	public nameControl = new UntypedFormControl('');
+	public nameControl = new FormControl('', { nonNullable: true });
 
 	private skipCount$ = new BehaviorSubject<number>(0);
+	private loadingState = new LoadingState();
+	public usersLoading$ = this.loadingState.loading$;
 
 	constructor(
 		private filterService: FilterService,
@@ -50,6 +42,7 @@ export class UserListService {
 
 	public setStatus(status: Status): void {
 		this.statusChange.next(status);
+		this.refreshCount();
 	}
 
 	public appendUsers(): void {
@@ -58,7 +51,7 @@ export class UserListService {
 		});
 	}
 
-	private refreshCount(): void {
+	public refreshCount(): void {
 		this.skipCount$.next(0);
 	}
 
@@ -88,30 +81,34 @@ export class UserListService {
 	}
 
 	public getUsers$(): Observable<UserInfoLike[]> {
-		return combineLatest([
-			this.nameControl.valueChanges.pipe(
-				debounceTime(500),
-				startWith(''),
-				distinctUntilChanged(),
-				tap(() => this.refreshCount())
-			),
-			this.statusChange$.pipe(tap(() => this.refreshCount())),
-			this.skipCount$.pipe(filter((skip: number) => skip < this.userCount)),
-		]).pipe(
-			switchMap(([name, status, skipCount]: [string, Status, number], index: number) => {
-				const nameSearch = name
-					? {
-							fullnameincludesubstring: name,
-					  }
-					: null;
+		return this.skipCount$.pipe(
+			filter((skipCount: number) => skipCount < this.userCount),
+			switchMap((skipCount: number, index: number) => {
+				this.loadingState.setLoading(true);
+
+				const name = this.nameControl.value;
+				const status = this.statusChange.value;
+
 				const params: FindUsersParams = {
 					skipCount: skipCount,
 					takeCount: this.takeCount,
-					...nameSearch,
+					...(name
+						? {
+								fullnameincludesubstring: name,
+						  }
+						: null),
 				};
-				return this.getFetchCallback(params, index ? status : undefined);
+				return this.getFetchCallback(params, index ? status : undefined).pipe(
+					catchError((err) => {
+						this.loadingState.setLoading(false);
+						return throwError(err);
+					})
+				);
 			}),
-			tap((res: OperationResultResponse<UserInfoLike[]>) => (this.userCount = res.totalCount || 0)),
+			tap((res: OperationResultResponse<UserInfoLike[]>) => {
+				this.loadingState.setLoading(false);
+				this.userCount = res.totalCount || 0;
+			}),
 			map((res: OperationResultResponse<UserInfoLike[]>) => res.body as UserInfoLike[]),
 			switchMap((users: UserInfoLike[]) =>
 				merge(of(users), this.editUser$, this.removeUser$).pipe(
