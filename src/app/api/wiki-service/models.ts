@@ -1,4 +1,5 @@
 export { CreateRubricRequest } from './models/create-rubric-request';
+export { RemoveFilesRequest } from './models/remove-files-request';
 export { EditRubricRequest } from './models/edit-rubric-request';
 export { RubricPatchDocument } from './models/rubric-patch-document';
 export { CreateArticleRequest } from './models/create-article-request';
@@ -7,8 +8,11 @@ export { EditArticleRequest } from './models/edit-article-request';
 export { PatchArticleDocument } from './models/patch-article-document';
 export { ActionResultWikiTreeResponse } from './models/action-result-wiki-tree-response';
 export { ActionResultCreateArticleResponse } from './models/action-result-create-article-response';
-export { ActionResulGetArticleResponse } from './models/action-resul-get-article-response';
+export { ActionResultGetArticleResponse } from './models/action-result-get-article-response';
 export { ActionResulEditArticleResponse } from './models/action-resul-edit-article-response';
 export { ActionResultCreateRubricResponse } from './models/action-result-create-rubric-response';
 export { ActionResulEditRubricResponse } from './models/action-resul-edit-rubric-response';
+export { ActionResulFindFilesResponse } from './models/action-resul-find-files-response';
+export { ActionResulRemoveFilesResponse } from './models/action-resul-remove-files-response';
 export { RubricData } from './models/rubric-data';
+export { FileInfo } from './models/file-info';

@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { ActionResulEditArticleResponse } from '../models/action-resul-edit-article-response';
-import { ActionResulGetArticleResponse } from '../models/action-resul-get-article-response';
 import { ActionResultCreateArticleResponse } from '../models/action-result-create-article-response';
+import { ActionResultGetArticleResponse } from '../models/action-result-get-article-response';
 import { CreateArticleRequest } from '../models/create-article-request';
 import { EditArticleRequest } from '../models/edit-article-request';
 
@@ -94,7 +94,7 @@ export class ArticleApiService extends BaseService {
 		 * Article global unique identifier.
 		 */
 		articleId?: string;
-	}): Observable<StrictHttpResponse<ActionResulGetArticleResponse>> {
+	}): Observable<StrictHttpResponse<ActionResultGetArticleResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, ArticleApiService.GetArticlePath, 'get');
 		if (params) {
 			rb.query('articleId', params.articleId, {});
@@ -110,7 +110,7 @@ export class ArticleApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResulGetArticleResponse>;
+					return r as StrictHttpResponse<ActionResultGetArticleResponse>;
 				})
 			);
 	}
@@ -128,9 +128,9 @@ export class ArticleApiService extends BaseService {
 		 * Article global unique identifier.
 		 */
 		articleId?: string;
-	}): Observable<ActionResulGetArticleResponse> {
+	}): Observable<ActionResultGetArticleResponse> {
 		return this.getArticle$Response(params).pipe(
-			map((r: StrictHttpResponse<ActionResulGetArticleResponse>) => r.body as ActionResulGetArticleResponse)
+			map((r: StrictHttpResponse<ActionResultGetArticleResponse>) => r.body as ActionResultGetArticleResponse)
 		);
 	}
 
