@@ -22,7 +22,6 @@ import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
 import { DateTimePipe } from './pipes/date-time';
-import { AddEmployeeComponent } from './dialogs/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
 import { ChangeUserPasswordComponent } from './dialogs/change-user-password/change-user-password.component';
@@ -85,7 +84,6 @@ import { UserAvatarComponent } from './component/user-avatar/user-avatar.compone
 		BreadcrumbsComponent,
 		ConfirmDialogComponent,
 		TitleDatepickerComponent,
-		AddEmployeeComponent,
 		DateTimePipe,
 		EmptyListComponent,
 		PhoneInputComponent,
@@ -170,7 +168,6 @@ import { UserAvatarComponent } from './component/user-avatar/user-avatar.compone
 		BreadcrumbsComponent,
 		TitleDatepickerComponent,
 		DateTimePipe,
-		AddEmployeeComponent,
 		EmptyListComponent,
 		PhoneInputComponent,
 		ChangeUserPasswordComponent,
