@@ -1,0 +1,19 @@
+.editor {
+	display: flex;
+	flex-direction: column;
+	align-self: stretch;
+}
+
+.title-input {
+	resize: none;
+
+	overflow-y: hidden;
+
+	text-align: center;
+
+	border: none;
+
+	&:focus {
+		outline: none;
+	}
+}

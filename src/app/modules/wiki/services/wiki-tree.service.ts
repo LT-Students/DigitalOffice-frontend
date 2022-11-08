@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RubricData } from '@api/wiki-service/models';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { WikiTreeApiService } from '@api/wiki-service/services/wiki-tree-api.service';
 import { WikiTreeNode } from '../models/tree-types';
 
 const DATA: RubricData[] = [
@@ -86,15 +87,16 @@ const DATA: RubricData[] = [
 	providedIn: 'root',
 })
 export class WikiTreeService {
-	constructor() {}
+	constructor(private wikiApi: WikiTreeApiService) {}
 
 	public getWikiTree(): Observable<WikiTreeNode[]> {
-		return of(DATA).pipe(map((data) => this.convertApiDataToClientTree(data)));
+		//@ts-ignore
+		return this.wikiApi.getWiki().pipe(map((res) => this.convertApiDataToClientTree(res)));
 	}
 
 	private convertApiDataToClientTree(data: RubricData[]): WikiTreeNode[] {
 		return data.map((d) => {
-			const articleNodes: WikiTreeNode[] = d.articlesNames.map((a) => ({
+			const articleNodes: WikiTreeNode[] = (d.articlesNames || []).map((a) => ({
 				id: a.id,
 				parentId: d.id,
 				type: 'article',
@@ -107,7 +109,7 @@ export class WikiTreeService {
 				type: 'rubric',
 				name: d.name,
 				isActive: d.isActive,
-				children: this.convertApiDataToClientTree(d.children).concat(articleNodes),
+				children: this.convertApiDataToClientTree(d.children || []).concat(articleNodes),
 			};
 		});
 	}

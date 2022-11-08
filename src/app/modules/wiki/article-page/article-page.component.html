@@ -7,7 +7,7 @@
 				></do-breadcrumbs>
 				<do-article-actions></do-article-actions>
 			</div>
-			<do-article-body></do-article-body>
+			<do-article-editor></do-article-editor>
 		</mat-card>
 	</div>
 	<div class="navigation">
@@ -15,7 +15,7 @@
 			<do-back-navigation></do-back-navigation>
 		</mat-card>
 		<mat-card class="tree-wrapper">
-			<do-navigation-tree [tree]="(tree$ | async) || []" [activeArticleId]="'12'"></do-navigation-tree>
+			<do-navigation-tree [tree]="(tree$ | async) || []" [activeArticleId]="articleId"></do-navigation-tree>
 		</mat-card>
 	</div>
 </div>
