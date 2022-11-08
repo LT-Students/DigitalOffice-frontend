@@ -2,6 +2,6 @@
 /* eslint-disable */
 import { DepartmentsTreeInfo } from './departments-tree-info';
 export interface OperationResultResponseDepartmentsTreeInfo {
-	body?: DepartmentsTreeInfo;
+	body?: Array<DepartmentsTreeInfo>;
 	errors: Array<string>;
 }

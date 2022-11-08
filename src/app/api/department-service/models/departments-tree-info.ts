@@ -2,7 +2,7 @@
 /* eslint-disable */
 
 /**
- * Department information of departments tree
+ * Department information in departments tree
  */
 export interface DepartmentsTreeInfo {
 	categoryName?: string;

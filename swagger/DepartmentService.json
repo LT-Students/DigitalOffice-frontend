@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.3.1",
+    "version": "1.0.3.2",
     "title": "DepartmentService",
     "description": "DepartmentService, is intended to work with the department."
   },
@@ -455,15 +455,6 @@
           "required": false
         },
         {
-          "name": "includeAvatars",
-          "in": "query",
-          "description": "If true returns departmnt users with avatars.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
           "name": "includePositions",
           "in": "query",
           "description": "If true returns departmnt users with positions.",
@@ -746,62 +737,6 @@
         }
       }
     },
-    "/project/edit": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "put": {
-        "tags": [
-          "Project"
-        ],
-        "operationId": "editDepartmentProject",
-        "description": "The method attempts to change depatrment project.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditDepartmentProjectRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/category/create": {
       "parameters": [
         {
@@ -1033,8 +968,9 @@
           "DepartmentUser": {
             "$ref": "#/components/schemas/DepartmentUserInfo"
           },
-          "AvatarImage": {
-            "$ref": "#/components/schemas/ImageInfo"
+          "ImageId": {
+            "type": "string",
+            "format": "guid"
           },
           "Position": {
             "$ref": "#/components/schemas/PositionInfo"
@@ -1057,36 +993,6 @@
             "description": "Position name.",
             "type": "string",
             "example": "IT projects consultant"
-          }
-        }
-      },
-      "ImageInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Name": {
-            "type": "string",
-            "nullable": true
-          },
-          "Content": {
-            "type": "string",
-            "format": "byte"
-          },
-          "Extension": {
-            "type": "string"
           }
         }
       },
@@ -1126,22 +1032,6 @@
             "items": {
               "$ref": "#/components/schemas/CreateUserRequest"
             }
-          }
-        }
-      },
-      "EditDepartmentProjectRequest": {
-        "type": "object",
-        "required": [
-          "ProjectId"
-        ],
-        "properties": {
-          "ProjectId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "DepartmentId": {
-            "type": "string",
-            "format": "uuid"
           }
         }
       },
@@ -1336,7 +1226,10 @@
         ],
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/DepartmentsTreeInfo"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentsTreeInfo"
+            }
           },
           "Errors": {
             "type": "array",
@@ -1413,7 +1306,7 @@
       },
       "DepartmentsTreeInfo": {
         "type": "object",
-        "description": "Department information of departments tree",
+        "description": "Department information in departments tree",
         "required": [
           "Id",
           "Name"
