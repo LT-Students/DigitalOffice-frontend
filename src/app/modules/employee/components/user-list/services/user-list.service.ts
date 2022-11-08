@@ -52,6 +52,7 @@ export class UserListService {
 	}
 
 	public refreshCount(): void {
+		this.userCount = Number.MAX_VALUE;
 		this.skipCount$.next(0);
 	}
 
