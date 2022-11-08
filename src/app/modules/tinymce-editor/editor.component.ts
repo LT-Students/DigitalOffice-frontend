@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { EditorOptions } from './types';
 
 @Component({
@@ -8,7 +9,12 @@ import { EditorOptions } from './types';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditorComponent {
-	private readonly defaultOptions: EditorOptions = { promotion: false, statusbar: false };
+	private readonly defaultOptions: EditorOptions = {
+		promotion: false,
+		statusbar: false,
+		menubar: false,
+		skin_url: '/assets/tinymce-skin',
+	};
 	@Input()
 	set editorOptions(options: EditorOptions) {
 		this._editorOptions = { ...this.defaultOptions, ...options };
@@ -17,6 +23,8 @@ export class EditorComponent {
 		return this._editorOptions;
 	}
 	private _editorOptions = this.defaultOptions;
+
+	public editorContent = new FormControl('', { nonNullable: true });
 
 	constructor() {}
 }
