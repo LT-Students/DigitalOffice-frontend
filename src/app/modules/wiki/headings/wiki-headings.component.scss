@@ -1,0 +1,36 @@
+@use 'base/variables' as var;
+
+.wiki-headings {
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+
+	&__title {
+		margin: 24px 0;
+	}
+
+	&__container {
+		margin-bottom: 20px;
+
+		display: inline-flex;
+		flex-direction: row;
+
+		flex-wrap: wrap;
+		gap: 24px;
+	}
+
+	&__expand {
+		top: 0;
+
+		margin: 0 auto;
+		align-self: center;
+		filter: invert(92%) sepia(0%) saturate(0%) hue-rotate(148deg) brightness(94%) contrast(84%);
+	}
+
+	&__expand:hover {
+		cursor: pointer;
+		filter: brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(0%) hue-rotate(167deg) brightness(90%)
+			contrast(88%);
+	}
+}

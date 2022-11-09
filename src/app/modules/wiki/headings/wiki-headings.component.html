@@ -1,0 +1,15 @@
+<div class="wiki-headings">
+	<h3 class="wiki-headings__title">Все рубрики</h3>
+	<div *ngIf="rubrics">
+		<div *ngFor="let rubric of rubrics" class="wiki-headings__container" id="wiki-headings__container">
+			<do-wiki-headings-item [rubric]="rubric"></do-wiki-headings-item>
+		</div>
+		<img
+			src="assets/icons/arrow-down-v2.svg"
+			id="wiki-arrow"
+			alt="arrow"
+			class="wiki-headings__expand"
+			(click)="toggleArrow()"
+		/>
+	</div>
+</div>

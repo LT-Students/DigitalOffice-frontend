@@ -16,12 +16,12 @@ export class SidebarService {
 	public links$: Observable<Link[]> = this.currentUser.user$.pipe(
 		map((user: User) => {
 			return [
-				// {
-				// 	visible: () => true,
-				// 	title: 'Новости',
-				// 	path: AppRoutes.News,
-				// 	icon: Icons.News,
-				// },
+				{
+					visible: () => true,
+					title: 'Вики',
+					path: AppRoutes.Wiki,
+					icon: Icons.News,
+				},
 				{
 					visible: () => true,
 					title: 'Учет времени',
