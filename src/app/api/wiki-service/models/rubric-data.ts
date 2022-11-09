@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ArticleData } from './article-data';
 export interface RubricData {
-	articlesNames?: Array<{ id: string; name: string; isActive: boolean }>;
-	children?: Array<RubricData>;
+	articles?: Array<ArticleData>;
+	children: Array<RubricData>;
 	id: string;
 	isActive: boolean;
 	name: string;

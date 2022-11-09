@@ -9,9 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { ActionResulEditArticleResponse } from '../models/action-resul-edit-article-response';
-import { ActionResultCreateArticleResponse } from '../models/action-result-create-article-response';
-import { ActionResultGetArticleResponse } from '../models/action-result-get-article-response';
+import { ArticleResponse } from '../models/article-response';
 import { CreateArticleRequest } from '../models/create-article-request';
 import { EditArticleRequest } from '../models/edit-article-request';
 
@@ -36,9 +34,7 @@ export class ArticleApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createArticle$Response(params: {
-		body: CreateArticleRequest;
-	}): Observable<StrictHttpResponse<ActionResultCreateArticleResponse>> {
+	createArticle$Response(params: { body: CreateArticleRequest }): Observable<StrictHttpResponse<string>> {
 		const rb = new RequestBuilder(this.rootUrl, ArticleApiService.CreateArticlePath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
@@ -54,7 +50,7 @@ export class ArticleApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResultCreateArticleResponse>;
+					return r as StrictHttpResponse<string>;
 				})
 			);
 	}
@@ -67,13 +63,8 @@ export class ArticleApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createArticle(params: { body: CreateArticleRequest }): Observable<ActionResultCreateArticleResponse> {
-		return this.createArticle$Response(params).pipe(
-			map(
-				(r: StrictHttpResponse<ActionResultCreateArticleResponse>) =>
-					r.body as ActionResultCreateArticleResponse
-			)
-		);
+	createArticle(params: { body: CreateArticleRequest }): Observable<string> {
+		return this.createArticle$Response(params).pipe(map((r: StrictHttpResponse<string>) => r.body as string));
 	}
 
 	/**
@@ -94,7 +85,7 @@ export class ArticleApiService extends BaseService {
 		 * Article global unique identifier.
 		 */
 		articleId?: string;
-	}): Observable<StrictHttpResponse<ActionResultGetArticleResponse>> {
+	}): Observable<StrictHttpResponse<ArticleResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, ArticleApiService.GetArticlePath, 'get');
 		if (params) {
 			rb.query('articleId', params.articleId, {});
@@ -110,7 +101,7 @@ export class ArticleApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResultGetArticleResponse>;
+					return r as StrictHttpResponse<ArticleResponse>;
 				})
 			);
 	}
@@ -128,9 +119,9 @@ export class ArticleApiService extends BaseService {
 		 * Article global unique identifier.
 		 */
 		articleId?: string;
-	}): Observable<ActionResultGetArticleResponse> {
+	}): Observable<ArticleResponse> {
 		return this.getArticle$Response(params).pipe(
-			map((r: StrictHttpResponse<ActionResultGetArticleResponse>) => r.body as ActionResultGetArticleResponse)
+			map((r: StrictHttpResponse<ArticleResponse>) => r.body as ArticleResponse)
 		);
 	}
 
@@ -153,7 +144,7 @@ export class ArticleApiService extends BaseService {
 		 */
 		articleId: string;
 		body?: EditArticleRequest;
-	}): Observable<StrictHttpResponse<ActionResulEditArticleResponse>> {
+	}): Observable<StrictHttpResponse<boolean>> {
 		const rb = new RequestBuilder(this.rootUrl, ArticleApiService.EditArticlePath, 'patch');
 		if (params) {
 			rb.query('articleId', params.articleId, {});
@@ -170,7 +161,9 @@ export class ArticleApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResulEditArticleResponse>;
+					return (r as HttpResponse<any>).clone({
+						body: String((r as HttpResponse<any>).body) === 'true',
+					}) as StrictHttpResponse<boolean>;
 				})
 			);
 	}
@@ -189,9 +182,7 @@ export class ArticleApiService extends BaseService {
 		 */
 		articleId: string;
 		body?: EditArticleRequest;
-	}): Observable<ActionResulEditArticleResponse> {
-		return this.editArticle$Response(params).pipe(
-			map((r: StrictHttpResponse<ActionResulEditArticleResponse>) => r.body as ActionResulEditArticleResponse)
-		);
+	}): Observable<boolean> {
+		return this.editArticle$Response(params).pipe(map((r: StrictHttpResponse<boolean>) => r.body as boolean));
 	}
 }

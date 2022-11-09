@@ -9,7 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { ActionResultWikiTreeResponse } from '../models/action-result-wiki-tree-response';
+import { RubricData } from '../models/rubric-data';
 
 @Injectable({
 	providedIn: 'root',
@@ -37,7 +37,7 @@ export class WikiTreeApiService extends BaseService {
 		 * If true - returns deactivated rubrics, false or null - returns only active rubrics
 		 */
 		includedeactivated?: boolean;
-	}): Observable<StrictHttpResponse<ActionResultWikiTreeResponse>> {
+	}): Observable<StrictHttpResponse<Array<RubricData>>> {
 		const rb = new RequestBuilder(this.rootUrl, WikiTreeApiService.GetWikiPath, 'get');
 		if (params) {
 			rb.query('includedeactivated', params.includedeactivated, {});
@@ -53,7 +53,7 @@ export class WikiTreeApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResultWikiTreeResponse>;
+					return r as StrictHttpResponse<Array<RubricData>>;
 				})
 			);
 	}
@@ -71,9 +71,9 @@ export class WikiTreeApiService extends BaseService {
 		 * If true - returns deactivated rubrics, false or null - returns only active rubrics
 		 */
 		includedeactivated?: boolean;
-	}): Observable<ActionResultWikiTreeResponse> {
+	}): Observable<Array<RubricData>> {
 		return this.getWiki$Response(params).pipe(
-			map((r: StrictHttpResponse<ActionResultWikiTreeResponse>) => r.body as ActionResultWikiTreeResponse)
+			map((r: StrictHttpResponse<Array<RubricData>>) => r.body as Array<RubricData>)
 		);
 	}
 }

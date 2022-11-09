@@ -9,8 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { ActionResulEditRubricResponse } from '../models/action-resul-edit-rubric-response';
-import { ActionResultCreateRubricResponse } from '../models/action-result-create-rubric-response';
 import { CreateRubricRequest } from '../models/create-rubric-request';
 import { EditRubricRequest } from '../models/edit-rubric-request';
 
@@ -35,9 +33,7 @@ export class RubricApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createRubric$Response(params: {
-		body: CreateRubricRequest;
-	}): Observable<StrictHttpResponse<ActionResultCreateRubricResponse>> {
+	createRubric$Response(params: { body: CreateRubricRequest }): Observable<StrictHttpResponse<string>> {
 		const rb = new RequestBuilder(this.rootUrl, RubricApiService.CreateRubricPath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
@@ -53,7 +49,7 @@ export class RubricApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResultCreateRubricResponse>;
+					return r as StrictHttpResponse<string>;
 				})
 			);
 	}
@@ -66,10 +62,8 @@ export class RubricApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createRubric(params: { body: CreateRubricRequest }): Observable<ActionResultCreateRubricResponse> {
-		return this.createRubric$Response(params).pipe(
-			map((r: StrictHttpResponse<ActionResultCreateRubricResponse>) => r.body as ActionResultCreateRubricResponse)
-		);
+	createRubric(params: { body: CreateRubricRequest }): Observable<string> {
+		return this.createRubric$Response(params).pipe(map((r: StrictHttpResponse<string>) => r.body as string));
 	}
 
 	/**
@@ -91,7 +85,7 @@ export class RubricApiService extends BaseService {
 		 */
 		ribricId: string;
 		body: EditRubricRequest;
-	}): Observable<StrictHttpResponse<ActionResulEditRubricResponse>> {
+	}): Observable<StrictHttpResponse<boolean>> {
 		const rb = new RequestBuilder(this.rootUrl, RubricApiService.EditRubricPath, 'patch');
 		if (params) {
 			rb.query('ribricId', params.ribricId, {});
@@ -108,7 +102,9 @@ export class RubricApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<ActionResulEditRubricResponse>;
+					return (r as HttpResponse<any>).clone({
+						body: String((r as HttpResponse<any>).body) === 'true',
+					}) as StrictHttpResponse<boolean>;
 				})
 			);
 	}
@@ -127,9 +123,7 @@ export class RubricApiService extends BaseService {
 		 */
 		ribricId: string;
 		body: EditRubricRequest;
-	}): Observable<ActionResulEditRubricResponse> {
-		return this.editRubric$Response(params).pipe(
-			map((r: StrictHttpResponse<ActionResulEditRubricResponse>) => r.body as ActionResulEditRubricResponse)
-		);
+	}): Observable<boolean> {
+		return this.editRubric$Response(params).pipe(map((r: StrictHttpResponse<boolean>) => r.body as boolean));
 	}
 }

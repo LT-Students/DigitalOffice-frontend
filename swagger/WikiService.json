@@ -44,7 +44,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultCreateRubricResponse"
+                  "type": "string",
+                  "format": "uuid"
                 }
               }
             }
@@ -54,7 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultCreateRubricResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -67,7 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultCreateRubricResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -106,7 +107,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulEditRubricResponse"
+                  "type": "boolean"
                 }
               }
             }
@@ -116,7 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulEditRubricResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -129,7 +130,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulEditRubricResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -165,7 +166,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultCreateArticleResponse"
+                  "type": "string",
+                  "format": "uuid"
                 }
               }
             }
@@ -175,7 +177,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultCreateArticleResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -188,7 +190,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultCreateArticleResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -225,7 +227,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultGetArticleResponse"
+                  "$ref": "#/components/schemas/ArticleResponse"
                 }
               }
             }
@@ -235,7 +237,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultGetArticleResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -245,7 +247,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultGetArticleResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -290,7 +292,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResulEditArticleResponse"
+                  "type": "boolean"
                 }
               }
             }
@@ -300,7 +302,7 @@
             "content": {
               "application/json": {
                 "schema":  {
-                  "$ref": "#/components/schemas/ActionResulEditArticleResponse"
+                  "$ref": "#/components/schemas/DefaultResponseSchema"
                 }
               }
             }
@@ -465,7 +467,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ActionResultWikiTreeResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RubricData"
+                  }
                 }
               }
             }
@@ -925,10 +930,10 @@
             "type": "string",
             "format": "uuid"
           },
-          "ArticlesNames": {
+          "Articles": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ArticleData"
             }
           },
           "Children": {
@@ -936,6 +941,26 @@
             "items": {
               "$ref": "#/components/schemas/RubricData"
             }
+          }
+        }
+      },
+      "ArticleData": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "IsActive"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "boolean"
           }
         }
       },
@@ -980,6 +1005,26 @@
           },
           "CreatedAtUtc": {
             "type": "object"
+          }
+        }
+      },
+      "DefaultResponseSchema": {
+        "type": "object",
+        "required": [
+          "UtcTime",
+          "Header",
+          "Message"
+        ],
+        "properties": {
+          "UtcTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "type": "string"
           }
         }
       }
