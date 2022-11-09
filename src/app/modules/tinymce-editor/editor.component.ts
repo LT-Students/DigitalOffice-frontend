@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, Optional } from '@angular/core';
+import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { EditorOptions } from './types';
 
 @Component({
@@ -8,7 +10,7 @@ import { EditorOptions } from './types';
 	styleUrls: ['./editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditorComponent {
+export class EditorComponent implements OnDestroy, ControlValueAccessor {
 	private readonly defaultOptions: EditorOptions = {
 		promotion: false,
 		statusbar: false,
@@ -26,5 +28,26 @@ export class EditorComponent {
 
 	public editorContent = new FormControl('', { nonNullable: true });
 
-	constructor() {}
+	private destroy$ = new Subject();
+
+	constructor(@Optional() ngControl: NgControl) {
+		if (ngControl) {
+			ngControl.valueAccessor = this;
+		}
+	}
+
+	public ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
+
+	public writeValue(content: string): void {
+		this.editorContent.setValue(content, { emitEvent: false });
+	}
+
+	public registerOnChange(fn: any): void {
+		this.editorContent.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(fn);
+	}
+
+	public registerOnTouched(fn: any): void {}
 }
