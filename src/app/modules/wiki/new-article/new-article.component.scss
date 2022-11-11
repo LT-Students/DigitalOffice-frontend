@@ -1,0 +1,43 @@
+.navigation {
+	position: fixed;
+	top: 104px;
+	bottom: 48px;
+
+	display: flex;
+	flex-direction: column;
+
+	width: 298px;
+
+	.back-button {
+		margin-bottom: 24px;
+		padding: 8px 4px;
+	}
+
+	.tree-wrapper {
+		padding: 16px 16px 16px 6px;
+
+		overflow: auto;
+
+		min-height: 429px;
+		max-height: 100%;
+	}
+}
+
+.article {
+	margin-left: 330px;
+
+	.article-wrapper {
+		padding: 16px 30px;
+	}
+}
+
+.article-header {
+	margin-bottom: 32px;
+
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	align-items: center;
+
+	height: 56px;
+}

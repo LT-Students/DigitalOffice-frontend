@@ -1,18 +1,33 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ArticlePageComponent } from './article-page/article-page.component';
-import { WikiTreeResolver } from './resolver/wiki-tree.resolver';
-import { ArticleResolver } from './resolver/article.resolver';
+import { ArticleResolver, WikiTreeResolver } from './resolvers';
+import { NewArticleComponent } from './new-article/new-article.component';
+import { WikiRoutes } from './models';
+import { RouterContainerComponent } from './router-container.component';
 
 const wikiRoutes: Routes = [
 	{
-		// TODO Add article title to title of the page
-		path: ':id',
-		component: ArticlePageComponent,
+		path: '',
+		component: RouterContainerComponent,
 		resolve: {
 			wikiTree: WikiTreeResolver,
-			article: ArticleResolver,
 		},
+		children: [
+			{
+				path: WikiRoutes.NewArticle,
+				component: NewArticleComponent,
+				title: 'Новая статья',
+			},
+			{
+				// TODO Add article title to title of the page
+				path: ':id',
+				component: ArticlePageComponent,
+				resolve: {
+					article: ArticleResolver,
+				},
+			},
+		],
 	},
 ];
 

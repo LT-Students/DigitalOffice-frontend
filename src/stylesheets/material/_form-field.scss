@@ -114,6 +114,7 @@ do-form-field mat-form-field.mat-form-field-appearance-outline {
 		transform: none;
 	}
 
+	.mat-select-empty .mat-select-value,
 	.mat-select-placeholder,
 	input::placeholder,
 	textarea::placeholder {
@@ -121,6 +122,7 @@ do-form-field mat-form-field.mat-form-field-appearance-outline {
 	}
 
 	&.mat-form-field-disabled {
+		.mat-form-field-outline,
 		.mat-select-placeholder,
 		input::placeholder,
 		textarea::placeholder {

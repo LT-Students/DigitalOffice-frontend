@@ -1,0 +1,12 @@
+<div class="editor" [formGroup]="articleForm">
+	<textarea
+		class="mat-h3 title-input"
+		placeholder="Название статьи (обязательное поле)"
+		formControlName="title"
+		[maxlength]="TITLE_MAX_LENGTH"
+		cdkTextareaAutosize
+		cdkAutosizeMinRows="1"
+		(keydown.enter)="$event.preventDefault()"
+	></textarea>
+	<do-editor formControlName="content" [editorOptions]="editorOptions"></do-editor>
+</div>

@@ -1,0 +1,28 @@
+<div class="position-relative" [formGroup]="form">
+	<div class="navigation">
+		<mat-card class="back-button">
+			<do-back-navigation></do-back-navigation>
+		</mat-card>
+		<mat-card>
+			<do-article-path formControlName="rubricId"></do-article-path>
+		</mat-card>
+	</div>
+	<div class="article">
+		<mat-card class="article-wrapper">
+			<div class="article-header">
+				<do-actions>
+					<button doButton (click)="onCancel()">Отмена</button>
+					<button
+						mat-flat-button
+						color="primary"
+						[loading]="loadingState.loading$ | async"
+						(click)="onSave()"
+					>
+						Сохранить статью
+					</button>
+				</do-actions>
+			</div>
+			<do-article-editor formControlName="article"></do-article-editor>
+		</mat-card>
+	</div>
+</div>

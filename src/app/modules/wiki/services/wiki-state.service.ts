@@ -32,9 +32,13 @@ export class WikiStateService {
 
 	public getSubRubricsByParentId$(parentId: string): Observable<WikiTreeFlatNode[]> {
 		return this.tree$.pipe(
-			map((tree: WikiTreeMap) =>
-				[...tree.values()].filter((n: WikiTreeFlatNode) => n.parentId === parentId && n.isRubric)
-			)
+			map((tree: WikiTreeMap) => {
+				const parent = tree.get(parentId);
+				return (parent?.children || [])
+					.map((childId) => tree.get(childId))
+					.filter(booleanGuard)
+					.filter((n) => n.isRubric);
+			})
 		);
 	}
 
