@@ -14,8 +14,12 @@
 		<mat-card class="back-button">
 			<do-back-navigation></do-back-navigation>
 		</mat-card>
-		<mat-card class="tree-wrapper">
-			<do-navigation-tree [tree]="(tree$ | async) || []" [activeArticleId]="articleId"></do-navigation-tree>
+		<mat-card *ngIf="tree$ | async as tree" class="tree-wrapper">
+			<do-navigation-tree
+				[tree]="tree"
+				[activeArticleId]="articleId"
+				(activeArticleChange)="handleArticleChange($event)"
+			></do-navigation-tree>
 		</mat-card>
 	</div>
 </div>

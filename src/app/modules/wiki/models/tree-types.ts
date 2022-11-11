@@ -1,19 +1,11 @@
-export interface WikiTreeNode {
-	id: string;
-	parentId?: string;
-	type: 'rubric' | 'article';
-	name: string;
-	isActive: boolean;
-	children?: WikiTreeNode[];
-}
-
 export interface WikiTreeFlatNode {
 	id: string;
 	parentId?: string;
-	type: 'rubric' | 'article';
+	isRubric: boolean;
 	name: string;
 	isActive: boolean;
 	children?: string[];
 	level: number;
-	expandable: boolean;
 }
+
+export class WikiTreeMap extends Map<string, WikiTreeFlatNode> {}

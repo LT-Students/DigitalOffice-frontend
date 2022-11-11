@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { WikiTreeService } from '../services/wiki-tree.service';
+import { WikiStateService } from '../services';
 
 @Component({
 	selector: 'do-article-page',
@@ -10,8 +9,12 @@ import { WikiTreeService } from '../services/wiki-tree.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticlePageComponent {
-	public tree$ = this.route.data.pipe(map((data) => data.wikiTree));
+	public tree$ = this.wikiTree.tree$;
 	public articleId = this.route.snapshot.params['id'];
 
-	constructor(private wikiTree: WikiTreeService, private route: ActivatedRoute) {}
+	constructor(private wikiTree: WikiStateService, private route: ActivatedRoute) {}
+
+	public handleArticleChange(articleId: string): void {
+		this.articleId = articleId;
+	}
 }
