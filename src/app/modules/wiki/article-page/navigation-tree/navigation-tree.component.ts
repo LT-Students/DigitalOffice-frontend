@@ -17,6 +17,7 @@ export class NavigationTreeComponent implements OnInit {
 
 	@Input() tree!: WikiTreeMap;
 	@Input() activeArticleId = '';
+
 	public dataSource!: TreeDataSource<WikiTreeFlatNode>;
 	public treeControl!: FlatTreeControl<WikiTreeFlatNode>;
 
@@ -28,6 +29,7 @@ export class NavigationTreeComponent implements OnInit {
 			(n) => !!n.children
 		);
 		this.dataSource = new TreeDataSource(this.treeControl, [...this.tree.values()]);
+		this.dataSource.data = this.findRootSubNodes();
 
 		this.expandTreeToActiveNode(this.activeArticleId);
 	}
@@ -36,16 +38,34 @@ export class NavigationTreeComponent implements OnInit {
 		return !!node.children;
 	}
 
+	private findRootSubNodes(): WikiTreeFlatNode[] {
+		try {
+			let rootNode: WikiTreeFlatNode | null = null;
+			let nodeId = this.activeArticleId;
+			while (!rootNode) {
+				const node = this.tree.get(nodeId) as WikiTreeFlatNode;
+				if (!node.parentId) {
+					rootNode = node;
+				} else {
+					nodeId = node.parentId;
+				}
+			}
+			return this.treeControl.getDescendants(rootNode).map((n) => ({ ...n, level: n.level - 1 }));
+		} catch (e) {
+			return [];
+		}
+	}
+
 	private expandTreeToActiveNode(nodeId: string): void {
-		const node = this.tree.get(nodeId);
+		const node = this.treeControl.dataNodes.find((n) => n.id === nodeId);
 		if (!node) {
 			return;
 		}
-		if (node.isRubric) {
-			this.treeControl.expand(node);
-		}
-		if (node.parentId) {
-			this.expandTreeToActiveNode(node.parentId);
+		if (node.level !== 0) {
+			const rubric = this.treeControl.dataNodes.find((n) => n.id === node.parentId);
+			if (rubric) {
+				this.treeControl.expand(rubric);
+			}
 		}
 	}
 }
