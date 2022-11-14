@@ -1,0 +1,4 @@
+<span *ngFor="let nodeName of breadcrumbs; last as isLast" class="text-secondary_default">
+	{{ nodeName }}
+	<mat-icon *ngIf="!isLast" class="icon" [svgIcon]="Icons.KeyboardArrowRight"></mat-icon>
+</span>
