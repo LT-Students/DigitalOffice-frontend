@@ -4,7 +4,7 @@ export type InitialDataEditRequest<T extends PatchPath> = FormDataEditRequest<T>
 export type EditRequest<T extends PatchPath> = PatchDocument<T>[];
 
 type PatchOperation = 'replace';
-export class PatchDocument<T extends PatchPath> {
+export class PatchDocument<T> {
 	public op: PatchOperation = 'replace';
 	constructor(public value: any, public path: T) {}
 }
@@ -87,4 +87,11 @@ export enum DepartmentPath {
 	SHORT_NAME = '/shortName',
 	DESCRIPTION = '/description',
 	IS_ACTIVE = '/isactive',
+}
+
+export enum ArticlePath {
+	Name = '/name',
+	Content = '/content',
+	IsActive = '/isActive',
+	RubricId = '/rubricId',
 }

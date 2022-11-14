@@ -7,10 +7,11 @@ import { ArticlePageComponent } from './article-page/article-page.component';
 import { NavigationTreeComponent } from './article-page/navigation-tree/navigation-tree.component';
 import { BackNavigationComponent } from './shared/back-navigation/back-navigation.component';
 import { ArticleEditorComponent } from './shared/article-editor/article-editor.component';
-import { ArticleActionsComponent } from './article-page/article-actions/article-actions.component';
 import { NewArticleComponent } from './new-article/new-article.component';
 import { RouterContainerComponent } from './router-container.component';
 import { ArticlePathComponent } from './new-article/article-path/article-path.component';
+import { ArticleViewerComponent } from './article-page/article-viewer/article-viewer.component';
+import { TreeBreadcrumbsComponent } from './article-page/tree-breadcrumbs/tree-breadcrumbs.component';
 
 @NgModule({
 	declarations: [
@@ -18,10 +19,11 @@ import { ArticlePathComponent } from './new-article/article-path/article-path.co
 		NavigationTreeComponent,
 		BackNavigationComponent,
 		ArticleEditorComponent,
-		ArticleActionsComponent,
 		NewArticleComponent,
 		RouterContainerComponent,
 		ArticlePathComponent,
+		ArticleViewerComponent,
+		TreeBreadcrumbsComponent,
 	],
 	imports: [SharedModule, WikiRoutingModule, CdkTreeModule, TinymceEditorModule],
 })

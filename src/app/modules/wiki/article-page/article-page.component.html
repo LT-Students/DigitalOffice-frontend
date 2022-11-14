@@ -1,23 +1,40 @@
-<div class="position-relative">
+<div *ngIf="state$ | async as state" class="position-relative">
 	<div class="article">
 		<mat-card class="article-wrapper">
 			<div class="article-header">
-				<do-breadcrumbs
-					[paths]="[{ title: 'Важное о компании' }, { title: 'История компании' }]"
-				></do-breadcrumbs>
-				<do-article-actions></do-article-actions>
+				<do-tree-breadcrumbs [tree]="state.tree" [activeArticleId]="state.article.id"></do-tree-breadcrumbs>
+				<do-actions>
+					<ng-container *ngIf="!isEditMode">
+						<button mat-flat-button color="primary" (click)="onEdit()">Редактировать</button>
+					</ng-container>
+					<ng-container *ngIf="isEditMode">
+						<button doButton (click)="onCancel()">Отмена</button>
+						<button
+							mat-flat-button
+							color="primary"
+							[loading]="loadingState.loading$ | async"
+							(click)="onSubmit()"
+						>
+							Сохранить изменения
+						</button>
+					</ng-container>
+					<button doButton class="context-menu">
+						<mat-icon [svgIcon]="Icons.KebabMenu" [style.transform]="'rotate(90deg)'"></mat-icon>
+					</button>
+				</do-actions>
 			</div>
-			<do-article-editor></do-article-editor>
+			<do-article-viewer *ngIf="!isEditMode" [article]="state.article"></do-article-viewer>
+			<do-article-editor *ngIf="isEditMode" [formControl]="editorControl"></do-article-editor>
 		</mat-card>
 	</div>
 	<div class="navigation">
 		<mat-card class="back-button">
 			<do-back-navigation></do-back-navigation>
 		</mat-card>
-		<mat-card *ngIf="tree$ | async as tree" class="tree-wrapper">
+		<mat-card class="tree-wrapper">
 			<do-navigation-tree
-				[tree]="tree"
-				[activeArticleId]="articleId"
+				[tree]="state.tree"
+				[activeArticleId]="state.article.id"
 				(activeArticleChange)="handleArticleChange($event)"
 			></do-navigation-tree>
 		</mat-card>

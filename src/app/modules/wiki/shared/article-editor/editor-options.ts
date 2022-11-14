@@ -4,8 +4,8 @@ import { EditorOptions } from '../../../tinymce-editor/types';
 
 export const WIKI_EDITOR_OPTIONS: EditorOptions = {
 	placeholder: 'Здесь вы можете ввести текст...',
-	plugins: 'image',
-	toolbar: 'undo redo | bold italic underline | image ',
+	plugins: 'image lists autoresize',
+	toolbar: 'undo redo | bold italic underline | image | numlist bullist',
 	toolbar_mode: 'wrap',
 	file_picker_types: 'image',
 	/* and here's our custom image picker*/

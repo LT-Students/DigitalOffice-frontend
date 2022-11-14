@@ -8,5 +8,5 @@
 		cdkAutosizeMinRows="1"
 		(keydown.enter)="$event.preventDefault()"
 	></textarea>
-	<do-editor formControlName="content" [editorOptions]="editorOptions"></do-editor>
+	<do-editor formControlName="content" [editorOptions]="editorOptions" (onDirty)="isDirty = true"></do-editor>
 </div>

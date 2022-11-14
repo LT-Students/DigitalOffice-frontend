@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Optional, Output } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,6 +17,9 @@ export class EditorComponent implements OnDestroy, ControlValueAccessor {
 		menubar: false,
 		skin_url: '/assets/tinymce-skin',
 	};
+
+	@Output() onDirty = new EventEmitter<void>();
+
 	@Input()
 	set editorOptions(options: EditorOptions) {
 		this._editorOptions = { ...this.defaultOptions, ...options };

@@ -5,6 +5,7 @@ import { ArticleResolver, WikiTreeResolver } from './resolvers';
 import { NewArticleComponent } from './new-article/new-article.component';
 import { WikiRoutes } from './models';
 import { RouterContainerComponent } from './router-container.component';
+import { CanLeaveArticlePageGuard } from './guards/can-leave-article-page-guard.service';
 
 const wikiRoutes: Routes = [
 	{
@@ -20,9 +21,9 @@ const wikiRoutes: Routes = [
 				title: 'Новая статья',
 			},
 			{
-				// TODO Add article title to title of the page
 				path: ':id',
 				component: ArticlePageComponent,
+				canDeactivate: [CanLeaveArticlePageGuard],
 				resolve: {
 					article: ArticleResolver,
 				},

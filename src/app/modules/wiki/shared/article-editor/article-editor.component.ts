@@ -13,6 +13,8 @@ export class ArticleEditorComponent implements OnDestroy, ControlValueAccessor {
 	public readonly TITLE_MAX_LENGTH = 210;
 	public readonly editorOptions = WIKI_EDITOR_OPTIONS;
 
+	public isDirty = false;
+
 	public articleForm = this.fb.nonNullable.group({
 		title: ['', [Validators.maxLength(this.TITLE_MAX_LENGTH)]],
 		content: [''],

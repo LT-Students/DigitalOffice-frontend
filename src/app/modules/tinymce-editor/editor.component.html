@@ -1,1 +1,1 @@
-<editor [formControl]="editorContent" [init]="editorOptions"></editor>
+<editor [formControl]="editorContent" [init]="editorOptions" (onDirty)="onDirty.emit()"></editor>
