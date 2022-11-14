@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { LoadingState } from '@app/utils/loading-state';
 import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WikiApiService } from '../services';
 
 @Component({
@@ -20,7 +21,12 @@ export class NewArticleComponent implements OnDestroy {
 
 	private destroy$ = new Subject();
 
-	constructor(private fb: FormBuilder, private wikiApi: WikiApiService) {}
+	constructor(
+		private fb: FormBuilder,
+		private wikiApi: WikiApiService,
+		private router: Router,
+		private route: ActivatedRoute
+	) {}
 
 	public ngOnDestroy(): void {
 		this.destroy$.next();
@@ -41,6 +47,6 @@ export class NewArticleComponent implements OnDestroy {
 		this.wikiApi
 			.createArticle(rubricId, title, content)
 			.pipe(finalize(() => this.loadingState.setLoading(false)))
-			.subscribe();
+			.subscribe((id: string) => this.router.navigate(['..', id], { relativeTo: this.route }));
 	}
 }
