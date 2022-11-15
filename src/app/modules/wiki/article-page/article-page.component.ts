@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -32,6 +32,7 @@ export class ArticlePageComponent implements OnInit {
 	public loadingState = new LoadingState();
 
 	constructor(
+		private cdr: ChangeDetectorRef,
 		private dialog: DialogService,
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
@@ -56,7 +57,7 @@ export class ArticlePageComponent implements OnInit {
 	}
 
 	public onCancel(): void {
-		this.canLeavePage().subscribe();
+		this.closeEditMode().subscribe();
 	}
 
 	public onSubmit(): void {
@@ -79,7 +80,7 @@ export class ArticlePageComponent implements OnInit {
 		this.isEditMode = false;
 	}
 
-	public canLeavePage(): Observable<boolean> {
+	public closeEditMode(): Observable<boolean> {
 		let result$: Observable<boolean>;
 		if (!this.isEditMode) {
 			result$ = of(true);
@@ -88,7 +89,7 @@ export class ArticlePageComponent implements OnInit {
 				first(),
 				switchMap((article) => {
 					const { title } = this.editorControl.value;
-					if (article.name === title && !this.editor.last?.isDirty) {
+					if (article.name === title && !this.isEditorDirty()) {
 						return of(true);
 					}
 					return this.dialog.confirm({
@@ -99,6 +100,17 @@ export class ArticlePageComponent implements OnInit {
 				})
 			);
 		}
-		return result$.pipe(tap((canLeave: boolean) => canLeave && (this.isEditMode = false)));
+		return result$.pipe(
+			tap((canLeave: boolean) => {
+				if (canLeave) {
+					this.isEditMode = false;
+					this.cdr.markForCheck();
+				}
+			})
+		);
+	}
+
+	private isEditorDirty(): boolean {
+		return this.editor.last.isDirty;
 	}
 }

@@ -13,6 +13,6 @@ export class CanLeaveArticlePageGuard implements CanDeactivate<ArticlePageCompon
 		currentState: RouterStateSnapshot,
 		nextState?: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return component.canLeavePage();
+		return component.closeEditMode();
 	}
 }

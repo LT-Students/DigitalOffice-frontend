@@ -1,4 +1,16 @@
 <div *ngIf="state$ | async as state" class="position-relative">
+	<div class="navigation">
+		<mat-card class="back-button">
+			<do-back-navigation></do-back-navigation>
+		</mat-card>
+		<mat-card class="tree-wrapper">
+			<do-navigation-tree
+				[tree]="state.tree"
+				[activeArticleId]="state.article.id"
+				(activeArticleChange)="handleArticleChange($event)"
+			></do-navigation-tree>
+		</mat-card>
+	</div>
 	<div class="article">
 		<mat-card class="article-wrapper">
 			<div class="article-header">
@@ -25,18 +37,6 @@
 			</div>
 			<do-article-viewer *ngIf="!isEditMode" [article]="state.article"></do-article-viewer>
 			<do-article-editor *ngIf="isEditMode" [formControl]="editorControl"></do-article-editor>
-		</mat-card>
-	</div>
-	<div class="navigation">
-		<mat-card class="back-button">
-			<do-back-navigation></do-back-navigation>
-		</mat-card>
-		<mat-card class="tree-wrapper">
-			<do-navigation-tree
-				[tree]="state.tree"
-				[activeArticleId]="state.article.id"
-				(activeArticleChange)="handleArticleChange($event)"
-			></do-navigation-tree>
 		</mat-card>
 	</div>
 </div>
