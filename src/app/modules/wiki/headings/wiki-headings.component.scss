@@ -14,7 +14,24 @@
 		margin-bottom: 20px;
 
 		display: inline-flex;
+
+		overflow: visible;
 		flex-direction: row;
+
+		height: initial;
+
+		flex-wrap: wrap;
+		gap: 24px;
+	}
+
+	&__container-hidden {
+		margin-bottom: 20px;
+
+		display: inline-flex;
+		overflow: hidden;
+		flex-direction: row;
+
+		height: 156px;
 
 		flex-wrap: wrap;
 		gap: 24px;
@@ -24,13 +41,12 @@
 		top: 0;
 
 		margin: 0 auto;
+
+		display: block;
 		align-self: center;
-		filter: invert(92%) sepia(0%) saturate(0%) hue-rotate(148deg) brightness(94%) contrast(84%);
 	}
 
-	&__expand:hover {
-		cursor: pointer;
-		filter: brightness(0) saturate(100%) invert(55%) sepia(8%) saturate(0%) hue-rotate(167deg) brightness(90%)
-			contrast(88%);
+	&__expand-hidden {
+		display: none;
 	}
 }

@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RubricData } from '@api/wiki-service/models/rubric-data';
 import { map } from 'rxjs/operators';
+import { Icons } from '@shared/modules/icons/icons';
+import { Observable } from 'rxjs';
 import { WikiService } from '../services/wiki.service';
 
 @Component({
@@ -13,41 +15,31 @@ import { WikiService } from '../services/wiki.service';
 export class WikiHeadingsComponent implements OnInit, AfterViewInit {
 	constructor(private wikiService: WikiService, private route: ActivatedRoute) {}
 
-	public rubrics!: RubricData[];
+	public readonly Icons = Icons;
+	@ViewChild('container') container: any;
+	@ViewChild('arrow') arrow: any;
+
+	public rubrics$!: Observable<RubricData[]>;
+	public isRubricsOverflow!: boolean;
+	public isRubricsExpanded!: boolean;
 
 	public ngOnInit(): void {
-		this.route.data.pipe(map((data) => (this.rubrics = data['rubrics'] as RubricData[]))).subscribe();
+		this.rubrics$ = this.route.data.pipe(map((data) => data['rubrics'] as RubricData[]));
 	}
 
 	ngAfterViewInit(): void {
 		const availableHeight = 136;
-		const grid = document.getElementById('wiki-headings__container') as HTMLElement;
-		const gridFirstTwoRows = grid.clientHeight;
-		console.log(gridFirstTwoRows, availableHeight);
-		const img = document.getElementById('wiki-arrow') as HTMLImageElement;
-		if (gridFirstTwoRows > availableHeight) {
-			grid.style.height = String(156 + 'px');
-			grid.style.overflow = 'hidden';
-			img.style.display = 'block';
-			img.src = 'assets/icons/arrow-down-v2.svg';
-		} else {
-			grid.style.height = String('inherit');
-			grid.style.overflow = 'visible';
-			img.style.display = 'none';
-		}
+		this.isRubricsExpanded = false;
+		this.isRubricsOverflow = this.container.nativeElement.clientHeight > availableHeight;
+		this.arrow.svgIcon = this.isRubricsOverflow ? Icons.ArrowDownV2 : '';
 	}
 
 	public toggleArrow() {
-		const img = document.getElementById('wiki-arrow') as HTMLImageElement;
-		const grid = document.getElementById('wiki-headings__container') as HTMLElement;
-		if (grid.style.overflow === 'hidden') {
-			grid.style.overflow = 'visible';
-			grid.style.height = 'initial';
-			img.src = 'assets/icons/arrow-up-v2.svg';
-		} else if (grid.style.overflow === 'visible') {
-			grid.style.overflow = 'hidden';
-			grid.style.height = String(156 + 'px');
-			img.src = 'assets/icons/arrow-down-v2.svg';
+		if (this.arrow.svgIcon === Icons.ArrowDownV2) {
+			this.arrow.svgIcon = Icons.ArrowUpV2;
+		} else {
+			this.arrow.svgIcon = Icons.ArrowDownV2;
 		}
+		this.isRubricsExpanded = !this.isRubricsExpanded;
 	}
 }
