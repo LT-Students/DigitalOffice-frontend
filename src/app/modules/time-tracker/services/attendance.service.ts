@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { CreateWorkTimeRequest, WorkTimeMonthLimitInfo } from '@api/time-service/models';
+import { CreateWorkTimeRequest } from '@api/time-service/models';
 import { isGUIDEmpty } from '@app/utils/utils';
 import { EditRequest, LeaveTimePath, PatchDocument, WorkTimePath } from '@app/types/edit-request';
 import { CurrentUserService } from '@app/services/current-user.service';
@@ -140,17 +140,8 @@ export class AttendanceService {
 	}
 
 	public getMonthNorm(): Observable<any> {
-		return forkJoin([this.currentUser.user$, this.canManageTime.selectedDate$]).pipe(
-			first(),
-			switchMap(([user, date]: [User, DateTime]) =>
-				this.timeApi
-					.getMonthLimit(date)
-					.pipe(
-						tap((limit: WorkTimeMonthLimitInfo) =>
-							this.monthNormService.setMonthNorm(limit.normHours, user.company?.rate || 1)
-						)
-					)
-			)
+		return forkJoin([this.currentUser.user$.pipe(first()), this.canManageTime.selectedDate$.pipe(first())]).pipe(
+			switchMap(([user, date]: [User, DateTime]) => this.monthNormService.getMonthLimit(date, user.company?.rate))
 		);
 	}
 }
