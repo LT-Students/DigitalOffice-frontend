@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { ArticleData, RubricData } from '@api/wiki-service/models';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { filter, first, map, switchMap, tap } from 'rxjs/operators';
+import { ArticleData, ArticleResponse, RubricData } from '@api/wiki-service/models';
+import { ArticlePath, PatchDocument } from '@app/types/edit-request';
 import { booleanGuard } from '@app/utils/utils';
 import { WikiTreeFlatNode, WikiTreeMap } from '../models';
-
-export interface WikiState {
-	flatTree: WikiTreeMap;
-}
+import { WikiApiService } from './wiki-api.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class WikiStateService {
-	private state = new BehaviorSubject<WikiState | null>(null);
+	private wikiTree = new BehaviorSubject<WikiTreeMap | null>(null);
 
 	public get tree$(): Observable<WikiTreeMap> {
-		return this.state.asObservable().pipe(
-			filter(booleanGuard),
-			map((state: WikiState) => state.flatTree)
-		);
+		return this.wikiTree.asObservable().pipe(filter(booleanGuard));
 	}
 
 	public get rootRubrics$(): Observable<WikiTreeFlatNode[]> {
@@ -28,7 +23,54 @@ export class WikiStateService {
 		);
 	}
 
-	constructor() {}
+	private activeArticle = new BehaviorSubject<ArticleResponse | null>(null);
+	public get activeArticle$(): Observable<ArticleResponse> {
+		return this.activeArticle.asObservable().pipe(filter(booleanGuard));
+	}
+
+	constructor(private wikiApi: WikiApiService) {}
+
+	public setActiveArticle(article: ArticleResponse): void {
+		this.activeArticle.next(article);
+	}
+
+	private refreshArticle(): Observable<ArticleResponse> {
+		return this.activeArticle$.pipe(
+			first(),
+			switchMap(({ id }) => this.wikiApi.getArticle(id)),
+			tap(this.setActiveArticle.bind(this))
+		);
+	}
+
+	public updateArticle({ title, content }: { title: string; content: string }): Observable<any> {
+		return this.activeArticle$.pipe(
+			first(),
+			switchMap((article) => {
+				const editRequest = [];
+				if (title !== article.name) {
+					editRequest.push(new PatchDocument(title, ArticlePath.Name));
+					this.updateArticleNode(article.id, title);
+				}
+				if (content !== article.content) {
+					editRequest.push(new PatchDocument(content, ArticlePath.Content));
+				}
+				if (editRequest.length) {
+					return this.wikiApi
+						.editArticle(article.id, editRequest)
+						.pipe(switchMap(() => this.refreshArticle()));
+				}
+				return of(true);
+			})
+		);
+	}
+
+	private updateArticleNode(articleId: string, title: string): void {
+		this.tree$.pipe(first()).subscribe((tree) => {
+			const article = tree.get(articleId) as WikiTreeFlatNode;
+			article.name = title;
+			this.wikiTree.next(tree);
+		});
+	}
 
 	public getSubRubricsByParentId$(parentId: string): Observable<WikiTreeFlatNode[]> {
 		return this.tree$.pipe(
@@ -44,7 +86,7 @@ export class WikiStateService {
 
 	public setWikiTree(apiData: RubricData[]): void {
 		const tree = this.convertApiDataToFlatTree(apiData);
-		this.state.next({ flatTree: tree });
+		this.wikiTree.next(tree);
 	}
 
 	private convertApiDataToFlatTree(data: RubricData[]): WikiTreeMap {
@@ -84,6 +126,6 @@ export class WikiStateService {
 	}
 
 	public clearState(): void {
-		this.state.next(null);
+		this.wikiTree.next(null);
 	}
 }

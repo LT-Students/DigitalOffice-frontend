@@ -1,14 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	OnDestroy,
+	OnInit,
+	QueryList,
+	ViewChildren,
+} from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable, of } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
-import { ArticleResponse } from '@api/wiki-service/models';
-import { ArticlePath, PatchDocument } from '@app/types/edit-request';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { finalize, first, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { LoadingState } from '@app/utils/loading-state';
 import { DialogService } from '@shared/component/dialog/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
-import { WikiApiService, WikiStateService } from '../services';
+import { WikiStateService } from '../services';
 import { ArticleEditorComponent } from '../shared/article-editor/article-editor.component';
 
 @Component({
@@ -17,13 +23,12 @@ import { ArticleEditorComponent } from '../shared/article-editor/article-editor.
 	styleUrls: ['./article-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ArticlePageComponent implements OnInit {
+export class ArticlePageComponent implements OnInit, OnDestroy {
 	public readonly Icons = Icons;
 
 	@ViewChildren(ArticleEditorComponent) editor!: QueryList<ArticleEditorComponent>;
 
-	private article$ = this.route.data.pipe(map((data) => data['article'] as ArticleResponse));
-	public state$ = combineLatest([this.article$, this.wikiTree.tree$]).pipe(
+	public state$ = combineLatest([this.state.activeArticle$, this.state.tree$]).pipe(
 		map(([article, tree]) => ({ article, tree }))
 	);
 
@@ -31,21 +36,27 @@ export class ArticlePageComponent implements OnInit {
 	public isEditMode = false;
 	public loadingState = new LoadingState();
 
+	private destroy$ = new Subject();
+
 	constructor(
 		private cdr: ChangeDetectorRef,
 		private dialog: DialogService,
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
 		private router: Router,
-		private wikiApi: WikiApiService,
-		private wikiTree: WikiStateService
+		private state: WikiStateService
 	) {}
 
 	public ngOnInit(): void {
-		this.article$.subscribe((article) => {
+		this.state.activeArticle$.pipe(takeUntil(this.destroy$)).subscribe((article) => {
 			const value = { title: article.name, content: article.content };
 			this.editorControl.setValue(value);
 		});
+	}
+
+	public ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	public handleArticleChange(articleId: string): void {
@@ -64,20 +75,13 @@ export class ArticlePageComponent implements OnInit {
 		if (this.editorControl.invalid) {
 			return;
 		}
-		this.article$.pipe(first()).subscribe((article) => {
-			const editRequest = [];
-			const { title, content } = this.editorControl.value;
-			if (title !== article.name) {
-				editRequest.push(new PatchDocument(title, ArticlePath.Name));
-			}
-			if (content !== article.content) {
-				editRequest.push(new PatchDocument(content, ArticlePath.Content));
-			}
-			if (editRequest.length) {
-				this.wikiApi.editArticle(article.id, editRequest).subscribe();
-			}
-		});
-		this.isEditMode = false;
+		this.loadingState.setLoading(true);
+		this.state
+			.updateArticle(this.editorControl.value)
+			.pipe(finalize(() => this.loadingState.setLoading(false)))
+			.subscribe(() => {
+				this.isEditMode = false;
+			});
 	}
 
 	public closeEditMode(): Observable<boolean> {
@@ -85,7 +89,7 @@ export class ArticlePageComponent implements OnInit {
 		if (!this.isEditMode) {
 			result$ = of(true);
 		} else {
-			result$ = this.article$.pipe(
+			result$ = this.state.activeArticle$.pipe(
 				first(),
 				switchMap((article) => {
 					const { title } = this.editorControl.value;
