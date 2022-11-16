@@ -8,7 +8,7 @@
 		Выгрузить часы
 	</button>
 </div>
-<do-dynamic-filter [filters]="filterConfig"></do-dynamic-filter>
+<do-dynamic-filter [filters]="filterConfig$ | async"></do-dynamic-filter>
 <do-table
 	[dataSource]="dataSource"
 	[tableOptions]="tableOptions"
