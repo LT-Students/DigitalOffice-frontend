@@ -6,11 +6,13 @@ export class DepartmentInfo {
 	public name: string;
 	public shortName: string;
 	public role: DepartmentUserRole;
+	public childDepartmentsIds: string[];
 
 	constructor(data: DepartmentUserInfo) {
 		this.id = data.department.id;
 		this.name = data.department.name;
 		this.shortName = data.department.shortName;
 		this.role = data.role;
+		this.childDepartmentsIds = data.department.childDepartmentsIds || [];
 	}
 }

@@ -1,11 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ImageInfo } from './image-info';
 import { PositionInfo } from './position-info';
 import { ProjectUserRoleType } from './project-user-role-type';
 export interface UserInfo {
-	avatarImage?: ImageInfo;
-
 	/**
 	 * The user first name
 	 */
@@ -15,6 +12,11 @@ export interface UserInfo {
 	 * Unique project identifier.
 	 */
 	id: string;
+
+	/**
+	 * Unique image (avatar) identifier.
+	 */
+	imageId?: string;
 
 	/**
 	 * User state.

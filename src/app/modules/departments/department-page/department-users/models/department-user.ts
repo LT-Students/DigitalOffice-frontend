@@ -1,10 +1,9 @@
 import { UserInfo } from '@api/department-service/models/user-info';
-import { ImageInfo } from '@app/models/image.model';
 import { DepartmentRole, DepartmentRoleInfo } from './department-role-info';
 
 export class DepartmentUser {
 	public id: string;
-	public avatar?: ImageInfo;
+	public imageId?: string;
 	public firstName: string;
 	public lastName: string;
 	public middleName?: string;
@@ -13,7 +12,7 @@ export class DepartmentUser {
 
 	constructor(user: UserInfo) {
 		this.id = user.id;
-		this.avatar = user.avatarImage;
+		this.imageId = user.imageId;
 		this.firstName = user.firstName;
 		this.lastName = user.lastName;
 		this.middleName = user.middleName;

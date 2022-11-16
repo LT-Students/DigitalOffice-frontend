@@ -109,9 +109,18 @@ export class UserApiService extends BaseService {
 		/**
 		 * true - ascending sort user, false - descending sort, null(default) - without sort.
 		 */
-		ascendingSort?: boolean;
-		includeAvatars?: boolean;
+		isAscendingSort?: boolean;
 		includePositions?: boolean;
+
+		/**
+		 * To filter users by substring in their name, last name or middle name.
+		 */
+		fullNameIncludeSubstring?: string;
+
+		/**
+		 * To filter users by their posisions.
+		 */
+		positionId?: string;
 	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
 		if (params) {
@@ -119,9 +128,10 @@ export class UserApiService extends BaseService {
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
 			rb.query('isActive', params.isActive, {});
-			rb.query('ascendingSort', params.ascendingSort, {});
-			rb.query('includeAvatars', params.includeAvatars, {});
+			rb.query('isAscendingSort', params.isAscendingSort, {});
 			rb.query('includePositions', params.includePositions, {});
+			rb.query('fullNameIncludeSubstring', params.fullNameIncludeSubstring, {});
+			rb.query('positionId', params.positionId, {});
 		}
 
 		return this.http
@@ -169,9 +179,18 @@ export class UserApiService extends BaseService {
 		/**
 		 * true - ascending sort user, false - descending sort, null(default) - without sort.
 		 */
-		ascendingSort?: boolean;
-		includeAvatars?: boolean;
+		isAscendingSort?: boolean;
 		includePositions?: boolean;
+
+		/**
+		 * To filter users by substring in their name, last name or middle name.
+		 */
+		fullNameIncludeSubstring?: string;
+
+		/**
+		 * To filter users by their posisions.
+		 */
+		positionId?: string;
 	}): Observable<FindResultResponseUserInfo> {
 		return this.findUsers$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)

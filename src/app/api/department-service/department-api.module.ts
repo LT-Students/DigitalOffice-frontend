@@ -7,7 +7,6 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { DepartmentApiService } from './services/department-api.service';
 import { DepartmentTreeApiService } from './services/department-tree-api.service';
 import { DepartmentUserApiService } from './services/department-user-api.service';
-import { ProjectApiService } from './services/project-api.service';
 import { CategoryApiService } from './services/category-api.service';
 
 /**
@@ -21,7 +20,6 @@ import { CategoryApiService } from './services/category-api.service';
 		DepartmentApiService,
 		DepartmentTreeApiService,
 		DepartmentUserApiService,
-		ProjectApiService,
 		CategoryApiService,
 		ApiConfiguration,
 	],

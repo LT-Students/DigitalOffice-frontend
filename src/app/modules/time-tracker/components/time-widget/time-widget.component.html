@@ -15,7 +15,7 @@
 		>
 			<mat-icon [svgIcon]="Icons.KeyboardArrowLeft"></mat-icon>
 		</button>
-		<do-doughnut-chart (chartLegend)="chartData = $event"></do-doughnut-chart>
+		<do-doughnut-chart [monthNorm]="monthNorm$ | async" (chartLegend)="chartData = $event"></do-doughnut-chart>
 		<button
 			(click)="onNextMonthClicked(selectedDate)"
 			class="fab-button"
