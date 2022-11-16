@@ -174,7 +174,7 @@ export class DoValidators {
 		return PASSWORD_REGEXP.test(control.value) ? null : { password: true };
 	}
 
-	static matchControls(field1: string, field2: string): ValidatorFn | null {
+	static matchControls(field1: string, field2: string): ValidatorFn {
 		return (group: AbstractControl): ValidationErrors | null => {
 			const control1 = group.get(field1);
 			const control2 = group.get(field2);
