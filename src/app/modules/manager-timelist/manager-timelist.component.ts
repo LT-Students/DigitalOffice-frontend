@@ -5,11 +5,12 @@ import {
 	Component,
 	Inject,
 	OnDestroy,
+	Optional,
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
-import { combineLatest, merge, Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DateTime, Interval } from 'luxon';
 import { LoadingState } from '@app/utils/loading-state';
@@ -32,7 +33,14 @@ import {
 	TimeApiService,
 	TimelistLeaveTimeDatepickerService,
 } from './services';
-import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType, TimeListDataSource, UserStat } from './models';
+import {
+	TIMELIST_ENTITY_INFO,
+	TimelistEntityInfo,
+	TimelistEntityType,
+	TimeListDataSource,
+	UserStat,
+	AdditionalTimelistFilters,
+} from './models';
 import {
 	AddLeaveTimeDialogComponent,
 	AddLeaveTimeDialogData,
@@ -62,7 +70,7 @@ export class ManagerTimelistComponent extends LoadingState implements AfterViewI
 	public canAddLeaveTime$ = this.canManageTime.canEdit$;
 
 	public tableOptions = this.tableConfig.getTableOptions();
-	public filterConfig = this.tableConfig.getFilters();
+	public filterConfig$ = this.tableConfig.getFilters();
 	public expandedRow$!: ReturnType<ManagerTimelistTableConfigService['getExpandedRowData$']>;
 	public dataSource!: TimeListDataSource;
 
@@ -70,6 +78,7 @@ export class ManagerTimelistComponent extends LoadingState implements AfterViewI
 
 	constructor(
 		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
+		@Optional() private additionalFilters: AdditionalTimelistFilters,
 		private tableConfig: ManagerTimelistTableConfigService,
 		private canManageTime: CanManageTimeInSelectedDate,
 		private reservedDaysStore: ReservedDaysStoreService,
@@ -94,22 +103,21 @@ export class ManagerTimelistComponent extends LoadingState implements AfterViewI
 
 					const stats = data['stats'];
 					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType, u);
+					this.dataSource.sort = this.table.sort;
+					this.dataSource.filter = this.filter;
+					this.dataSource.additionalFilters = this.additionalFilters;
+
 					this.expandedRow$ = this.tableConfig.getExpandedRowData$(this.dataSource);
 					this.cdr.markForCheck();
 				},
 			});
 
-		const sort = this.table.sort;
-		merge(
-			sort.sortChange,
-			this.filter.filterChange,
-			this.datepicker.dateSelection.pipe(tap((d: DateTime) => this.canManageTime.setNewDate(d)))
-		)
+		this.datepicker.dateSelection
+			.pipe(tap((d: DateTime) => this.canManageTime.setNewDate(d)))
 			.pipe(
 				switchMap(() => {
 					const { year, month } = this.datepicker.selectDate;
-					const name = this.filter.value['name'] || '';
-					return this.dataSource.loadStats(this.entityInfo.entityId, month, year, sort.direction, name);
+					return this.dataSource.loadStats(this.entityInfo.entityId, month, year);
 				}),
 				takeUntil(this.destroy$)
 			)

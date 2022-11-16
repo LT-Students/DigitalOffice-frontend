@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ProjectInfo } from '@api/project-service/models/project-info';
 import { PermissionGuard } from '@app/guards/permission.guard';
 import { UserRights } from '@app/types/user-rights.enum';
 import { TimelistHolidaysResolver } from '../manager-timelist/resolvers/timelist-holidays-resolver.service';
+import { AutocompleteFilterParams, FilterDef } from '../dynamic-filter/models';
+import { AdditionalTimelistFilters, UserStat } from '../manager-timelist/models';
+import { FilterEvent } from '../dynamic-filter/dynamic-filter.component';
 import { DepartmentListResolver } from './resolvers/department-list.resolver';
 import { DepartmentPageComponent } from './department-page/department-page.component';
 import { DepartmentPageResolver } from './resolvers/department-page.resolver';
@@ -19,6 +25,7 @@ import { DepartmentProjectsResolver } from './department-page/department-project
 import { DepartmentUsersComponent } from './department-page/department-users/department-users.component';
 import { DepartmentProjectsComponent } from './department-page/department-projects/department-projects.component';
 import { DepartmentOverviewComponent } from './department-page/department-overview/department-overview.component';
+import { DepartmentPageStateService } from './department-id-route-container/department-page-state.service';
 
 const routes: Routes = [
 	{
@@ -83,12 +90,48 @@ const routes: Routes = [
 				resolve: {
 					stats: TimelistResolver,
 					holidays: TimelistHolidaysResolver,
+					projects: DepartmentProjectsResolver,
 				},
+				providers: [
+					{
+						provide: AdditionalTimelistFilters,
+						useFactory: resolveAdditionalFilters,
+						deps: [DepartmentPageStateService],
+					},
+				],
 			},
 		],
 	},
 	{ path: '**', redirectTo: '', pathMatch: 'full' },
 ];
+
+function resolveAdditionalFilters(depState: DepartmentPageStateService): AdditionalTimelistFilters {
+	return {
+		getAdditionalFilters(): Observable<FilterDef[]> {
+			return of([
+				{
+					key: 'projectId',
+					type: 'autocomplete',
+					width: 306,
+					params: new AutocompleteFilterParams({
+						options$: depState.projects$.pipe(map((projects) => projects.data)),
+						valueGetter: (p) => p?.id,
+						displayWithFn: (p) => p?.name || '',
+						filterFn: (v: string, options: ProjectInfo[]) => {
+							v = v.toLowerCase();
+							return options.filter((p: ProjectInfo) => p.name.toLowerCase().includes(v));
+						},
+						placeholder: 'Выберите проект',
+					}),
+				},
+			]);
+		},
+		filterFn(stats: UserStat[], filter: FilterEvent): UserStat[] {
+			const projectId = filter['projectId'];
+			return projectId ? stats.filter((u) => u.workTimes.some((wt) => wt.project?.id === projectId)) : stats;
+		},
+	};
+}
 
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
