@@ -2,28 +2,24 @@ import { Injectable } from '@angular/core';
 import { PositionApiService } from '@api/position-service/services/position-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { PositionInfo } from '@api/position-service/models/position-info';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { EditRequest, PositionPath } from '@app/types/edit-request';
+import { map } from 'rxjs/operators';
 
 export interface ICreatePositionRequest {
 	name: string;
-	description?: null | string;
-}
-
-export interface IPositionInfo {
-	id?: string;
-	name: string;
 	description?: string;
-	isActive?: boolean;
 }
 
 export interface IFindRequest {
 	skipCount: number;
 	takeCount: number;
-	includedeactivated?: boolean;
+	isascendingsort?: boolean;
+	includeDeactivated: boolean;
+	nameincludesubstring?: string;
 }
 
 @Injectable({
@@ -38,13 +34,22 @@ export class PositionService {
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Create));
 	}
 
-	// public getPosition(positionId: UUID): Observable<OperationResultResponse<IPositionInfo>> {
-	// 	return this._positionApiService.getPosition({ positionId: positionId });
-	// }
-
-	//TODO merge PositionInfo and IPositionInfo into one interface
-	public findPositions(params: IFindRequest): Observable<OperationResultResponse<PositionInfo[]>> {
-		return this._positionApiService.findPositions(params);
+	public findPositions({
+		skipCount,
+		takeCount,
+		isascendingsort,
+		nameincludesubstring,
+		includeDeactivated,
+	}: IFindRequest): Observable<FindResponse<PositionInfo>> {
+		return this._positionApiService
+			.findPositions({
+				skipcount: skipCount,
+				takecount: takeCount,
+				isascendingsort,
+				nameincludesubstring,
+				includeDeactivated,
+			})
+			.pipe(map((res) => new FindResponse(res)));
 	}
 
 	public editPosition(

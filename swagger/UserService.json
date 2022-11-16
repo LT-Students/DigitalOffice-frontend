@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.5.5",
+    "version": "1.4.5.7",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -1960,8 +1960,8 @@
       "UserAdditionInfo": {
         "type": "object",
         "properties": {
-          "GenderName": {
-            "type": "string",
+          "Gender": {
+            "$ref": "#/components/schemas/GenderInfo",
             "nullable": true
           },
           "About": {
@@ -2192,6 +2192,13 @@
           },
           "ShortName": {
             "type": "string"
+          },
+          "ChildDepartmentsIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
@@ -2345,7 +2352,6 @@
         "required": [
           "UserId",
           "Secret",
-          "Login",
           "NewPassword"
         ],
         "properties": {
@@ -2359,11 +2365,6 @@
             "description": "Secret from email.",
             "type": "string",
             "example": "22cf2f"
-          },
-          "Login": {
-            "description": "User login.",
-            "type": "string",
-            "example": "login"
           },
           "NewPassword": {
             "description": "New user password.",

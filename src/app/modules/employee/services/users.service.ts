@@ -21,7 +21,6 @@ export class UsersService {
 			includeoffice: true,
 			includecommunications: true,
 			includerole: true,
-			includeavatars: true,
 			includeprojects: true,
 			includecurrentavatar: true,
 			includecompany: true,

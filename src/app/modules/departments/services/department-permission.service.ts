@@ -27,11 +27,7 @@ export class DepartmentPermissionService {
 
 	public canTransferProjects$(departmentId: string): Observable<boolean> {
 		return this.currentUser.user$.pipe(
-			map(
-				(user: User) =>
-					user.isAdmin ||
-					(user.department?.id === departmentId && user.department.role === DepartmentUserRole.Manager)
-			)
+			map((user: User) => user.isAdmin || this.isUserDepartmentManager(departmentId, user))
 		);
 	}
 
@@ -43,12 +39,19 @@ export class DepartmentPermissionService {
 				}
 				return this.currentUser.user$.pipe(
 					first(),
-					map(
-						(user: User) =>
-							user.department?.id === departmentId && user.department.role === DepartmentUserRole.Manager
-					)
+					map((user: User) => this.isUserDepartmentManager(departmentId, user))
 				);
 			})
+		);
+	}
+
+	private isUserDepartmentManager(departmentId: string, { department }: User): boolean {
+		if (!department) {
+			return false;
+		}
+		return (
+			(department.id === departmentId || department.childDepartmentsIds.some((id) => id === departmentId)) &&
+			department.role === DepartmentUserRole.Manager
 		);
 	}
 }

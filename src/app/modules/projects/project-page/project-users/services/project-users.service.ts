@@ -76,7 +76,7 @@ export class ProjectUsersService {
 						field: 'userInfo',
 						headerName: 'Фио',
 						sortEnabled: true,
-						valueGetter: (user: UserInfo) => ({ ...user, avatar: user.avatarImage }),
+						valueGetter: (user: UserInfo) => user,
 						columnStyle: { overflow: 'hidden' },
 						headerStyle: { 'margin-left': '60px' },
 						params: new UserInfoParams({

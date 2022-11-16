@@ -6,6 +6,7 @@ import {
 	CanManageTimeInSelectedDate,
 	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
 } from '@shared/modules/shared-time-tracking-system/models';
+import { MonthNormService } from '../../services';
 import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 
 @Component({
@@ -21,8 +22,9 @@ export class TimeWidgetComponent {
 	public selectedDate$ = this.canManageTime.selectedDate$;
 	public chartData: ChartLegend = { colors: [], labels: [] };
 	public nextMonthButtonDisabled = false;
+	public monthNorm$ = this.monthNormService.monthNorm$;
 
-	constructor(private canManageTime: CanManageTimeInSelectedDate) {}
+	constructor(private canManageTime: CanManageTimeInSelectedDate, private monthNormService: MonthNormService) {}
 
 	private changeMonth(date: DateTime): void {
 		this.canManageTime.setNewDate(date);

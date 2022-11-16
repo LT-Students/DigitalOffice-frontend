@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.3.3",
+    "version": "1.2.3.5",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -104,16 +104,6 @@
         "responses": {
           "200": {
             "description": "Successfully returned projects informations.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseProjectInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -379,16 +369,6 @@
         "responses": {
           "200": {
             "description": "Successfully returned files information from project.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseFileInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -730,7 +710,7 @@
           "required": false
         },
         {
-          "name": "ascendingSort",
+          "name": "isAscendingSort",
           "in": "query",
           "schema": {
             "type": "boolean"
@@ -739,18 +719,30 @@
           "required": false
         },
         {
-          "name": "includeAvatars",
+          "name": "includePositions",
           "in": "query",
           "schema": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
           },
           "required": false
         },
         {
-          "name": "includePositions",
+          "name": "fullNameIncludeSubstring",
           "in": "query",
+          "description": "To filter users by substring in their name, last name or middle name.",
           "schema": {
-            "type": "boolean"
+            "type": "string"
+          },
+          "required": false
+        },
+        {
+          "name": "positionId",
+          "in": "query",
+          "description": "To filter users by their posisions.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
           },
           "required": false
         }
@@ -767,16 +759,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FindResultResponseUserInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1047,34 +1029,6 @@
           }
         }
       },
-      "ImageInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Content": {
-            "type": "string",
-            "description": "Image file content in base64 encoded string."
-          },
-          "Extension": {
-            "type": "string"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
       "FileAccessType": {
         "type": "string",
         "description": "Type of the access to the file.\n",
@@ -1128,8 +1082,11 @@
           "Position": {
             "$ref": "#/components/schemas/PositionInfo"
           },
-          "AvatarImage": {
-            "$ref": "#/components/schemas/ImageInfo"
+          "ImageId": {
+            "description": "Unique image (avatar) identifier.",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         }
       },
@@ -1170,7 +1127,7 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
           },
-          "Access ": {
+          "Access": {
             "$ref": "#/components/schemas/FileAccessType"
           }
         }

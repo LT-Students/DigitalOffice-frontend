@@ -10,7 +10,7 @@ export class AdditionalInfo {
 	public businessHoursFromUtc?: string;
 	public businessHoursToUtc?: string;
 	public dateOfBirth?: string;
-	public genderName?: string;
+	public gender?: { id: string; name: string };
 	public location?: LatLng;
 
 	constructor(additionInfo: UserAdditionInfo) {
@@ -18,7 +18,7 @@ export class AdditionalInfo {
 		this.businessHoursFromUtc = additionInfo.businessHoursFromUtc;
 		this.businessHoursToUtc = additionInfo.businessHoursToUtc;
 		this.dateOfBirth = additionInfo.dateOfBirth;
-		this.genderName = additionInfo.genderName;
+		this.gender = additionInfo.gender;
 
 		if (additionInfo.latitude && additionInfo.longitude) {
 			this.location = {

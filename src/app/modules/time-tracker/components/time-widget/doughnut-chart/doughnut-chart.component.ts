@@ -4,11 +4,13 @@ import {
 	Component,
 	ElementRef,
 	EventEmitter,
+	Input,
 	OnDestroy,
 	OnInit,
 	Output,
 	ViewChild,
 } from '@angular/core';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Subject } from 'rxjs';
 import { takeUntil, withLatestFrom } from 'rxjs/operators';
 import { Chart, registerables, TooltipItem } from 'chart.js';
@@ -45,19 +47,27 @@ export interface ChartLegend {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
-	@ViewChild('canvas', { static: true }) canvas?: ElementRef<HTMLCanvasElement>;
-	@Output() chartLegend = new EventEmitter<ChartLegend>();
-
 	private readonly COLORS = ['#B9B7DE', '#FFB2B2', '#FFD89E', '#ABF5C0', '#9ECAE2', '#FFCDCD'];
 	private readonly REST_PROJECTS_COLOR = '#FEECAA';
 	private readonly LEAVES_COLOR = '#FFBE97';
 	private readonly OTHER_COLOR = '#D2ECFF';
 	private readonly EMPTY_COLOR = '#EBEBEB';
 
+	@ViewChild('canvas', { static: true }) canvas?: ElementRef<HTMLCanvasElement>;
+	@Output() chartLegend = new EventEmitter<ChartLegend>();
+
+	@Input()
+	set monthNorm(norm: number | null) {
+		this._monthNorm = coerceNumberProperty(norm);
+	}
+	get monthNorm(): number {
+		return this._monthNorm;
+	}
+	private _monthNorm = 160;
+
 	public workTimes: WorkTime[] = [];
 	public leaveTimes: ChartLeaveTime[] = [];
 	public labels: string[] = [];
-	public monthNorm = 160;
 	public userHours = 0;
 
 	private chart?: Chart<'doughnut'>;
@@ -74,10 +84,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		const ctx = this.canvas?.nativeElement.getContext('2d');
 		this.chart = this.buildChart(ctx);
-
-		this.monthNormService.monthNorm$.pipe(takeUntil(this.destroy$)).subscribe({
-			next: (monthNorm: number) => (this.monthNorm = monthNorm),
-		});
 
 		this.attendanceStore.activities$
 			.pipe(withLatestFrom(this.canManageTime.selectedDate$), takeUntil(this.destroy$))

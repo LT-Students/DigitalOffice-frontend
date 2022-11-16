@@ -5,8 +5,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { PositionInfo } from '@api/position-service/models/position-info';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { IPositionInfo, PositionService } from '@app/services/position/position.service';
+import { FindResponse } from '@app/types/operation-result-response.interface';
+import { PositionService } from '@app/services/position/position.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
@@ -21,7 +21,7 @@ export class PositionListComponent implements AfterViewInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	public readonly Icons = Icons;
 
-	public positions$!: Observable<OperationResultResponse<IPositionInfo[]>>;
+	public positions$!: Observable<FindResponse<PositionInfo>>;
 	public filters: UntypedFormGroup;
 	private _refreshCurrentPage$$: Subject<boolean>;
 
@@ -99,11 +99,11 @@ export class PositionListComponent implements AfterViewInit {
 			});
 	}
 
-	public getPositions(filters: any, event: PageEvent | null): Observable<OperationResultResponse<PositionInfo[]>> {
+	public getPositions(filters: any, event: PageEvent | null): Observable<FindResponse<PositionInfo>> {
 		return this._positionService.findPositions({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
-			includedeactivated: filters.showDeactivated,
+			includeDeactivated: filters.showDeactivated,
 		});
 	}
 }
