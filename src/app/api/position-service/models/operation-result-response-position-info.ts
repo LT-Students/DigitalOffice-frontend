@@ -1,8 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-import { OperationResultStatusType } from './operation-result-status-type';
+import { PositionInfo } from './position-info';
 export interface OperationResultResponsePositionInfo {
-	body?: { id?: string; name?: string; description?: string; isactive?: boolean };
+	body?: PositionInfo;
 	errors: Array<string>;
-	status?: OperationResultStatusType;
 }

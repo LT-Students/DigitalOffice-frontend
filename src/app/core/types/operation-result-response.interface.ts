@@ -8,7 +8,7 @@ export class FindResponse<T> {
 	public data: T[];
 	public totalCount = 0;
 
-	constructor(response?: OperationResultResponse<T[]>) {
+	constructor(response?: OperationResultResponse<T[]> | { body?: T[]; totalCount?: number }) {
 		this.data = response?.body || [];
 		this.totalCount = response?.totalCount || 0;
 	}
