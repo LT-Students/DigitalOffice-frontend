@@ -20,7 +20,6 @@ import { WorkInfoItemComponent } from './dialogs/edit-info/edit-work-info/work-i
 import { IsAdminStatusComponent } from './dialogs/edit-info/edit-work-info/is-admin-status/is-admin-status.component';
 import { EditPersonalInfoComponent } from './dialogs/edit-info/edit-personal-info/edit-personal-info.component';
 import { WorkingHoursPipe } from './working-hours.pipe';
-import { GenderSelectComponent } from './components/gender-select/gender-select.component';
 import { CommunicationItemComponent } from './components/communications/communication-item/communication-item.component';
 import { CommunicationTypePipe } from './components/communications/communication-item/communication-type.pipe';
 import { ProjectCardComponent } from './components/projects/project-card/project-card.component';
@@ -46,7 +45,6 @@ import { ProjectStatusPipe } from './components/projects/project-card/status-col
 		IsAdminStatusComponent,
 		EditPersonalInfoComponent,
 		WorkingHoursPipe,
-		GenderSelectComponent,
 		CommunicationItemComponent,
 		CommunicationTypePipe,
 		ProjectCardComponent,

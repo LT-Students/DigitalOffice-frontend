@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreatePositionRequest } from '../models/create-position-request';
 import { EditPositionRequest } from '../models/edit-position-request';
-import { FindResultResponsePositionInfo } from '../models/find-result-response-position-info';
+import { FindResultPositionInfo } from '../models/find-result-position-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponsePositionInfo } from '../models/operation-result-response-position-info';
 
@@ -101,23 +101,35 @@ export class PositionApiService extends BaseService {
 		/**
 		 * Number of positions to skip.
 		 */
-		skipCount: number;
+		skipcount: number;
 
 		/**
 		 * Number of positions to take.
 		 */
-		takeCount: number;
+		takecount: number;
 
 		/**
-		 * If it is true, response will be have deactivated records.
+		 * If true returns sorted positions from A to Z, false - sorted from Z to A, null - no sorting.
 		 */
-		includedeactivated?: boolean;
-	}): Observable<StrictHttpResponse<FindResultResponsePositionInfo>> {
+		isascendingsort?: boolean;
+
+		/**
+		 * If true returns both active and disactivated positions, false - only active
+		 */
+		includeDeactivated: boolean;
+
+		/**
+		 * Returns positions whose names contain a substring.
+		 */
+		nameincludesubstring?: string;
+	}): Observable<StrictHttpResponse<FindResultPositionInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, PositionApiService.FindPositionsPath, 'get');
 		if (params) {
-			rb.query('skipcount', params.skipCount, {});
-			rb.query('takecount', params.takeCount, {});
-			rb.query('includedeactivated', params.includedeactivated, {});
+			rb.query('skipcount', params.skipcount, {});
+			rb.query('takecount', params.takecount, {});
+			rb.query('isascendingsort', params.isascendingsort, {});
+			rb.query('includeDeactivated', params.includeDeactivated, {});
+			rb.query('nameincludesubstring', params.nameincludesubstring, {});
 		}
 
 		return this.http
@@ -130,7 +142,7 @@ export class PositionApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<FindResultResponsePositionInfo>;
+					return r as StrictHttpResponse<FindResultPositionInfo>;
 				})
 			);
 	}
@@ -147,20 +159,30 @@ export class PositionApiService extends BaseService {
 		/**
 		 * Number of positions to skip.
 		 */
-		skipCount: number;
+		skipcount: number;
 
 		/**
 		 * Number of positions to take.
 		 */
-		takeCount: number;
+		takecount: number;
 
 		/**
-		 * If it is true, response will be have deactivated records.
+		 * If true returns sorted positions from A to Z, false - sorted from Z to A, null - no sorting.
 		 */
-		includedeactivated?: boolean;
-	}): Observable<FindResultResponsePositionInfo> {
+		isascendingsort?: boolean;
+
+		/**
+		 * If true returns both active and disactivated positions, false - only active
+		 */
+		includeDeactivated: boolean;
+
+		/**
+		 * Returns positions whose names contain a substring.
+		 */
+		nameincludesubstring?: string;
+	}): Observable<FindResultPositionInfo> {
 		return this.findPositions$Response(params).pipe(
-			map((r: StrictHttpResponse<FindResultResponsePositionInfo>) => r.body as FindResultResponsePositionInfo)
+			map((r: StrictHttpResponse<FindResultPositionInfo>) => r.body as FindResultPositionInfo)
 		);
 	}
 

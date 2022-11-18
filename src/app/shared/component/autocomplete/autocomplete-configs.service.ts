@@ -63,8 +63,11 @@ export class AutocompleteConfigsService {
 	}
 
 	public getPositionsConfig(): AutocompleteConfig<PositionInfo> {
+		const { skipCount, takeCount } = FIND_PARAMS;
 		return {
-			options$: this.positionService.findPositions(FIND_PARAMS).pipe(map((res) => res.body as PositionInfo[])),
+			options$: this.positionService
+				.findPositions({ skipcount: skipCount, takecount: takeCount, includeDeactivated: false })
+				.pipe(map((res) => res.body as PositionInfo[])),
 			valueGetter: (p?: PositionInfo) => p?.id || null,
 			displayWithFn: (p?: PositionInfo) => p?.name || '',
 			filterFn: (v: string, options: PositionInfo[]) => {

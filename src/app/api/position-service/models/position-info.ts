@@ -4,17 +4,17 @@ export interface PositionInfo {
 	/**
 	 * Position description.
 	 */
-	description?: null | string;
+	description?: string;
 
 	/**
 	 * Specific position id.
 	 */
-	id?: string;
+	id: string;
 
 	/**
 	 * Marks whether position is active or not.
 	 */
-	isActive?: boolean;
+	isActive: boolean;
 
 	/**
 	 * Position name.

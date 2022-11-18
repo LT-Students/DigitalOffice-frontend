@@ -1,5 +1,5 @@
 <h3 class="time-info">
-	<span [ngClass]="{ success: userHours >= monthNorm }">{{ userHours }}</span>
+	<span [class.success]="userHours >= monthNorm">{{ userHours }}</span>
 	<small>&nbsp;/&nbsp;{{ monthNorm }}</small>
 </h3>
 <canvas #canvas class="chart" height="280"></canvas>

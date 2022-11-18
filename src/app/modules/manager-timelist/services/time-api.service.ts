@@ -30,8 +30,8 @@ export class TimeApiService {
 		entityType: TimelistEntityType,
 		entityId: string,
 		params: {
-			ascendingsort: boolean;
-			nameincludesubstring?: string;
+			// ascendingsort: boolean;
+			// nameincludesubstring?: string;
 			month: number;
 			year: number;
 			takeCount: number;

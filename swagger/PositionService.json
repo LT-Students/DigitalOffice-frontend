@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.1.1",
+    "version": "1.0.1.4",
     "title": "PositionService",
     "description": "PositionService is an API that intended to work with positions."
   },
@@ -98,11 +98,30 @@
           "required": true
         },
         {
-          "name": "includedeactivated",
+          "name": "isascendingsort",
           "in": "query",
-          "description": "If it is true, response will be have deactivated records.",
+          "description": "If true returns sorted positions from A to Z, false - sorted from Z to A, null - no sorting.",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "description": "If true returns both active and disactivated positions, false - only active",
+          "schema": {
+            "type": "boolean",
+            "default": false
+          },
+          "required": true
+        },
+        {
+          "name": "nameincludesubstring",
+          "in": "query",
+          "description": "Returns positions whose names contain a substring.",
+          "schema": {
+            "type": "string"
           },
           "required": false
         }
@@ -119,7 +138,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindResultResponsePositionInfo"
+                  "$ref": "#/components/schemas/FindResultPositionInfo"
                 }
               }
             }
@@ -129,7 +148,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -332,8 +351,7 @@
           "Description": {
             "description": "Position description.",
             "type": "string",
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
-            "nullable": true
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
           }
         }
       },
@@ -403,6 +421,11 @@
       },
       "PositionInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "IsActive"
+        ],
         "properties": {
           "Id": {
             "description": "Specific position id.",
@@ -417,26 +440,13 @@
           "Description": {
             "description": "Position description.",
             "type": "string",
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
-            "nullable": true
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
           },
           "IsActive": {
             "description": "Marks whether position is active or not.",
-            "type": "boolean",
-            "example": true
+            "type": "boolean"
           }
         }
-      },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
       },
       "ErrorResponse": {
         "description": "Error information",
@@ -457,13 +467,12 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "nullable": true
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+            "type": "object"
           },
           "Errors": {
             "type": "array",
@@ -475,35 +484,12 @@
       },
       "OperationResultResponsePositionInfo": {
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Specific position id.",
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "description": "Position name.",
-                "type": "string",
-                "example": "IT projects consultant"
-              },
-              "description": {
-                "description": "Position description.",
-                "type": "string",
-                "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
-                "nullable": true
-              },
-              "isactive": {
-                "description": "Marks whether position is active or not.",
-                "type": "boolean",
-                "example": true
-              }
-            }
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+            "$ref": "#/components/schemas/PositionInfo"
           },
           "Errors": {
             "type": "array",
@@ -515,10 +501,11 @@
       },
       "FindResultResponsePositionInfo": {
         "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer"
           },
@@ -532,6 +519,23 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultPositionInfo": {
+        "type": "object",
+        "required": [
+          "TotalCount"
+        ],
+        "properties": {
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PositionInfo"
             }
           }
         }
