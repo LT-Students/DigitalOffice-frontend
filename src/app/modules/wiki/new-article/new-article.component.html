@@ -4,7 +4,10 @@
 			<do-back-navigation></do-back-navigation>
 		</mat-card>
 		<mat-card>
-			<do-article-path formControlName="rubricId"></do-article-path>
+			<do-create-wiki-node-form
+				formControlName="rubricId"
+				[isCreateArticlePage]="true"
+			></do-create-wiki-node-form>
 		</mat-card>
 	</div>
 	<div class="article">

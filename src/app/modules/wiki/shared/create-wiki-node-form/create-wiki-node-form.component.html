@@ -1,0 +1,60 @@
+<div class="flex flex_column form" [formGroup]="form">
+	<do-form-field label="Что вы хотите добавить?" labelClass="main">
+		<mat-form-field>
+			<mat-select formControlName="nodeType" placeholder="Выберите из списка">
+				<mat-option *ngFor="let type of nodeTypes$ | async" [value]="type.value">{{ type.label }}</mat-option>
+			</mat-select>
+			<mat-error>{{ form.controls.nodeType.errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-field>
+	<ng-container *ngIf="form.controls.nodeType.value">
+		<do-form-field
+			*ngIf="form.controls.nodeType.value !== WikiNodeType.Rubric"
+			label="Выберите рубрику"
+			labelClass="main"
+		>
+			<mat-form-field>
+				<mat-select formControlName="rubricId" placeholder="Выберите из списка">
+					<mat-option *ngFor="let rubric of rubrics$ | async" [value]="rubric.id">{{
+						rubric.name
+					}}</mat-option>
+				</mat-select>
+				<mat-error>{{ form.controls.rubricId.errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-field>
+		<do-form-field
+			*ngIf="form.controls.nodeType.value !== WikiNodeType.Article"
+			labelClass="main"
+			[label]="form.controls.nodeType.value === WikiNodeType.Rubric ? 'Название рубрики' : 'Название подрубрики'"
+		>
+			<mat-form-field>
+				<input
+					matInput
+					type="text"
+					name="name"
+					formControlName="name"
+					[placeholder]="
+						form.controls.nodeType.value === WikiNodeType.Rubric
+							? 'Введите название рубрики'
+							: 'Введите название подрубрики'
+					"
+				/>
+				<mat-error>{{ form.controls.name.errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-field>
+		<do-form-field
+			*ngIf="form.controls.nodeType.value === WikiNodeType.Article"
+			label="Выберите подрубрику"
+			labelClass="main"
+		>
+			<mat-form-field>
+				<mat-select formControlName="subRubricId" placeholder="Выберите из списка (необязательно)">
+					<mat-option>Не выбрано</mat-option>
+					<mat-option *ngFor="let rubric of subRubrics$ | async" [value]="rubric.id">
+						{{ rubric.name }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-field>
+	</ng-container>
+</div>

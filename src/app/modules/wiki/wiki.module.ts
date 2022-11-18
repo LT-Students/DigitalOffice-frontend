@@ -9,9 +9,11 @@ import { BackNavigationComponent } from './shared/back-navigation/back-navigatio
 import { ArticleEditorComponent } from './shared/article-editor/article-editor.component';
 import { NewArticleComponent } from './new-article/new-article.component';
 import { RouterContainerComponent } from './router-container.component';
-import { ArticlePathComponent } from './new-article/article-path/article-path.component';
 import { ArticleViewerComponent } from './article-page/article-viewer/article-viewer.component';
 import { TreeBreadcrumbsComponent } from './article-page/tree-breadcrumbs/tree-breadcrumbs.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { CreateWikiNodeFormComponent } from './shared/create-wiki-node-form/create-wiki-node-form.component';
+import { CreateWikiNodeDialogComponent } from './edit-page/create-wiki-node-dialog/create-wiki-node-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -21,9 +23,11 @@ import { TreeBreadcrumbsComponent } from './article-page/tree-breadcrumbs/tree-b
 		ArticleEditorComponent,
 		NewArticleComponent,
 		RouterContainerComponent,
-		ArticlePathComponent,
 		ArticleViewerComponent,
 		TreeBreadcrumbsComponent,
+		EditPageComponent,
+		CreateWikiNodeFormComponent,
+		CreateWikiNodeDialogComponent,
 	],
 	imports: [SharedModule, WikiRoutingModule, CdkTreeModule, TinymceEditorModule],
 })

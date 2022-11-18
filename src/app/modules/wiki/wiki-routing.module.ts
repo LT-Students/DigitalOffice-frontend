@@ -6,6 +6,7 @@ import { NewArticleComponent } from './new-article/new-article.component';
 import { WikiRoutes } from './models';
 import { RouterContainerComponent } from './router-container.component';
 import { CanLeaveArticlePageGuard } from './guards/can-leave-article-page-guard.service';
+import { EditPageComponent } from './edit-page/edit-page.component';
 
 const wikiRoutes: Routes = [
 	{
@@ -15,6 +16,10 @@ const wikiRoutes: Routes = [
 			wikiTree: WikiTreeResolver,
 		},
 		children: [
+			{
+				path: '',
+				component: EditPageComponent,
+			},
 			{
 				path: WikiRoutes.NewArticle,
 				component: NewArticleComponent,
