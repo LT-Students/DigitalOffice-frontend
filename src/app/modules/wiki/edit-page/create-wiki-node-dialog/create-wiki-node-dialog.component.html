@@ -1,24 +1,8 @@
-<ng-container *ngIf="!isRubricCreated">
-	<h3 class="text-align_center">Добавить в Wiki</h3>
-	<do-create-wiki-node-form [formControl]="createNodeForm"></do-create-wiki-node-form>
-	<do-actions>
-		<button doButton doDialogClose>Отмена</button>
-		<button mat-flat-button color="primary" [loading]="loadingState.loading$ | async" (click)="submit()">
-			{{ createNodeForm.value?.nodeType === WikiNodeType.Article ? 'Продолжить' : 'Добавить' }}
-		</button>
-	</do-actions>
-</ng-container>
-<ng-container *ngIf="isRubricCreated">
-	<h3 class="text-align_center">
-		{{ createNodeForm.value?.nodeType === WikiNodeType.Rubric ? 'Рубрика добавлена!' : 'Подрубрика добавлена!' }}
-	</h3>
-	<div *ngIf="createNodeForm.value?.nodeType === WikiNodeType.Rubric" class="text-align_center">
-		Вы добавили рубрику <span class="text-accent_controls_default">{{ createNodeForm.value?.name }}.</span>
-	</div>
-	<div *ngIf="createNodeForm.value?.nodeType === WikiNodeType.SubRubric" class="text-align_center">
-		Вы добавили подрубрику <span class="text-accent_controls_default">{{ createNodeForm.value?.name }}.</span>
-	</div>
-	<do-actions>
-		<button mat-flat-button color="primary" doDialogClose>Хорошо</button>
-	</do-actions>
-</ng-container>
+<h3 class="text-align_center">Добавить в Wiki</h3>
+<do-create-wiki-node-form [formControl]="createNodeForm"></do-create-wiki-node-form>
+<do-actions>
+	<button doButton doDialogClose>Отмена</button>
+	<button mat-flat-button color="primary" [loading]="loadingState.loading$ | async" (click)="submit()">
+		{{ createNodeForm.value?.nodeType === WikiNodeType.Article ? 'Продолжить' : 'Добавить' }}
+	</button>
+</do-actions>

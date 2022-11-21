@@ -33,12 +33,6 @@ export class CreateWikiNodeDialogComponent {
 		this.submitService
 			.submit$(value)
 			.pipe(finalize(() => this.loadingState.setLoading(false)))
-			.subscribe(() => {
-				if (value.nodeType === WikiNodeType.Article) {
-					this.dialogRef.close();
-				} else {
-					this.isRubricCreated = true;
-				}
-			});
+			.subscribe(() => this.dialogRef.close());
 	}
 }
