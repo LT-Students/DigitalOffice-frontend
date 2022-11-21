@@ -12,6 +12,7 @@ import { SubmitService } from './submit.service';
 	templateUrl: './create-wiki-node-dialog.component.html',
 	styleUrls: ['./create-wiki-node-dialog.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [SubmitService],
 })
 export class CreateWikiNodeDialogComponent {
 	public readonly WikiNodeType = WikiNodeType;

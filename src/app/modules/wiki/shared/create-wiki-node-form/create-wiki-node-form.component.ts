@@ -9,9 +9,9 @@ import {
 	Self,
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors } from '@angular/forms';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subject } from 'rxjs';
-import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { booleanGuard } from '@app/utils/utils';
 import { DoValidators } from '@app/validators/do-validators';
 import { WikiNodeType, WikiNodeTypes, WikiTreeFlatNode } from '../../models';
@@ -34,8 +34,8 @@ export class CreateWikiNodeFormComponent implements OnInit, OnDestroy, ControlVa
 	public readonly WikiNodeType = WikiNodeType;
 
 	@Input()
-	set isCreateArticlePage(isCreateArticlePage: boolean | null) {
-		const shouldDisable = coerceBooleanProperty(isCreateArticlePage);
+	set disableNodeTypeSelection(disableNodeTypeSelection: BooleanInput) {
+		const shouldDisable = coerceBooleanProperty(disableNodeTypeSelection);
 		if (shouldDisable) {
 			this.form.controls.nodeType.disable();
 		}
@@ -52,6 +52,8 @@ export class CreateWikiNodeFormComponent implements OnInit, OnDestroy, ControlVa
 
 	public rubrics$ = this.wikiState.rootRubrics$;
 	public subRubrics$ = this.form.controls.rubricId.valueChanges.pipe(
+		startWith(null),
+		map(() => this.form.controls.rubricId.value),
 		filter(booleanGuard),
 		switchMap((rubricId: string) => this.wikiState.getSubRubricsByParentId$(rubricId))
 	);
@@ -81,8 +83,9 @@ export class CreateWikiNodeFormComponent implements OnInit, OnDestroy, ControlVa
 			};
 		}
 
-		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v) => {
-			switch (v.nodeType) {
+		this.form.valueChanges.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+			const { nodeType } = this.form.getRawValue();
+			switch (nodeType) {
 				case WikiNodeType.Rubric:
 					this.form.controls.rubricId.disable({ emitEvent: false });
 					this.form.controls.subRubricId.disable({ emitEvent: false });
@@ -125,9 +128,11 @@ export class CreateWikiNodeFormComponent implements OnInit, OnDestroy, ControlVa
 	public registerOnTouched(fn: any): void {}
 
 	public writeValue(value: CreateNodeFormValue | null): void {
-		if (value) {
-			this.form.setValue(value, { emitEvent: false });
-		}
+		setTimeout(() => {
+			if (value) {
+				this.form.patchValue(value);
+			}
+		});
 	}
 
 	private getNodeTypes(rubrics: WikiTreeFlatNode[]): { label: string; value: WikiNodeType }[] {

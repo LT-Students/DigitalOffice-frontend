@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 @Injectable({
 	providedIn: 'root',
 })
+/**
+ * @deprecated some stupid implementation
+ */
 export class LocalStorageService {
 	constructor() {}
 

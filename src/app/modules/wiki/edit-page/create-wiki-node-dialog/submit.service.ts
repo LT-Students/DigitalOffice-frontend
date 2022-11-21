@@ -2,16 +2,20 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { BrowserStorage } from '@app/models/browserStorage';
 import { DialogService } from '@shared/component/dialog/dialog.service';
 import { CreateNodeFormValue } from '../../shared/create-wiki-node-form/create-wiki-node-form.component';
-import { WikiNodeType, WikiRoutes } from '../../models';
+import { WikiNodeType, WikiRoutes, CREATE_FORM_NODE_KEY } from '../../models';
 import { WikiApiService } from '../../services';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class SubmitService {
-	constructor(private dialog: DialogService, private router: Router, private wikiApi: WikiApiService) {}
+	constructor(
+		private dialog: DialogService,
+		private router: Router,
+		private storage: BrowserStorage,
+		private wikiApi: WikiApiService
+	) {}
 
 	public submit$(formValue: CreateNodeFormValue): Observable<string | never> {
 		switch (formValue.nodeType) {
@@ -52,6 +56,7 @@ export class SubmitService {
 
 	private navigateToArticleEditor(formValue: CreateNodeFormValue): Observable<string> {
 		this.router.navigate([this.router.url, WikiRoutes.NewArticle]);
+		this.storage.set(CREATE_FORM_NODE_KEY, JSON.stringify(formValue));
 		return of('');
 	}
 }

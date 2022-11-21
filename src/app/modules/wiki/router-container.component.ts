@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BrowserStorage } from '@app/models/browserStorage';
+import { SessionStorageService } from '@app/services/session-storage.service';
 import { WikiStateService } from './services';
 
 @Component({
@@ -7,6 +9,7 @@ import { WikiStateService } from './services';
 	template: `<router-outlet></router-outlet>`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: BrowserStorage, useExisting: SessionStorageService }],
 })
 export class RouterContainerComponent implements OnInit, OnDestroy {
 	constructor(private wikiState: WikiStateService, private route: ActivatedRoute) {}
