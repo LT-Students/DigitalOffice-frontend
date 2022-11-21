@@ -18,3 +18,7 @@ mat-dialog-content.mat-dialog-content {
 mat-dialog-actions.mat-dialog-actions {
 	margin: 0;
 }
+
+.no-transition-on-multiple-dialogs.cdk-overlay-backdrop {
+	transition: none;
+}

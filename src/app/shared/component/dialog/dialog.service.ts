@@ -25,6 +25,18 @@ export class DialogService {
 		component: ComponentType<C>,
 		config?: DialogConfig<D, DialogRef<R, C>>
 	): DialogRef<R, C> {
+		// remove transition from backdrop when there's a multiple dialogs to remove flickering when closing and opening
+		// dialogs at the same time
+		if (this.openDialogs.length) {
+			config = {
+				...config,
+				backdropClass: [
+					...(config?.backdropClass || []),
+					'no-transition-on-multiple-dialogs',
+					'cdk-overlay-dark-backdrop',
+				],
+			};
+		}
 		return this.dialog.open(component, {
 			container: DialogComponent,
 			...config,
