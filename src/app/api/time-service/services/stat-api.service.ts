@@ -33,8 +33,8 @@ export class StatApiService extends BaseService {
 	 * This method doesn't expect any request body.
 	 */
 	findStat$Response(params: {
-		departmentsIds?: Array<string>;
-		projectId?: string;
+		departmentId?: Array<string>;
+		projectId?: Array<string>;
 
 		/**
 		 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A, when null - without sort
@@ -52,7 +52,7 @@ export class StatApiService extends BaseService {
 	}): Observable<StrictHttpResponse<FindResultResponseUserStatInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, StatApiService.FindStatPath, 'get');
 		if (params) {
-			rb.query('departmentsIds', params.departmentsIds, {});
+			rb.query('departmentId', params.departmentId, {});
 			rb.query('projectId', params.projectId, {});
 			rb.query('ascendingsort', params.ascendingsort, {});
 			rb.query('nameincludesubstring', params.nameincludesubstring, {});
@@ -86,8 +86,8 @@ export class StatApiService extends BaseService {
 	 * This method doesn't expect any request body.
 	 */
 	findStat(params: {
-		departmentsIds?: Array<string>;
-		projectId?: string;
+		departmentId?: Array<string>;
+		projectId?: Array<string>;
 
 		/**
 		 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A, when null - without sort
