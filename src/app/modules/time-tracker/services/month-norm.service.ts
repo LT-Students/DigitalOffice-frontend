@@ -27,7 +27,8 @@ export class MonthNormService {
 			return of(null);
 		}
 		return this.timeApi.getMonthLimit(date).pipe(
-			tap(({ normHours }: WorkTimeMonthLimitInfo) => {
+			tap((limit: WorkTimeMonthLimitInfo | null) => {
+				const normHours = limit?.normHours || 0;
 				this.normMap.set(monthId, normHours);
 				this.setMonthNorm(normHours, rate);
 			})

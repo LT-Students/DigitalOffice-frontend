@@ -68,7 +68,7 @@ export class TimeApiService {
 		);
 	}
 
-	public getMonthLimit(date: DateTime): Observable<WorkTimeMonthLimitInfo> {
+	public getMonthLimit(date: DateTime): Observable<WorkTimeMonthLimitInfo | null> {
 		const params: IFindWorkTimeMonthLimitRequest = {
 			month: date.month,
 			year: date.year,
@@ -77,8 +77,11 @@ export class TimeApiService {
 		};
 		return this.workTimeMonthLimitApiService.findWorkTimeMonthLimits(params).pipe(
 			map((response) => {
-				const [monthLimit] = response.body as [WorkTimeMonthLimitInfo];
-				return monthLimit;
+				const limits = response.body;
+				if (Array.isArray(limits) && limits.length) {
+					return limits[0];
+				}
+				return null;
 			})
 		);
 	}

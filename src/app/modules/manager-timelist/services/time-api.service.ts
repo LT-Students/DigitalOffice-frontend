@@ -39,7 +39,7 @@ export class TimeApiService {
 		}
 	): Observable<UserStat[]> {
 		const entityParams =
-			entityType === TimelistEntityType.Department ? { departmentsIds: [entityId] } : { projectId: entityId };
+			entityType === TimelistEntityType.Department ? { departmentId: [entityId] } : { projectId: [entityId] };
 		params = { ...params, ...entityParams };
 		return this.statService
 			.findStat(params)

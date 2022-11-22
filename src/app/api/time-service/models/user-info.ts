@@ -9,6 +9,7 @@ export interface UserInfo {
 	id: string;
 	imageId?: string;
 	isActive: boolean;
+	isPending?: boolean;
 	lastName: string;
 	middleName?: string;
 }

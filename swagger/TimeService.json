@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.8.2",
+    "version": "1.1.8.4",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -912,7 +912,7 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
-          "name": "departmentsIds",
+          "name": "departmentId",
           "in": "query",
           "schema": {
             "type": "array",
@@ -927,8 +927,11 @@
           "name": "projectId",
           "in": "query",
           "schema": {
-            "type": "string",
-            "format": "uuid"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           },
           "required": false
         },
@@ -1692,6 +1695,9 @@
             "example": "Alexandrovich"
           },
           "IsActive": {
+            "type": "boolean"
+          },
+          "IsPending": {
             "type": "boolean"
           },
           "ImageId": {
