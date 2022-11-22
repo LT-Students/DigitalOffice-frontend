@@ -1,0 +1,85 @@
+@use 'base/variables' as variables;
+
+:host {
+	display: block;
+}
+
+.wiki-tree-node {
+	display: block;
+
+	cursor: pointer;
+	user-select: none;
+
+	&:not(:last-child) {
+		margin-bottom: 4px;
+	}
+
+	.node-body {
+		padding: 8px;
+
+		display: flex;
+		align-items: center;
+
+		height: 46px;
+
+		border-radius: 10px;
+
+		transition: box-shadow ease-out 200ms, background ease-out 200ms;
+
+		&:hover {
+			background: variables.$light_3;
+		}
+
+		&.root-node {
+			background: #fff;
+
+			box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+
+			&:hover {
+				box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+			}
+		}
+
+		.node-icon {
+			margin-right: 16px;
+
+			color: variables.$secondary_default;
+		}
+
+		.node-name {
+			margin: 0;
+
+			display: -webkit-box;
+			overflow: hidden;
+			flex: 1;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+		}
+	}
+}
+
+.cdk-tree-node {
+	user-select: none;
+
+	&.cdk-drag-preview {
+		// while dragging
+		.node-body {
+			box-shadow: 0 1px 10px rgba(0, 0, 0, 0.15);
+		}
+	}
+
+	&.cdk-drag-placeholder {
+		// potential drop area
+		opacity: 0;
+	}
+}
+
+/* items moving away to make room for drop */
+.cdk-drop-list-dragging .cdk-tree-node:not(.cdk-drag-placeholder) {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* item being dropped */
+.cdk-drag-animating {
+	transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}

@@ -1,1 +1,7 @@
-<button mat-flat-button color="primary" (click)="onCreateNode()">Добавить</button>
+<div class="search">
+	<button mat-flat-button color="primary" (click)="onCreateNode()">Добавить</button>
+</div>
+<div *ngIf="wikiTree$ | async as tree">
+	<h3 class="title">Редактирование</h3>
+	<do-editable-tree [tree]="tree"></do-editable-tree>
+</div>

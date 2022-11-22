@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkTreeModule } from '@angular/cdk/tree';
 import { SharedModule } from '@shared/shared.module';
 import { TinymceEditorModule } from '../tinymce-editor/tinymce-editor.module';
@@ -14,6 +15,7 @@ import { TreeBreadcrumbsComponent } from './article-page/tree-breadcrumbs/tree-b
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { CreateWikiNodeFormComponent } from './shared/create-wiki-node-form/create-wiki-node-form.component';
 import { CreateWikiNodeDialogComponent } from './edit-page/create-wiki-node-dialog/create-wiki-node-dialog.component';
+import { EditableTreeComponent } from './edit-page/editable-tree/editable-tree.component';
 
 @NgModule({
 	declarations: [
@@ -28,7 +30,8 @@ import { CreateWikiNodeDialogComponent } from './edit-page/create-wiki-node-dial
 		EditPageComponent,
 		CreateWikiNodeFormComponent,
 		CreateWikiNodeDialogComponent,
+		EditableTreeComponent,
 	],
-	imports: [SharedModule, WikiRoutingModule, CdkTreeModule, TinymceEditorModule],
+	imports: [SharedModule, WikiRoutingModule, CdkTreeModule, TinymceEditorModule, DragDropModule],
 })
 export class WikiModule {}

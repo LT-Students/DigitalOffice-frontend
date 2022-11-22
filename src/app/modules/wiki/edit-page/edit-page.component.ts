@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewContainerRef } from '@angular/core';
 import { DialogService, ModalWidth } from '@shared/component/dialog/dialog.service';
+import { WikiStateService } from '../services';
 import { CreateWikiNodeDialogComponent } from './create-wiki-node-dialog/create-wiki-node-dialog.component';
 
 @Component({
@@ -9,7 +10,9 @@ import { CreateWikiNodeDialogComponent } from './create-wiki-node-dialog/create-
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPageComponent {
-	constructor(private dialog: DialogService, private vcr: ViewContainerRef) {}
+	public wikiTree$ = this.wikiState.tree$;
+
+	constructor(private dialog: DialogService, private vcr: ViewContainerRef, private wikiState: WikiStateService) {}
 
 	public onCreateNode(): void {
 		this.dialog.open(CreateWikiNodeDialogComponent, { width: ModalWidth.S, viewContainerRef: this.vcr });

@@ -1,0 +1,9 @@
+@use 'base/variables' as variables;
+
+.search {
+	margin-bottom: 24px;
+}
+
+.title {
+	color: variables.$accent_controls_default;
+}
