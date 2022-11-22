@@ -16,7 +16,6 @@ import { StatApiService } from '@api/time-service/services/stat-api.service';
 import { ImportApiService } from '@api/time-service/services/import-api.service';
 import { OperationResultResponseByteArray } from '@api/time-service/models/operation-result-response-byte-array';
 import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
-import { FindResultResponseUserStatInfo } from '@api/time-service/models/find-result-response-user-stat-info';
 import { LeaveType } from '@api/time-service/models/leave-type';
 
 export interface IFindWorkTimesRequest {
@@ -58,17 +57,6 @@ export interface IFindWorkTimeMonthLimitRequest {
 export interface IEditWorkTimeMonthLimitRequest {
 	workTimeMonthLimitId: string;
 	body: EditWorkTimeMonthLimitRequest;
-}
-
-export interface IFindStatRequest {
-	departmentsIds?: Array<string>;
-	projectId?: string;
-	ascendingsort?: boolean;
-	nameincludesubstring?: string;
-	month: number;
-	year: number;
-	takeCount: number;
-	skipCount: number;
 }
 
 export interface IGetImport {
@@ -151,10 +139,6 @@ export class TimeService {
 
 	public editWorkTimeMonthLimit(params: IEditWorkTimeMonthLimitRequest): Observable<OperationResultResponse> {
 		return this._workTimeService.editWorkTimeMonthLimit(params);
-	}
-
-	public findStat(params: IFindStatRequest): Observable<FindResultResponseUserStatInfo> {
-		return this._statService.findStat(params);
 	}
 
 	public getImport(params: IGetImport): Observable<OperationResultResponseByteArray> {
