@@ -1,5 +1,3 @@
-import { ImageInfo } from '@app/models/image.model';
-
 export interface ExistingUserBase {
 	id: string;
 }
@@ -12,7 +10,7 @@ export interface AddUsersDialogData {
 
 export interface NewUserBase {
 	id: string;
-	avatar?: ImageInfo;
+	imageId?: string;
 	firstName: string;
 	lastName: string;
 	middleName?: string;

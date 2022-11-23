@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.1",
+    "version": "1.0.0.2",
     "title": "FilterService",
     "description": "FilterService is an API that intended for filter requests in different services."
   },
@@ -202,8 +202,10 @@
           "MiddleName": {
             "type": "string"
           },
-          "Avatar": {
-            "$ref": "#/components/schemas/ImageInfo"
+          "AvatarId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           },
           "Department": {
             "$ref": "#/components/schemas/DepartmentInfo"
@@ -222,34 +224,6 @@
             "items": {
               "$ref": "#/components/schemas/ProjectInfo"
             }
-          }
-        }
-      },
-      "ImageInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Content": {
-            "type": "string",
-            "description": "Image file content in base64 encoded string."
-          },
-          "Extension": {
-            "type": "string"
-          },
-          "Name": {
-            "type": "string"
           }
         }
       },
