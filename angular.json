@@ -64,8 +64,11 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "aot" : true,
               "optimization": true,
               "outputHashing": "all",
+              "deleteOutputPath" : true,
+              "commonChunk" : true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -85,12 +88,15 @@
               ]
             },
             "development": {
+              "aot" : true,
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "deleteOutputPath" : true,
+              "commonChunk" : true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true
             }
           },
