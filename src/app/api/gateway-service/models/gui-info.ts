@@ -4,8 +4,8 @@ import { ImageConsist } from './image-consist';
 export interface GuiInfo {
 	createdAtUtc: string;
 	favicon?: ImageConsist;
-	id?: string;
+	id: string;
 	logo?: ImageConsist;
-	portalName?: string;
+	portalName: string;
 	siteUrl?: string;
 }

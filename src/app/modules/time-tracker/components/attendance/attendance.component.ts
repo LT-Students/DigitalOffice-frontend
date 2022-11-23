@@ -12,7 +12,6 @@ import {
 import {
 	AttendanceService,
 	AttendanceStoreService,
-	CanManageTimeInSelectedDateService,
 	LeaveTimeDatepickerService,
 	MonthNormService,
 } from '../../services';
@@ -26,8 +25,8 @@ import { CreateLeaveTimeService } from '../../services/create-leave-time.service
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		AttendanceService,
+		CanManageTimeInSelectedDate,
 		{ provide: LeaveTimeAndDatepickerManagement, useClass: LeaveTimeDatepickerService },
-		{ provide: CanManageTimeInSelectedDate, useClass: CanManageTimeInSelectedDateService },
 		{ provide: CreateLeaveTime, useClass: CreateLeaveTimeService },
 	],
 })

@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AdminApiService } from '@api/admin-service/services/admin-api.service';
-import { GraphicalUserInterfaceApiService } from '@api/admin-service/services/graphical-user-interface-api.service';
-import { ServiceEndpointApiService } from '@api/admin-service/services/service-endpoint-api.service';
-import { InstallAppRequest } from '@api/admin-service/models/install-app-request';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ServiceConfigurationInfo } from '@api/admin-service/models/service-configuration-info';
 import { Observable } from 'rxjs';
+import { AdminApiService, ServiceEndpointApiService } from '@api/admin-service/services';
+import { InstallAppRequest, ServiceConfigurationInfo } from '@api/admin-service/models';
+import { GraphicalUserInterfaceApiService } from '@api/gateway-service/services/graphical-user-interface-api.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ImageConsist } from '@api/gateway-service/models/image-consist';
 
 export interface PortalInfo {
 	id: string;
 	portalName: string;
-	logoContent?: string;
-	logoExtension?: string;
+	createdAtUtc: string;
 	siteUrl?: string;
+	favicon?: ImageConsist;
+	logo?: ImageConsist;
 }
 
 @Injectable({
@@ -35,7 +35,7 @@ export class AdminService {
 		return this.adminApiService.editAdmin({ body: params });
 	}
 
-	public isPortalExists(): Observable<OperationResultResponse<Partial<PortalInfo> | null>> {
+	public isPortalExists(): Observable<OperationResultResponse<PortalInfo | null>> {
 		return this.guiApiService.getGraphicalUserInterface();
 	}
 }

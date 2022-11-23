@@ -2,6 +2,7 @@
 	<do-title-datepicker
 		title="Часы за"
 		[selectDate]="selectedDate"
+		[minDate]="minDate$ | async"
 		[maxDate]="maxDate"
 		(dateSelection)="chosenMonthHandler($event)"
 	></do-title-datepicker>
@@ -10,6 +11,7 @@
 			(click)="onPreviousMonthClicked(selectedDate)"
 			class="fab-button"
 			mat-mini-fab
+			[disabled]="previousMonthButtonDisabled$ | async"
 			[class.mat-elevation-z0]="true"
 			data-test="previous-month-btn"
 		>
@@ -20,7 +22,7 @@
 			(click)="onNextMonthClicked(selectedDate)"
 			class="fab-button"
 			mat-mini-fab
-			[disabled]="nextMonthButtonDisabled"
+			[disabled]="nextMonthButtonDisabled$ | async"
 			[class.mat-elevation-z0]="true"
 			data-test="next-month-btn"
 		>

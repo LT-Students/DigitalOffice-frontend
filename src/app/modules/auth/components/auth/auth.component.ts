@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PortalInfo } from '@app/services/admin/admin.service';
-import { PortalService } from '@app/services/portal.service';
+import { PortalInfoService } from '@app/services/portal-info.service';
 
 @Component({
 	selector: 'do-auth',
@@ -12,7 +12,7 @@ import { PortalService } from '@app/services/portal.service';
 })
 export class AuthComponent {
 	public portalName$: Observable<string>;
-	constructor(private portalService: PortalService) {
+	constructor(private portalService: PortalInfoService) {
 		this.portalName$ = this.portalService.portal$.pipe(map((portal: PortalInfo) => portal.portalName));
 	}
 }

@@ -22,12 +22,12 @@ import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/t
 import {
 	CanManageTimeInSelectedDate,
 	LeaveTimeAndDatepickerManagement,
+	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
 	SubmitLeaveTimeValue,
 } from '@shared/modules/shared-time-tracking-system/models';
 import { TableComponent } from '../table/table.component';
 import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
 import {
-	CanManageTimeInSelectedDateService,
 	ReservedDaysStoreService,
 	ManagerTimelistTableConfigService,
 	TimeApiService,
@@ -54,13 +54,13 @@ import {
 	providers: [
 		ReservedDaysStoreService,
 		ManagerTimelistTableConfigService,
+		CanManageTimeInSelectedDate,
 		{ provide: LeaveTimeAndDatepickerManagement, useClass: TimelistLeaveTimeDatepickerService },
-		{ provide: CanManageTimeInSelectedDate, useClass: CanManageTimeInSelectedDateService },
 	],
 })
 export class ManagerTimelistComponent extends LoadingState implements AfterViewInit, OnDestroy {
 	public readonly Icons = Icons;
-	public readonly maxDate = DateTime.now().plus({ month: 1 });
+	public readonly maxDate = MAX_FUTURE_DATE_FOR_LEAVE_TIME;
 
 	@ViewChild(TitleDatepickerV2Component) datepicker!: TitleDatepickerV2Component;
 	@ViewChild(TableComponent) table!: TableComponent<UserStat>;
@@ -68,6 +68,7 @@ export class ManagerTimelistComponent extends LoadingState implements AfterViewI
 
 	public pageTitle = this.getPageTitle(this.entityInfo.entityType);
 	public canAddLeaveTime$ = this.canManageTime.canEdit$;
+	public minDate$ = this.canManageTime.minDate$;
 
 	public tableOptions = this.tableConfig.getTableOptions();
 	public filterConfig$ = this.tableConfig.getFilters();
