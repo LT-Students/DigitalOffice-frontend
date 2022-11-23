@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { PortalInfo } from '@app/services/admin/admin.service';
 import { AppRoutes } from '@app/models/app-routes';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { PortalService } from '@app/services/portal.service';
+import { PortalInfoService } from '@app/services/portal-info.service';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
@@ -12,7 +12,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 	styleUrls: ['./sidebar-header.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidebarHeaderComponent implements OnInit {
+export class SidebarHeaderComponent {
 	@Input()
 	set isWideScreen(value: any) {
 		this._isWideScreen = coerceBooleanProperty(value);
@@ -23,7 +23,5 @@ export class SidebarHeaderComponent implements OnInit {
 	public user$ = this.currentUser.user$;
 	public portalName$ = this.portalService.portal$.pipe(map((portal: PortalInfo) => portal.portalName));
 
-	constructor(private currentUser: CurrentUserService, private portalService: PortalService) {}
-
-	ngOnInit(): void {}
+	constructor(private currentUser: CurrentUserService, private portalService: PortalInfoService) {}
 }

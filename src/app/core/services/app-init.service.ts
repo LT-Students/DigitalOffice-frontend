@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { EMPTY, iif } from 'rxjs';
-import { PortalService } from '@app/services/portal.service';
-import { AdminService, PortalInfo } from '@app/services/admin/admin.service';
+import { PortalInfoService } from '@app/services/portal-info.service';
+import { AdminService } from '@app/services/admin/admin.service';
 import { CompanyService } from '@app/services/company/company.service';
 import { AuthTokenService } from '@app/services/auth-token.service';
 
@@ -13,7 +13,7 @@ import { AuthTokenService } from '@app/services/auth-token.service';
 export class AppInitService {
 	constructor(
 		private companyService: CompanyService,
-		private portalService: PortalService,
+		private portalService: PortalInfoService,
 		private adminService: AdminService,
 		private authToken: AuthTokenService,
 		private authService: AuthService
@@ -28,7 +28,7 @@ export class AppInitService {
 				.isPortalExists()
 				.pipe(
 					tap((res) => {
-						this.portalService.setPortal((res.body as PortalInfo) ?? null);
+						this.portalService.setPortal(res.body || null);
 					}),
 					switchMap(() =>
 						iif(

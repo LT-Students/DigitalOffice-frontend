@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import { AdminInfo } from './admin-info';
-import { GuiInfo } from './gui-info';
+import { CreateGuiRequest } from './create-gui-request';
 import { SmtpInfo } from './smtp-info';
 export interface InstallAppRequest {
 	adminInfo?: AdminInfo;
-	guiInfo?: GuiInfo;
+	createGuiRequest?: CreateGuiRequest;
 	servicesToDisable?: Array<string>;
 	smtpInfo?: SmtpInfo;
 }

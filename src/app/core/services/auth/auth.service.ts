@@ -8,7 +8,6 @@ import { AuthenticationResponse } from '@api/auth-service/models/authentication-
 import { AuthApiService } from '@api/auth-service/services/auth-api.service';
 import { CredentialsApiService } from '@api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
-import { OperationResultResponseCredentialsResponse } from '@api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { AppRoutes } from '@app/models/app-routes';
@@ -83,9 +82,7 @@ export class AuthService {
 		return token != null;
 	}
 
-	public signUp$(
-		createCredentialsRequest: CreateCredentialsRequest
-	): Observable<OperationResultResponseCredentialsResponse> {
+	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<OperationResultResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((response: OperationResultResponse<CredentialsResponse>) => {
 				if (response.body) {

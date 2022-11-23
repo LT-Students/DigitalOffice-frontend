@@ -2,6 +2,7 @@
 	<do-title-datepicker
 		title="Записи за"
 		[selectDate]="selectedDate$ | async"
+		[minDate]="minDate$ | async"
 		[maxDate]="maxDate"
 		(dateSelection)="chosenMonthHandler($event)"
 	></do-title-datepicker>

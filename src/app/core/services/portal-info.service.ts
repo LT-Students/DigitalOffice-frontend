@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 @Injectable({
 	providedIn: 'root',
 })
-export class PortalService {
+export class PortalInfoService {
 	private portal: ReplaySubject<PortalInfo>;
 	public readonly portal$: Observable<PortalInfo>;
 

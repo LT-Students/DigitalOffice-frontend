@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Gateway",
-    "version": "1.0.0.0",
+    "version": "1.0.0.2",
     "description": "Gateway is a pattern for a single entry point to the program."
   },
   "servers": [
@@ -709,13 +709,14 @@
       "GuiInfo": {
         "type": "object",
         "required": [
-          "SiteUrl"
+          "SiteUrl",
+          "createdAtUtc"
         ],
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid",
-            "nullable": true
+            "nullable": false
           },
           "portalName": {
             "type": "string"
@@ -728,6 +729,12 @@
           },
           "favicon": {
             "$ref": "#/components/schemas/ImageConsist"
+          },
+          "createdAtUtc": {
+            "type": "string",
+            "example": "2021-01-21T00:00:00.000Z",
+            "format": "date",
+            "nullable": false
           }
         }
       },
@@ -764,7 +771,7 @@
         "required": [
           "SmtpInfo",
           "AdminInfo",
-          "GuiInfo",
+          "CreateGuiRequest",
           "ServicesToDisable"
         ],
         "properties": {
@@ -774,8 +781,8 @@
           "adminInfo": {
             "$ref": "#/components/schemas/AdminInfo"
           },
-          "guiInfo": {
-            "$ref": "#/components/schemas/GuiInfo"
+          "createGuiRequest": {
+            "$ref": "#/components/schemas/CreateGuiRequest"
           },
           "servicesToDisable": {
             "type": "array",
@@ -783,6 +790,26 @@
               "type": "string",
               "format": "uuid"
             }
+          }
+        }
+      },
+      "CreateGuiRequest": {
+        "type": "object",
+        "required": [
+          "SiteUrl"
+        ],
+        "properties": {
+          "portalName": {
+            "type": "string"
+          },
+          "siteUrl": {
+            "type": "string"
+          },
+          "logo": {
+            "$ref": "#/components/schemas/ImageConsist"
+          },
+          "favicon": {
+            "$ref": "#/components/schemas/ImageConsist"
           }
         }
       },
