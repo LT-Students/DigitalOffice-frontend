@@ -5,6 +5,7 @@ export { GuiInfo } from './models/gui-info';
 export { OperationResultResponseGuiInfo } from './models/operation-result-response-gui-info';
 export { ImageConsist } from './models/image-consist';
 export { InstallAppRequest } from './models/install-app-request';
+export { CreateGuiRequest } from './models/create-gui-request';
 export { AuthenticationRequest } from './models/authentication-request';
 export { AuthenticationResponse } from './models/authentication-response';
 export { ErrorResponse } from './models/error-response';

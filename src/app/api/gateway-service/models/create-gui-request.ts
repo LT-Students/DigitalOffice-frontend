@@ -1,10 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ImageConsist } from './image-consist';
-export interface GuiInfo {
-	createdAtUtc: string;
+export interface CreateGuiRequest {
 	favicon?: ImageConsist;
-	id?: string;
 	logo?: ImageConsist;
 	portalName?: string;
 	siteUrl?: string;

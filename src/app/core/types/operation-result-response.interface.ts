@@ -1,6 +1,6 @@
 export interface OperationResultResponse<T = any> {
 	body?: T;
-	errors: string[];
+	errors?: string[];
 	totalCount?: number;
 }
 
