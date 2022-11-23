@@ -224,10 +224,21 @@ export class TimeListDataSource extends DataSource<UserStat> {
 
 	private sortStats(stats: UserStat[]): UserStat[] {
 		const sortOrder = this.getSortOrder(this._sort.direction);
+		// sort alphabetically
 		stats.sort((u1, u2) => {
 			const u1Name = (u1.user.lastName + u1.user.firstName).toLowerCase();
 			const u2Name = (u2.user.lastName + u2.user.firstName).toLowerCase();
 			return u1Name.localeCompare(u2Name) * (sortOrder ? 1 : -1);
+		});
+		// sort pending users to the end of the list
+		stats.sort(({ user: u1 }, { user: u2 }) => {
+			if (u1.isPending) {
+				return 1;
+			}
+			if (u2.isPending) {
+				return -1;
+			}
+			return 0;
 		});
 		return stats;
 	}

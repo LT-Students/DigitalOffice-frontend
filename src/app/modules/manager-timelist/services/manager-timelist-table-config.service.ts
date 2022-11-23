@@ -36,6 +36,15 @@ export class ManagerTimelistTableConfigService {
 		return {
 			sortActive: 'username',
 			sortDirection: 'asc',
+			getRowStyle: (row: UserStat) => ({
+				'min-height': '64px',
+				...(row.user.isPending ? { filter: 'opacity(65%)' } : null),
+			}),
+			getRowTooltip: (row: UserStat) => (row.user.isPending ? 'Сотрудник не активировал учетную запись' : null),
+			isRowExpandable: (_: number, row: UserStat) => !row.user.isPending,
+			expandedRowComparator: ([expandedRow, row]: [UserStat | null, UserStat]) =>
+				expandedRow?.user.id === row.user.id,
+			trackByFn: (index: number, item: UserStat) => JSON.stringify(item),
 			columns: [
 				new ColumnDef({
 					field: 'username',
@@ -52,7 +61,7 @@ export class ManagerTimelistTableConfigService {
 					type: 'textCell',
 					headerName: 'Часы / Норма',
 					valueGetter: (stats: UserStat) => {
-						const userHours = this.countUserHours(stats);
+						const userHours = stats.user.isPending ? '-' : this.countUserHours(stats);
 						const normHours = stats.limitInfo.normHours;
 						const rate = stats.companyInfo.rate;
 						return `${userHours} / ${normHours * rate}`;
@@ -83,13 +92,6 @@ export class ManagerTimelistTableConfigService {
 					},
 				}),
 			],
-			rowStyle: {
-				'min-height': '64px',
-			},
-			isRowExpandable: () => true,
-			expandedRowComparator: ([expandedRow, row]: [UserStat | null, UserStat]) =>
-				expandedRow?.user.id === row.user.id,
-			trackByFn: (index: number, item: UserStat) => JSON.stringify(item),
 		};
 	}
 

@@ -49,7 +49,10 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 			this.columns = options.columns || this._columns;
 			this._rowHeight = options.rowHeight || this._rowHeight;
 			this._rowStyle = options.rowStyle || this._rowStyle;
+			this._getRowStyle = options.getRowStyle || this._getRowStyle;
 			this._rowClass = options.rowClass || this._rowClass;
+			this._getRowClass = options.getRowClass || this._getRowClass;
+			this._getRowTooltip = options.getRowTooltip || this._getRowTooltip;
 			this.contextMenuItems = options.contextMenuItems || this.contextMenuItems;
 			this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
 			this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
@@ -79,13 +82,40 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 	private _rowStyle = {};
 
 	@Input()
-	set rowClass(className: string) {
+	set getRowStyle(getRowStyle: ((row: T) => { [key: string]: any }) | null) {
+		this._getRowStyle = getRowStyle;
+	}
+	get getRowStyle(): ((row: T) => { [key: string]: any }) | null {
+		return this._getRowStyle;
+	}
+	private _getRowStyle: ((row: T) => { [key: string]: any }) | null = null;
+
+	@Input()
+	set rowClass(className: string | string[]) {
 		this._rowClass = className;
 	}
-	get rowClass(): string {
+	get rowClass(): string | string[] {
 		return this._rowClass;
 	}
-	private _rowClass = '';
+	private _rowClass: string | string[] = '';
+
+	@Input()
+	set getRowClass(getRowClass: ((row: T) => string | string[]) | null) {
+		this._getRowClass = getRowClass;
+	}
+	get getRowClass(): ((row: T) => string | string[]) | null {
+		return this._getRowClass;
+	}
+	private _getRowClass: ((row: T) => string | string[]) | null = null;
+
+	@Input()
+	set getRowTooltip(getRowTooltip: ((row: T) => string | null) | null) {
+		this._getRowTooltip = getRowTooltip;
+	}
+	get getRowTooltip(): ((row: T) => string | null) | null {
+		return this._getRowTooltip;
+	}
+	private _getRowTooltip: ((row: T) => string | null) | null = null;
 
 	@Input() dataSource!: T[] | DataSource<T> | Observable<readonly T[]>;
 	@Input()
