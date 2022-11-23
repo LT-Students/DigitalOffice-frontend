@@ -16,6 +16,7 @@ interface UserInfo {
 	isActive: boolean;
 	lastName: string;
 	middleName?: string;
+	isPending?: boolean;
 	position?: { id: string; name: string };
 }
 
@@ -110,7 +111,7 @@ export class UserStat {
 	public limitInfo: WorkTimeMonthLimitInfo;
 
 	constructor(data: UserStatInfo) {
-		this.user = { ...data.user, imageId: data.user.imageId, position: data.position };
+		this.user = { ...data.user, position: data.position };
 		this.companyInfo = {
 			rate: data.companyUser?.rate || 1,
 			contractName: data.companyUser?.contractSubject?.name,
