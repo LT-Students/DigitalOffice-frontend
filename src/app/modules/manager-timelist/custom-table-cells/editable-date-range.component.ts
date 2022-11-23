@@ -19,8 +19,8 @@ import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { UtilitiesService } from '@app/services/utilities.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { DialogService } from '@shared/component/dialog/dialog.service';
-import { TableCellComponent } from '../../table-cell.component';
-import { TableCell } from '../../models';
+import { TableCellComponent } from '../../table/table-cell.component';
+import { TableCell } from '../../table/models';
 
 export class EditableDateRangeParams {
 	public minDate: DateTime | null = null;
