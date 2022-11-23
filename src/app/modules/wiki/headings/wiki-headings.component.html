@@ -1,0 +1,22 @@
+<div class="wiki-headings">
+	<h3 class="wiki-headings__title">Все рубрики</h3>
+	<div
+		#container
+		id="wiki-headings__container"
+		*ngFor="let rubric of rubrics$ | async as rubrics"
+		[class.wiki-headings__container]="!isRubricsOverflow || isRubricsExpanded"
+		[class.wiki-headings__container-hidden]="isRubricsOverflow && !isRubricsExpanded"
+	>
+		<do-wiki-headings-item [name]="rubric.name"></do-wiki-headings-item>
+	</div>
+	<button doButton>
+		<mat-icon
+			#arrow
+			id="wiki-arrow"
+			[class.wiki-headings__expand]="isRubricsOverflow"
+			[class.wiki-headings__expand-hidden]="!isRubricsOverflow"
+			[svgIcon]="Icons.ArrowDownV2"
+			(click)="toggleArrow()"
+		></mat-icon>
+	</button>
+</div>

@@ -1,0 +1,45 @@
+@use 'base/variables' as var;
+
+.wiki-headings-item {
+	padding: 15px 24px;
+
+	display: inline-flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	box-sizing: border-box;
+
+	background: var.$bg_primary;
+	border-radius: 10px;
+	box-shadow: 0 1px 6px 0 #00000014;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&:hover .wiki-headings-item__name {
+		color: var.$accent_controls_hover;
+	}
+
+	&:focus {
+		border: 2px solid var.$accent_controls_default;
+		box-shadow: none;
+	}
+
+	&:focus .wiki-headings-item__name {
+		color: var.$accent_controls_active;
+	}
+
+	&:active .wiki-headings-item__name {
+		color: var.$accent_controls_active;
+	}
+
+	&:disabled .wiki-headings-item__name {
+		color: var.$disabled;
+	}
+
+	&__name {
+		margin: 0;
+	}
+}

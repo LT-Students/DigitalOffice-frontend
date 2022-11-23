@@ -9,6 +9,7 @@ export enum Icons {
 	Departments = 'departments',
 	Company = 'company',
 	Administration = 'administration',
+	Wiki = 'wiki',
 
 	/**
 	 * Sort icons
@@ -87,6 +88,7 @@ export const IconPaths = {
 	[Icons.Departments]: '/assets/icons/sidebar/departments.svg',
 	[Icons.Company]: '/assets/icons/sidebar/company.svg',
 	[Icons.Administration]: '/assets/icons/sidebar/settings.svg',
+	[Icons.Wiki]: '/assets/icons/sidebar/wiki.svg',
 
 	/**
 	 * Sort icons
