@@ -9,8 +9,11 @@ export class CellFactoryService {
 
 	constructor() {}
 
-	public createCell(cellType: CellTypes, cellHost: DynamicComponentHostDirective): ComponentRef<TableCell<any>> {
-		const component = this.getCellComponentByType(cellType);
+	public createCell(
+		cellType: CellTypes | ComponentType<TableCell<any>>,
+		cellHost: DynamicComponentHostDirective
+	): ComponentRef<TableCell<any>> {
+		const component = typeof cellType === 'string' ? this.getCellComponentByType(cellType) : cellType;
 		const viewContainerRef = cellHost.viewContainerRef;
 		viewContainerRef.clear();
 		this.componentRef = viewContainerRef.createComponent(component);

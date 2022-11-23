@@ -30,6 +30,7 @@
 			[style.max-width.px]="column.maxWidth"
 			><do-table-cell
 				[componentType]="column.type"
+				[customComponent]="column.customComponent"
 				[row]="row"
 				[cellValue]="column.valueGetter ? (row | execute: column.valueGetter) : row[column.field]"
 				[cellParams]="column.params"

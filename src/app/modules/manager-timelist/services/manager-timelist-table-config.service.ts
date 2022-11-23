@@ -20,7 +20,7 @@ import { LeaveTimeType, LeaveTime, UserStat, WorkTime, TimeListDataSource, Addit
 import { ColumnDef, TableOptions } from '../../table/models';
 import { IconButtonParams } from '../../table/cell-components/icon-button/icon-button.component';
 import { ShowMoreTextParams } from '../../table/cell-components/show-more-text/show-more-text.component';
-import { EditableDateRangeParams } from '../../table/cell-components/editable-text-field/editable-date-range.component';
+import { EditableDateRangeComponent, EditableDateRangeParams, EditableTimeComponent } from '../custom-table-cells';
 
 @Injectable()
 export class ManagerTimelistTableConfigService {
@@ -114,7 +114,7 @@ export class ManagerTimelistTableConfigService {
 							}),
 							new ColumnDef({
 								field: 'entityHours',
-								type: 'editableTimeCell',
+								customComponent: EditableTimeComponent,
 								headerName: 'Внесённые часы',
 								valueGetter: (wt: WorkTime) =>
 									wt.managerHours != null ? wt.managerHours : wt.userHours || 0,
@@ -166,7 +166,7 @@ export class ManagerTimelistTableConfigService {
 							}),
 							new ColumnDef({
 								field: 'leaveDates',
-								type: 'editableDateRangeCell',
+								customComponent: EditableDateRangeComponent,
 								headerName: 'Даты отсутствия',
 								valueGetter: (lt: LeaveTime) => lt,
 								params: new EditableDateRangeParams({
