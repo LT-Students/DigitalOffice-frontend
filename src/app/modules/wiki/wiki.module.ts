@@ -16,6 +16,10 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { CreateWikiNodeFormComponent } from './shared/create-wiki-node-form/create-wiki-node-form.component';
 import { CreateWikiNodeDialogComponent } from './edit-page/create-wiki-node-dialog/create-wiki-node-dialog.component';
 import { EditableTreeComponent } from './edit-page/editable-tree/editable-tree.component';
+import { TreeNodeDragDirective } from './edit-page/dnd-tree-directives/tree-node-drag.directive';
+import { TreeNodeDragHandleDirective } from './edit-page/dnd-tree-directives/tree-node-drag-handle.directive';
+import { TreeDndDirective } from './edit-page/dnd-tree-directives/tree-dnd.directive';
+import { DropIndicatorComponent } from './edit-page/dnd-tree-directives/drop-indicator.component';
 
 @NgModule({
 	declarations: [
@@ -31,6 +35,10 @@ import { EditableTreeComponent } from './edit-page/editable-tree/editable-tree.c
 		CreateWikiNodeFormComponent,
 		CreateWikiNodeDialogComponent,
 		EditableTreeComponent,
+		TreeNodeDragDirective,
+		TreeNodeDragHandleDirective,
+		TreeDndDirective,
+		DropIndicatorComponent,
 	],
 	imports: [SharedModule, WikiRoutingModule, CdkTreeModule, TinymceEditorModule, DragDropModule],
 })

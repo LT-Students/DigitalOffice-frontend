@@ -1,38 +1,38 @@
-<cdk-tree [dataSource]="dataSource" [treeControl]="treeControl" cdkDropList>
+<cdk-tree [dataSource]="dataSource" [treeControl]="treeControl" treeDnd>
 	<cdk-tree-node
+		[@nodeToggle]
 		*cdkTreeNodeDef="let node"
 		cdkTreeNodePadding
 		[cdkTreeNodePaddingIndent]="TREE_PADDING"
-		class="wiki-tree-node"
-		cdkDrag
+		class="wiki-tree-node position-relative"
 	>
-		<div class="node-body">
-			<mat-icon cdkDragHandle class="node-icon" [svgIcon]="Icons.DragIndicator"></mat-icon>
+		<div treeNodeDrag class="node-body">
+			<mat-icon treeNodeDragHandle class="node-icon" [svgIcon]="Icons.DragIndicator"></mat-icon>
 			<mat-icon class="node-icon" [svgIcon]="Icons.Article"></mat-icon>
 			<span class="node-name">{{ node.name }}</span>
 		</div>
 	</cdk-tree-node>
 	<cdk-tree-node
+		[@nodeToggle]
 		*cdkTreeNodeDef="let node; when: isRootRubric"
 		cdkTreeNodePadding
 		[cdkTreeNodePaddingIndent]="TREE_PADDING"
-		class="wiki-tree-node"
-		cdkDrag
+		class="wiki-tree-node position-relative"
 	>
-		<div cdkTreeNodeToggle class="node-body root-node">
-			<mat-icon cdkDragHandle class="node-icon" [svgIcon]="Icons.DragIndicator"></mat-icon>
+		<div treeNodeDrag cdkTreeNodeToggle class="node-body root-node">
+			<mat-icon treeNodeDragHandle class="node-icon" [svgIcon]="Icons.DragIndicator"></mat-icon>
 			<h5 class="node-name">{{ node.name }}</h5>
 		</div>
 	</cdk-tree-node>
 	<cdk-tree-node
+		[@nodeToggle]
 		*cdkTreeNodeDef="let node; when: hasChild"
 		cdkTreeNodePadding
 		[cdkTreeNodePaddingIndent]="TREE_PADDING"
-		class="wiki-tree-node"
-		cdkDrag
+		class="wiki-tree-node position-relative"
 	>
-		<div cdkTreeNodeToggle class="node-body">
-			<mat-icon cdkDragHandle class="node-icon" [svgIcon]="Icons.DragIndicator"></mat-icon>
+		<div treeNodeDrag cdkTreeNodeToggle class="node-body">
+			<mat-icon treeNodeDragHandle class="node-icon" [svgIcon]="Icons.DragIndicator"></mat-icon>
 			<mat-icon class="node-icon" [svgIcon]="Icons.Rubric"></mat-icon>
 			<span class="node-name">{{ node.name }}</span>
 		</div>

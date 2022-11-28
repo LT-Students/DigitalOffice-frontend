@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Icons } from '@shared/modules/icons/icons';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { FlatTreeControl } from '@angular/cdk/tree';
+import { Icons } from '@shared/modules/icons/icons';
 import { WikiStateService } from '../../services';
 import { TreeDataSource, WikiTreeFlatNode, WikiTreeMap } from '../../models';
 
@@ -9,6 +10,16 @@ import { TreeDataSource, WikiTreeFlatNode, WikiTreeMap } from '../../models';
 	templateUrl: './editable-tree.component.html',
 	styleUrls: ['./editable-tree.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [
+		trigger('nodeToggle', [
+			transition(':enter', [
+				style({ height: 0, opacity: 0 }),
+				animate(100, style({ height: '*' })),
+				animate(200, style({ opacity: 1 })),
+			]),
+			transition(':leave', [style({ height: '*', opacity: 1 }), animate(100, style({ height: 0, opacity: 0 }))]),
+		]),
+	],
 })
 export class EditableTreeComponent implements OnInit {
 	public readonly Icons = Icons;
