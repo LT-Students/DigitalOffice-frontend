@@ -39,7 +39,7 @@
 			<div class="edit-info__field">
 				<span class="mat-body-2 text-secondary_default">Гендер</span>
 				<div>
-					{{ user.additionalInfo.genderName | placeholder }}
+					{{ user.additionalInfo.gender?.name | placeholder }}
 				</div>
 			</div>
 			<div class="edit-info__field edit-info__two-columns">
@@ -53,56 +53,56 @@
 <ng-template #editTemplate [formGroup]="editForm">
 	<do-form-field label="Фамилия">
 		<mat-form-field
-			[matTooltip]="editForm.controls[userPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, \' и пробел.\nФамилия не может начинаться и заканчиваться символами - и \'' : ''"
+			[matTooltip]="editForm.controls[UserPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, \' и пробел.\nФамилия не может начинаться и заканчиваться символами - и \'' : ''"
 			[matTooltipPosition]="'right'"
 		>
 			<input
 				doTransformName
 				matInput
-				[formControlName]="userPath.LAST_NAME"
+				[formControlName]="UserPath.LAST_NAME"
 				placeholder="Фамилия"
 				minlength="1"
 				maxlength="45"
 				required
 			/>
-			<mat-error *ngIf="editForm.controls[userPath.LAST_NAME].errors?.['whitespace']"
+			<mat-error *ngIf="editForm.controls[UserPath.LAST_NAME].errors?.['whitespace']"
 				>Фамилия не может состоять только из пробелов!
 			</mat-error>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Имя">
 		<mat-form-field
-			[matTooltip]="editForm.controls[userPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, \' и пробел.\nИмя не может начинаться и заканчиваться символами - и \'' : ''"
+			[matTooltip]="editForm.controls[UserPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, \' и пробел.\nИмя не может начинаться и заканчиваться символами - и \'' : ''"
 			[matTooltipPosition]="'right'"
 		>
 			<input
 				doTransformName
 				matInput
-				[formControlName]="userPath.FIRST_NAME"
+				[formControlName]="UserPath.FIRST_NAME"
 				placeholder="Имя"
 				minlength="1"
 				maxlength="45"
 				required
 			/>
-			<mat-error *ngIf="editForm.controls[userPath.FIRST_NAME].errors?.['whitespace']"
+			<mat-error *ngIf="editForm.controls[UserPath.FIRST_NAME].errors?.['whitespace']"
 				>Имя не может состоять только из пробелов!
 			</mat-error>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Отчество">
 		<mat-form-field
-			[matTooltip]="editForm.controls[userPath.MIDDLE_NAME].errors?.['name'] ? 'Отчество может содержать только буквы, -, \' и пробел.\nОтчество не может начинаться и заканчиваться символами - и \'' : ''"
+			[matTooltip]="editForm.controls[UserPath.MIDDLE_NAME].errors?.['name'] ? 'Отчество может содержать только буквы, -, \' и пробел.\nОтчество не может начинаться и заканчиваться символами - и \'' : ''"
 			[matTooltipPosition]="'right'"
 		>
 			<input
 				doTransformName
 				matInput
-				[formControlName]="userPath.MIDDLE_NAME"
+				[formControlName]="UserPath.MIDDLE_NAME"
 				placeholder="Отчество"
 				minlength="1"
 				maxlength="45"
 			/>
-			<mat-error *ngIf="editForm.controls[userPath.MIDDLE_NAME].errors?.['whitespace']"
+			<mat-error *ngIf="editForm.controls[UserPath.MIDDLE_NAME].errors?.['whitespace']"
 				>Отчество не может состоять только из пробелов!
 			</mat-error>
 		</mat-form-field>
@@ -111,7 +111,7 @@
 		<mat-form-field>
 			<input
 				matInput
-				[formControlName]="userPath.DATE_OF_BIRTH"
+				[formControlName]="UserPath.DATE_OF_BIRTH"
 				[matDatepicker]="dayOfBirth"
 				placeholder="Дата рождения"
 			/>
@@ -127,19 +127,25 @@
 			<div class="edit-info__hours-input">
 				<span>С</span>
 				<mat-form-field>
-					<do-time-input [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC"></do-time-input>
+					<do-time-input [formControlName]="UserPath.BUSINESS_HOURS_FROM_UTC"></do-time-input>
 				</mat-form-field>
 			</div>
 			<div class="edit-info__hours-input">
 				<span>По</span>
 				<mat-form-field>
-					<do-time-input [formControlName]="userPath.BUSINESS_HOURS_TO_UTC"></do-time-input>
+					<do-time-input [formControlName]="UserPath.BUSINESS_HOURS_TO_UTC"></do-time-input>
 				</mat-form-field>
 			</div>
 		</div>
 	</do-form-field>
 
-	<do-gender-select [formControl]="genderControl" ngDefaultControl></do-gender-select>
+	<do-form-field label="Гендер">
+		<mat-form-field>
+			<mat-select [formControlName]="UserPath.GENDER_ID" placeholder="Гендер">
+				<mat-option *ngFor="let gender of genders$ | async" [value]="gender.id">{{ gender.name }}</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</do-form-field>
 
 	<do-form-field label="О себе" class="edit-info__two-columns">
 		<mat-form-field appearance="outline">
@@ -150,7 +156,7 @@
 				placeholder="Написать..."
 				maxlength="{{ MAX_ABOUT_LENGTH }}"
 				cdkTextareaAutosize="true"
-				[formControlName]="userPath.ABOUT"
+				[formControlName]="UserPath.ABOUT"
 				cdkAutosizeMinRows="4"
 				cdkAutosizeMaxRows="4"
 			></textarea>

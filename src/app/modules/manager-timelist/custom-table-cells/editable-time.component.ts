@@ -6,9 +6,9 @@ import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { UtilitiesService } from '@app/services/utilities.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { DialogService } from '@shared/component/dialog/dialog.service';
-import { TableCell } from '../../models';
-import { TableCellComponent } from '../../table-cell.component';
-import { EditableTextFieldParams } from './editable-text-field.component';
+import { TableCell } from '../../table/models';
+import { TableCellComponent } from '../../table/table-cell.component';
+import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 
 @Component({
 	selector: 'do-editable-time',

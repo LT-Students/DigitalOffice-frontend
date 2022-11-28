@@ -71,7 +71,6 @@ export class ProjectService {
 		return this.projectUsersService
 			.findUsers({
 				projectId,
-				includeAvatars: true,
 				includePositions: true,
 				isActive: true,
 				skipCount: 0,

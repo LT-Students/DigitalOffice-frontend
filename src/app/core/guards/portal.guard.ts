@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { PortalService } from '@app/services/portal.service';
+import { PortalInfoService } from '@app/services/portal-info.service';
 import { AppRoutes } from '@app/models/app-routes';
 
 @Injectable({
@@ -20,7 +20,7 @@ import { AppRoutes } from '@app/models/app-routes';
 export class PortalGuard implements CanActivate, CanLoad {
 	private installerUrl = this.router.createUrlTree([AppRoutes.Installer]);
 
-	constructor(private portalService: PortalService, private router: Router) {}
+	constructor(private portalService: PortalInfoService, private router: Router) {}
 
 	canActivate(
 		route: ActivatedRouteSnapshot,

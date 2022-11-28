@@ -22,7 +22,6 @@ export class CurrentUserService {
 			userId: userId,
 			includedepartment: true,
 			includerole: true,
-			includeavatars: true,
 			includecurrentavatar: true,
 			includecompany: true,
 			locale: 'ru',

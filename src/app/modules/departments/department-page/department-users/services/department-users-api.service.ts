@@ -30,7 +30,6 @@ export class DepartmentUsersApiService {
 				skipCount: 0,
 				takeCount: MAX_INT32,
 				isActive: true,
-				includeAvatars: true,
 				includePositions: true,
 				...params,
 			})

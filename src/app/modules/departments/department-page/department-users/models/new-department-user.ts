@@ -1,6 +1,6 @@
 import { UserInfo } from '@api/filter-service/models/user-info';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
-import { ExistingUserBase, NewUserBase } from '../../../../add-users-dialog/models/models';
+import { ExistingUserBase, NewUserBase } from '../../../../add-users-dialog/models';
 import { DepartmentRole, DepartmentRoleInfo } from './department-role-info';
 
 export interface NewDepartmentUser extends NewUserBase {
@@ -12,7 +12,7 @@ export class NewDepartmentUser {
 		this.firstName = apiUser.firstName;
 		this.lastName = apiUser.lastName;
 		this.middleName = apiUser.middleName;
-		this.avatar = apiUser.avatar;
+		this.imageId = apiUser.avatarId;
 		this.role = DepartmentRole.Employee;
 	}
 }

@@ -20,7 +20,7 @@ export class TeamStatisticsResolver implements Resolve<UserStat[]> {
 			year,
 			skipCount: 0,
 			takeCount: MAX_INT32,
-			ascendingsort: true,
+			// ascendingsort: true,
 		});
 	}
 }

@@ -12,7 +12,7 @@ import { DepartmentsRoutes } from '../models/departments-routes';
 export class DepartmentPageComponent {
 	public readonly Icons = Icons;
 
-	public state$ = this.departmentPageState.departmentState$;
+	public state$ = this.departmentPageState.state$;
 
 	public navLinks = [
 		{

@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ImageInfo } from './image-info';
 
 /**
  * User data.
@@ -8,8 +7,9 @@ import { ImageInfo } from './image-info';
 export interface UserInfo {
 	firstName: string;
 	id: string;
-	image?: ImageInfo;
+	imageId?: string;
 	isActive: boolean;
+	isPending?: boolean;
 	lastName: string;
 	middleName?: string;
 }

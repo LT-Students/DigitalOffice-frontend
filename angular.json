@@ -29,7 +29,8 @@
             ],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "inlineStyleLanguage": "scss",
             "styles": [
@@ -47,7 +48,9 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -61,8 +64,11 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "aot" : true,
               "optimization": true,
               "outputHashing": "all",
+              "deleteOutputPath" : true,
+              "commonChunk" : true,
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
@@ -82,12 +88,15 @@
               ]
             },
             "development": {
+              "aot" : true,
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "deleteOutputPath" : true,
+              "commonChunk" : true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true
             }
           },
@@ -119,7 +128,8 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "inlineStyleLanguage": "scss",
             "styles": [

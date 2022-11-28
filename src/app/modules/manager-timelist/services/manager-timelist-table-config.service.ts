@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { AppRoutes } from '@app/models/app-routes';
@@ -16,11 +16,11 @@ import {
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
-import { LeaveTimeType, LeaveTime, UserStat, WorkTime, TimeListDataSource } from '../models';
+import { LeaveTimeType, LeaveTime, UserStat, WorkTime, TimeListDataSource, AdditionalTimelistFilters } from '../models';
 import { ColumnDef, TableOptions } from '../../table/models';
 import { IconButtonParams } from '../../table/cell-components/icon-button/icon-button.component';
 import { ShowMoreTextParams } from '../../table/cell-components/show-more-text/show-more-text.component';
-import { EditableDateRangeParams } from '../../table/cell-components/editable-text-field/editable-date-range.component';
+import { EditableDateRangeComponent, EditableDateRangeParams, EditableTimeComponent } from '../custom-table-cells';
 
 @Injectable()
 export class ManagerTimelistTableConfigService {
@@ -28,13 +28,23 @@ export class ManagerTimelistTableConfigService {
 		private router: Router,
 		private dialog: DialogService,
 		private canManageTime: CanManageTimeInSelectedDate,
-		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement
+		private leaveTimeDatepicker: LeaveTimeAndDatepickerManagement,
+		@Optional() private additionalFilters: AdditionalTimelistFilters
 	) {}
 
 	public getTableOptions(): TableOptions {
 		return {
 			sortActive: 'username',
 			sortDirection: 'asc',
+			getRowStyle: (row: UserStat) => ({
+				'min-height': '64px',
+				...(row.user.isPending ? { filter: 'opacity(65%)' } : null),
+			}),
+			getRowTooltip: (row: UserStat) => (row.user.isPending ? 'Сотрудник не активировал учетную запись' : null),
+			isRowExpandable: (_: number, row: UserStat) => !row.user.isPending,
+			expandedRowComparator: ([expandedRow, row]: [UserStat | null, UserStat]) =>
+				expandedRow?.user.id === row.user.id,
+			trackByFn: (index: number, item: UserStat) => JSON.stringify(item),
 			columns: [
 				new ColumnDef({
 					field: 'username',
@@ -51,7 +61,7 @@ export class ManagerTimelistTableConfigService {
 					type: 'textCell',
 					headerName: 'Часы / Норма',
 					valueGetter: (stats: UserStat) => {
-						const userHours = this.countUserHours(stats);
+						const userHours = stats.user.isPending ? '-' : this.countUserHours(stats);
 						const normHours = stats.limitInfo.normHours;
 						const rate = stats.companyInfo.rate;
 						return `${userHours} / ${normHours * rate}`;
@@ -82,13 +92,6 @@ export class ManagerTimelistTableConfigService {
 					},
 				}),
 			],
-			rowStyle: {
-				'min-height': '64px',
-			},
-			isRowExpandable: () => true,
-			expandedRowComparator: ([expandedRow, row]: [UserStat | null, UserStat]) =>
-				expandedRow?.user.id === row.user.id,
-			trackByFn: (index: number, item: UserStat) => JSON.stringify(item),
 		};
 	}
 
@@ -111,7 +114,7 @@ export class ManagerTimelistTableConfigService {
 							}),
 							new ColumnDef({
 								field: 'entityHours',
-								type: 'editableTimeCell',
+								customComponent: EditableTimeComponent,
 								headerName: 'Внесённые часы',
 								valueGetter: (wt: WorkTime) =>
 									wt.managerHours != null ? wt.managerHours : wt.userHours || 0,
@@ -163,7 +166,7 @@ export class ManagerTimelistTableConfigService {
 							}),
 							new ColumnDef({
 								field: 'leaveDates',
-								type: 'editableDateRangeCell',
+								customComponent: EditableDateRangeComponent,
 								headerName: 'Даты отсутствия',
 								valueGetter: (lt: LeaveTime) => lt,
 								params: new EditableDateRangeParams({
@@ -220,15 +223,22 @@ export class ManagerTimelistTableConfigService {
 		);
 	}
 
-	public getFilters(): FilterDef[] {
-		return [
+	public getFilters(): Observable<FilterDef[]> {
+		const filters = [
 			{
 				key: 'name',
 				type: 'input',
-				width: 267,
+				width: 352,
 				params: new InputFilterParams({ icon: Icons.Search, placeholder: 'Поиск по имени и фамилии' }),
 			},
-		];
+		] as FilterDef[];
+
+		if (this.additionalFilters) {
+			return this.additionalFilters
+				.getAdditionalFilters()
+				.pipe(map((additionalFilters) => [...filters, ...additionalFilters]));
+		}
+		return of(filters);
 	}
 
 	private countUserHours(stats: UserStat): number {

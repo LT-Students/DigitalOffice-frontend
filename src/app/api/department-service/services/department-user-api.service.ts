@@ -123,11 +123,6 @@ export class DepartmentUserApiService extends BaseService {
 		isActive?: boolean;
 
 		/**
-		 * If true returns departmnt users with avatars.
-		 */
-		includeAvatars?: boolean;
-
-		/**
 		 * If true returns departmnt users with positions.
 		 */
 		includePositions?: boolean;
@@ -146,7 +141,6 @@ export class DepartmentUserApiService extends BaseService {
 			rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
 			rb.query('departmentUserRoleAscendingSort', params.departmentUserRoleAscendingSort, {});
 			rb.query('isActive', params.isActive, {});
-			rb.query('includeAvatars', params.includeAvatars, {});
 			rb.query('includePositions', params.includePositions, {});
 			rb.query('byPositionId', params.byPositionId, {});
 		}
@@ -209,11 +203,6 @@ export class DepartmentUserApiService extends BaseService {
 		 * If true returns active departmnt users, false - not active, null - all.
 		 */
 		isActive?: boolean;
-
-		/**
-		 * If true returns departmnt users with avatars.
-		 */
-		includeAvatars?: boolean;
 
 		/**
 		 * If true returns departmnt users with positions.

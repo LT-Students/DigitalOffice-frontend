@@ -15,6 +15,7 @@ import { AttendanceStoreService } from '../../services';
 })
 export class UserTasksComponent {
 	public readonly maxDate = MAX_FUTURE_DATE_FOR_LEAVE_TIME;
+	public minDate$ = this.canManageTime.minDate$;
 	public selectedDate$ = this.canManageTime.selectedDate$;
 	public activities$ = this.attendanceStore.activities$;
 	public canEdit$ = this.canManageTime.canEdit$;

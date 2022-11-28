@@ -1,10 +1,12 @@
-import { CellParams, CellTypes } from './table-cell';
+import { ComponentType } from '@angular/cdk/overlay';
+import { CellTypes, TableCell } from './table-cell';
 
 export interface IColumnDef {
 	field: string;
 	headerName?: string;
 	type?: CellTypes;
-	params?: CellParams;
+	customComponent?: ComponentType<TableCell<any>>;
+	params?: any;
 	valueGetter?: (element: any) => any;
 	width?: number;
 	minWidth?: number;
@@ -19,8 +21,9 @@ export interface IColumnDef {
 export class ColumnDef {
 	field: string;
 	type: CellTypes;
+	customComponent?: ComponentType<TableCell<any>>;
 	headerName?: string;
-	params?: CellParams;
+	params?: any;
 	valueGetter?: (element: any) => any;
 	width?: number;
 	minWidth?: number;
@@ -34,6 +37,7 @@ export class ColumnDef {
 	constructor(colDef: IColumnDef) {
 		this.field = colDef.field;
 		this.type = colDef.type || 'textCell';
+		this.customComponent = colDef.customComponent;
 		this.headerName = colDef.headerName;
 		this.params = colDef.params;
 		this.valueGetter = colDef.valueGetter;

@@ -17,6 +17,7 @@ export class UserListItemComponent implements OnInit {
 
 	@Input() user!: UserInfoLike;
 
+	public avatarId?: string;
 	public email?: CommunicationInfo;
 	public additionalInfo?: Pick<FilterUserInfo, 'department' | 'position'>;
 
@@ -24,11 +25,13 @@ export class UserListItemComponent implements OnInit {
 
 	public ngOnInit(): void {
 		if (isActiveUser(this.user)) {
+			this.avatarId = this.user.avatarId;
 			this.additionalInfo = {
 				position: this.user.position,
 				department: this.user.department,
 			};
 		} else if (isPendingUser(this.user)) {
+			this.avatarId = this.user.avatar?.id;
 			const invitationId = this.user.pendingInfo?.invitationCommunicationId;
 			this.email = this.user.communications?.find((c: CommunicationInfo) => c.id === invitationId);
 		}

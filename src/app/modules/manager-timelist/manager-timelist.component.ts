@@ -5,12 +5,12 @@ import {
 	Component,
 	Inject,
 	OnDestroy,
-	OnInit,
+	Optional,
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
-import { combineLatest, merge, Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { DateTime, Interval } from 'luxon';
 import { LoadingState } from '@app/utils/loading-state';
@@ -22,18 +22,25 @@ import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/t
 import {
 	CanManageTimeInSelectedDate,
 	LeaveTimeAndDatepickerManagement,
+	MAX_FUTURE_DATE_FOR_LEAVE_TIME,
 	SubmitLeaveTimeValue,
 } from '@shared/modules/shared-time-tracking-system/models';
 import { TableComponent } from '../table/table.component';
 import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
 import {
-	CanManageTimeInSelectedDateService,
 	ReservedDaysStoreService,
 	ManagerTimelistTableConfigService,
 	TimeApiService,
 	TimelistLeaveTimeDatepickerService,
 } from './services';
-import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType, TimeListDataSource, UserStat } from './models';
+import {
+	TIMELIST_ENTITY_INFO,
+	TimelistEntityInfo,
+	TimelistEntityType,
+	TimeListDataSource,
+	UserStat,
+	AdditionalTimelistFilters,
+} from './models';
 import {
 	AddLeaveTimeDialogComponent,
 	AddLeaveTimeDialogData,
@@ -47,13 +54,13 @@ import {
 	providers: [
 		ReservedDaysStoreService,
 		ManagerTimelistTableConfigService,
+		CanManageTimeInSelectedDate,
 		{ provide: LeaveTimeAndDatepickerManagement, useClass: TimelistLeaveTimeDatepickerService },
-		{ provide: CanManageTimeInSelectedDate, useClass: CanManageTimeInSelectedDateService },
 	],
 })
-export class ManagerTimelistComponent extends LoadingState implements OnInit, AfterViewInit, OnDestroy {
+export class ManagerTimelistComponent extends LoadingState implements AfterViewInit, OnDestroy {
 	public readonly Icons = Icons;
-	public readonly maxDate = DateTime.now().plus({ month: 1 });
+	public readonly maxDate = MAX_FUTURE_DATE_FOR_LEAVE_TIME;
 
 	@ViewChild(TitleDatepickerV2Component) datepicker!: TitleDatepickerV2Component;
 	@ViewChild(TableComponent) table!: TableComponent<UserStat>;
@@ -61,9 +68,10 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 
 	public pageTitle = this.getPageTitle(this.entityInfo.entityType);
 	public canAddLeaveTime$ = this.canManageTime.canEdit$;
+	public minDate$ = this.canManageTime.minDate$;
 
 	public tableOptions = this.tableConfig.getTableOptions();
-	public filterConfig = this.tableConfig.getFilters();
+	public filterConfig$ = this.tableConfig.getFilters();
 	public expandedRow$!: ReturnType<ManagerTimelistTableConfigService['getExpandedRowData$']>;
 	public dataSource!: TimeListDataSource;
 
@@ -71,6 +79,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 
 	constructor(
 		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
+		@Optional() private additionalFilters: AdditionalTimelistFilters,
 		private tableConfig: ManagerTimelistTableConfigService,
 		private canManageTime: CanManageTimeInSelectedDate,
 		private reservedDaysStore: ReservedDaysStoreService,
@@ -85,7 +94,7 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 		super();
 	}
 
-	public ngOnInit(): void {
+	public ngAfterViewInit(): void {
 		combineLatest([this.route.data, this.currentUser.user$])
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
@@ -95,24 +104,21 @@ export class ManagerTimelistComponent extends LoadingState implements OnInit, Af
 
 					const stats = data['stats'];
 					this.dataSource = new TimeListDataSource(stats, this.timeService, this.entityInfo.entityType, u);
+					this.dataSource.sort = this.table.sort;
+					this.dataSource.filter = this.filter;
+					this.dataSource.additionalFilters = this.additionalFilters;
+
 					this.expandedRow$ = this.tableConfig.getExpandedRowData$(this.dataSource);
 					this.cdr.markForCheck();
 				},
 			});
-	}
 
-	public ngAfterViewInit(): void {
-		const sort = this.table.sort;
-		merge(
-			sort.sortChange,
-			this.filter.filterChange,
-			this.datepicker.dateSelection.pipe(tap((d: DateTime) => this.canManageTime.setNewDate(d)))
-		)
+		this.datepicker.dateSelection
+			.pipe(tap((d: DateTime) => this.canManageTime.setNewDate(d)))
 			.pipe(
 				switchMap(() => {
 					const { year, month } = this.datepicker.selectDate;
-					const name = this.filter.value['name'] || '';
-					return this.dataSource.loadStats(this.entityInfo.entityId, month, year, sort.direction, name);
+					return this.dataSource.loadStats(this.entityInfo.entityId, month, year);
 				}),
 				takeUntil(this.destroy$)
 			)

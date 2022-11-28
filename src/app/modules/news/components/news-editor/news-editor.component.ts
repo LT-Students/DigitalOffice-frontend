@@ -18,7 +18,6 @@ import { DoValidators } from '@app/validators/do-validators';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogService } from '@app/services/dialog.service';
-import { OperationResultResponseNewsResponse } from '@api/news-service/models/operation-result-response-news-response';
 import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
@@ -104,7 +103,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		this._destroy$.complete();
 	}
 
-	private _initializeEditor(): Observable<OperationResultResponseNewsResponse | null> {
+	private _initializeEditor(): Observable<OperationResultResponse | null> {
 		if (this.data._newsId) {
 			return this._newsService.getNews(this.data._newsId).pipe(
 				tap((response) => {

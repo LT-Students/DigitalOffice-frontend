@@ -2,20 +2,17 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FindResponse } from '@app/types/operation-result-response.interface';
-import { DepartmentUsersApiService } from './services/department-users-api.service';
+import { DepartmentPageStateService } from '../../department-id-route-container/department-page-state.service';
 import { DepartmentUser } from './models/department-user';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class DepartmentUsersResolver implements Resolve<FindResponse<DepartmentUser>> {
-	constructor(private apiService: DepartmentUsersApiService) {}
+	constructor(private depState: DepartmentPageStateService) {}
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<FindResponse<DepartmentUser>> {
 		const departmentId = route.params['id'];
-		return this.apiService.findUsers(departmentId, {
-			isAscendingSort: true,
-			departmentUserRoleAscendingSort: false,
-		});
+		return this.depState.resolveUsers(departmentId);
 	}
 }

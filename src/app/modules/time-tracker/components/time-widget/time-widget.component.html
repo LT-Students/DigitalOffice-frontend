@@ -2,6 +2,7 @@
 	<do-title-datepicker
 		title="Часы за"
 		[selectDate]="selectedDate"
+		[minDate]="minDate$ | async"
 		[maxDate]="maxDate"
 		(dateSelection)="chosenMonthHandler($event)"
 	></do-title-datepicker>
@@ -10,17 +11,18 @@
 			(click)="onPreviousMonthClicked(selectedDate)"
 			class="fab-button"
 			mat-mini-fab
+			[disabled]="previousMonthButtonDisabled$ | async"
 			[class.mat-elevation-z0]="true"
 			data-test="previous-month-btn"
 		>
 			<mat-icon [svgIcon]="Icons.KeyboardArrowLeft"></mat-icon>
 		</button>
-		<do-doughnut-chart (chartLegend)="chartData = $event"></do-doughnut-chart>
+		<do-doughnut-chart [monthNorm]="monthNorm$ | async" (chartLegend)="chartData = $event"></do-doughnut-chart>
 		<button
 			(click)="onNextMonthClicked(selectedDate)"
 			class="fab-button"
 			mat-mini-fab
-			[disabled]="nextMonthButtonDisabled"
+			[disabled]="nextMonthButtonDisabled$ | async"
 			[class.mat-elevation-z0]="true"
 			data-test="next-month-btn"
 		>

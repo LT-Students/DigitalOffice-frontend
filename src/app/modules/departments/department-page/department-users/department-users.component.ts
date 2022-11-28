@@ -8,9 +8,7 @@ import { Observable } from 'rxjs';
 import { DepartmentPageStateService } from '../../department-id-route-container/department-page-state.service';
 import { TableComponent } from '../../../table/table.component';
 import { DynamicFilterComponent } from '../../../dynamic-filter/dynamic-filter.component';
-import { AddUsersDialogService } from '../../../add-users-dialog/services/add-users-dialog.service';
-import { AddUsersTableConfigService } from '../../../add-users-dialog/services/add-users-table-config.service';
-import { AddUsersApiBase } from '../../../add-users-dialog/services/add-users-api.service';
+import { AddUsersApiBase, AddUsersDialogService, AddUsersTableConfigService } from '../../../add-users-dialog/services';
 import { DepartmentPermissionService } from '../../services/department-permission.service';
 import { Department } from '../department';
 import { TableOptions } from '../../../table/models';
@@ -55,22 +53,19 @@ export class DepartmentUsersComponent implements OnInit {
 	) {}
 
 	ngOnInit(): void {
-		this.dataSource = this.createDataSource();
-		this.tableConfigs.dataSource = this.dataSource;
-		this.tableOptions$ = this.tableConfigs.getTableOptions$();
-	}
+		this.departmentState.users$.pipe(first()).subscribe((users) => {
+			this.dataSource = new DoTableDataSource<DepartmentUser>(users);
+			const id = this.route.snapshot.params['id'];
+			this.dataSource.dataService = {
+				loadData: this.apiService.findUsers.bind(this.apiService, id),
+				convertListParamsToRequestParams: this.convertListParamsToRequestParams.bind(this),
+			};
+			this.dataSource.sort = this.table.sort;
+			this.dataSource.filter = this.filter;
 
-	private createDataSource(): DoTableDataSource<DepartmentUser> {
-		const initialData = this.route.snapshot.data['users'];
-		const dataSource = new DoTableDataSource<DepartmentUser>(initialData);
-		const id = this.route.snapshot.params['id'];
-		dataSource.dataService = {
-			loadData: this.apiService.findUsers.bind(this.apiService, id),
-			convertListParamsToRequestParams: this.convertListParamsToRequestParams.bind(this),
-		};
-		dataSource.sort = this.table.sort;
-		dataSource.filter = this.filter;
-		return dataSource;
+			this.tableConfigs.dataSource = this.dataSource;
+			this.tableOptions$ = this.tableConfigs.getTableOptions$();
+		});
 	}
 
 	private convertListParamsToRequestParams(params: ListParams): FindUsersParams {

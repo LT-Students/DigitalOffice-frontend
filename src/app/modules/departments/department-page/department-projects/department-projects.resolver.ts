@@ -3,16 +3,16 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { FindResponse } from '@app/types/operation-result-response.interface';
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { DepartmentProjectsApiService } from './services/department-projects-api.service';
+import { DepartmentPageStateService } from '../../department-id-route-container/department-page-state.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class DepartmentProjectsResolver implements Resolve<FindResponse<ProjectInfo>> {
-	constructor(private apiService: DepartmentProjectsApiService) {}
+	constructor(private depState: DepartmentPageStateService) {}
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<FindResponse<ProjectInfo>> {
 		const departmentId = route.params['id'];
-		return this.apiService.findDepartmentProjects(departmentId);
+		return this.depState.resolveProjects(departmentId);
 	}
 }

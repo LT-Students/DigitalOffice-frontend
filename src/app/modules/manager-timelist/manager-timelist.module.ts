@@ -6,9 +6,15 @@ import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ManagerTimelistComponent } from './manager-timelist.component';
 import { ManagerTimelistRoutingModule } from './manager-timelist-routing.module';
 import { AddLeaveTimeDialogComponent } from './add-leave-time-dialog/add-leave-time-dialog.component';
+import { EditableDateRangeComponent, EditableTimeComponent } from './custom-table-cells';
 
 @NgModule({
-	declarations: [ManagerTimelistComponent, AddLeaveTimeDialogComponent],
+	declarations: [
+		ManagerTimelistComponent,
+		AddLeaveTimeDialogComponent,
+		EditableDateRangeComponent,
+		EditableTimeComponent,
+	],
 	imports: [
 		ManagerTimelistRoutingModule,
 		SharedModule,

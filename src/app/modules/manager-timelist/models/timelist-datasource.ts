@@ -1,17 +1,34 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { SortDirection } from '@angular/material/sort';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { getUTCWithOffset, MAX_INT32 } from '@app/utils/utils';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { LeaveTimePath, PatchDocument } from '@app/types/edit-request';
 import { User } from '@app/models/user/user.model';
 import { TimeApiService } from '../services';
+import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
 import { LeaveTime, LeaveTimeFactory, UserStat, WorkTime } from './user-stat';
 import { TimelistEntityType } from './timelist-entity';
+import { AdditionalTimelistFilters } from './additional-filters';
 
 export class TimeListDataSource extends DataSource<UserStat> {
 	private data = new BehaviorSubject<UserStat[]>([]);
+
+	public set filter(filter: DynamicFilterComponent) {
+		this._filter = filter;
+	}
+	private _filter!: DynamicFilterComponent;
+
+	public set sort(sort: MatSort) {
+		this._sort = sort;
+	}
+	private _sort!: MatSort;
+
+	public set additionalFilters(additionalFilters: AdditionalTimelistFilters) {
+		this._additionalFilters = additionalFilters;
+	}
+	private _additionalFilters?: AdditionalTimelistFilters;
 
 	constructor(
 		data: UserStat[],
@@ -23,8 +40,20 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		this.data.next(data);
 	}
 
+	// sort and filter data on client until we start using server pagination
 	connect(collectionViewer: CollectionViewer): Observable<UserStat[]> {
-		return this.data.asObservable();
+		return merge(this._filter.filterChange, this._sort.sortChange).pipe(
+			startWith(null),
+			switchMap(() => this.data.asObservable()),
+			map((data) => this.filterByName(data)),
+			map((data) => {
+				if (this._additionalFilters) {
+					return this._additionalFilters.filterFn(data, this._filter.value);
+				}
+				return data;
+			}),
+			map((data) => this.sortStats(data))
+		);
 	}
 
 	disconnect(collectionViewer: CollectionViewer): void {}
@@ -42,22 +71,13 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		setTimeout(() => (scrollContainer.style.height = ''));
 	}
 
-	public loadStats(
-		entityId: string,
-		month: number,
-		year: number,
-		sort: SortDirection,
-		name: string
-	): Observable<UserStat[]> {
-		const sortOrder = this.getSortOrder(sort);
+	public loadStats(entityId: string, month: number, year: number): Observable<UserStat[]> {
 		return this.apiService
 			.findStats(this.entityType, entityId, {
 				month,
 				year,
 				skipCount: 0,
 				takeCount: MAX_INT32,
-				ascendingsort: sortOrder,
-				nameincludesubstring: name || undefined,
 			})
 			.pipe(tap((data: UserStat[]) => this.data.next(data)));
 	}
@@ -200,6 +220,37 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		});
 		this.setDataWithScroll(newData);
 		this.apiService.deleteLeaveTime(leaveTimeId).subscribe({ error: () => this.setDataWithScroll(oldData) });
+	}
+
+	private sortStats(stats: UserStat[]): UserStat[] {
+		const sortOrder = this.getSortOrder(this._sort.direction);
+		// sort alphabetically
+		stats.sort((u1, u2) => {
+			const u1Name = (u1.user.lastName + u1.user.firstName).toLowerCase();
+			const u2Name = (u2.user.lastName + u2.user.firstName).toLowerCase();
+			return u1Name.localeCompare(u2Name) * (sortOrder ? 1 : -1);
+		});
+		// sort pending users to the end of the list
+		stats.sort(({ user: u1 }, { user: u2 }) => {
+			if (u1.isPending) {
+				return 1;
+			}
+			if (u2.isPending) {
+				return -1;
+			}
+			return 0;
+		});
+		return stats;
+	}
+
+	private filterByName(stats: UserStat[]): UserStat[] {
+		const name = this._filter.value['name'];
+		return name
+			? stats.filter((u) => {
+					const fullName = `${u.user.lastName} ${u.user.firstName}`.toLowerCase();
+					return fullName.includes(name.toLowerCase());
+			  })
+			: stats;
 	}
 
 	private getSortOrder(sort: SortDirection): boolean {

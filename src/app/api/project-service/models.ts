@@ -1,7 +1,6 @@
 export { DepartmentInfo } from './models/department-info';
 export { PositionInfo } from './models/position-info';
 export { ImageContent } from './models/image-content';
-export { ImageInfo } from './models/image-info';
 export { FileAccessType } from './models/file-access-type';
 export { UserInfo } from './models/user-info';
 export { FileInfo } from './models/file-info';

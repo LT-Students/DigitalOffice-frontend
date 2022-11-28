@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, Input, OnDestroy } from '@angular/core';
+import { ComponentType } from '@angular/cdk/overlay';
 import { DynamicComponentHostDirective } from '@shared/directives/dynamic-component-host.directive';
-import { CellTypes } from './models';
+import { CellTypes, TableCell } from './models';
 import { CellFactoryService } from './cell-factory.service';
 
 @Component({
@@ -18,6 +19,8 @@ export class TableCellComponent implements OnInit, OnDestroy {
 	}
 	private _componentType: CellTypes = 'textCell';
 
+	@Input() customComponent?: ComponentType<TableCell<any>>;
+
 	@Input() cellValue: any;
 	@Input() cellParams: any;
 	@Input() row: any;
@@ -33,7 +36,7 @@ export class TableCellComponent implements OnInit, OnDestroy {
 	}
 
 	private loadCell(): void {
-		const componentRef = this.cellFactory.createCell(this._componentType, this.cellHost);
+		const componentRef = this.cellFactory.createCell(this.customComponent || this._componentType, this.cellHost);
 		componentRef.instance.value = this.cellValue;
 		componentRef.instance.params = this.cellParams;
 	}

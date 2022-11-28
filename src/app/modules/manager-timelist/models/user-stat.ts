@@ -7,16 +7,16 @@ import {
 	WorkTimeInfo,
 	WorkTimeMonthLimitInfo,
 } from '@api/time-service/models';
-import { ImageInfo } from '@app/models/image.model';
 import { TimeDuration } from '@app/services/time-duration.service';
 
 interface UserInfo {
 	firstName: string;
 	id: string;
-	avatar?: ImageInfo;
+	imageId?: string;
 	isActive: boolean;
 	lastName: string;
 	middleName?: string;
+	isPending?: boolean;
 	position?: { id: string; name: string };
 }
 
@@ -111,7 +111,7 @@ export class UserStat {
 	public limitInfo: WorkTimeMonthLimitInfo;
 
 	constructor(data: UserStatInfo) {
-		this.user = { ...data.user, avatar: data.user.image, position: data.position };
+		this.user = { ...data.user, position: data.position };
 		this.companyInfo = {
 			rate: data.companyUser?.rate || 1,
 			contractName: data.companyUser?.contractSubject?.name,

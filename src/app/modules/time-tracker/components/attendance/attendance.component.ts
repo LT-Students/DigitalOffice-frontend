@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
-import { forkJoin, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { first, skip, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { User } from '@app/models/user/user.model';
@@ -12,7 +12,6 @@ import {
 import {
 	AttendanceService,
 	AttendanceStoreService,
-	CanManageTimeInSelectedDateService,
 	LeaveTimeDatepickerService,
 	MonthNormService,
 } from '../../services';
@@ -26,8 +25,8 @@ import { CreateLeaveTimeService } from '../../services/create-leave-time.service
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		AttendanceService,
+		CanManageTimeInSelectedDate,
 		{ provide: LeaveTimeAndDatepickerManagement, useClass: LeaveTimeDatepickerService },
-		{ provide: CanManageTimeInSelectedDate, useClass: CanManageTimeInSelectedDateService },
 		{ provide: CreateLeaveTime, useClass: CreateLeaveTimeService },
 	],
 })
@@ -60,7 +59,7 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 		this.canManage.selectedDate$
 			.pipe(
 				skip(1),
-				switchMap(() => forkJoin([this.attendance.getMonthNorm(), this.attendance.getMonthActivities()])),
+				switchMap(() => merge(this.attendance.getMonthNorm(), this.attendance.getMonthActivities())),
 				takeUntil(this.destroy$)
 			)
 			.subscribe();

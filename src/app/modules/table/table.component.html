@@ -30,6 +30,7 @@
 			[style.max-width.px]="column.maxWidth"
 			><do-table-cell
 				[componentType]="column.type"
+				[customComponent]="column.customComponent"
 				[row]="row"
 				[cellValue]="column.valueGetter ? (row | execute: column.valueGetter) : row[column.field]"
 				[cellParams]="column.params"
@@ -40,7 +41,7 @@
 	<!-- Expanded row columns -->
 	<ng-container cdkColumnDef="expandedRow">
 		<cdk-cell *cdkCellDef="let row">
-			<div [@detailExpand]="([expandedElement, row] | execute: expandedRowComparator) ? 'expanded' : 'collapsed'">
+			<div *ngIf="[expandedElement, row] | execute: expandedRowComparator">
 				<ng-container *ngTemplateOutlet="expandedRowTemplate; context: row"></ng-container>
 			</div>
 		</cdk-cell>
@@ -49,10 +50,13 @@
 	<cdk-header-row *cdkHeaderRowDef="displayColumns" [ngClass]="rowClass"></cdk-header-row>
 	<cdk-row
 		*cdkRowDef="let row; columns: displayColumns"
-		(click)="handleRowClick(row)"
-		[ngClass]="rowClass"
-		[ngStyle]="rowStyle"
+		[ngClass]="getRowClass ? (row | execute: getRowClass) : rowClass"
+		[ngStyle]="getRowStyle ? (row | execute: getRowStyle) : rowStyle"
 		[style.height.px]="rowHeight || 'auto'"
+		[matTooltip]="getRowTooltip && (row | execute: getRowTooltip)"
+		[matTooltipPosition]="'above'"
+		[matTooltipDisabled]="getRowTooltip ? !(row | execute: getRowTooltip) : true"
+		(click)="handleRowClick(row)"
 	>
 	</cdk-row>
 	<cdk-row class="expanded-row" *cdkRowDef="let row; columns: ['expandedRow']; when: isRowExpandable"></cdk-row>

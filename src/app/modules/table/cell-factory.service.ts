@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, ComponentRef, Injectable } from '@angular/core';
+import { ComponentRef, Injectable } from '@angular/core';
 import { DynamicComponentHostDirective } from '@shared/directives/dynamic-component-host.directive';
 import { ComponentType } from '@angular/cdk/overlay';
 import { CELL_TYPES, CellTypes, TableCell } from './models';
@@ -7,14 +7,16 @@ import { CELL_TYPES, CellTypes, TableCell } from './models';
 export class CellFactoryService {
 	private componentRef?: ComponentRef<any>;
 
-	constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
+	constructor() {}
 
-	public createCell(cellType: CellTypes, cellHost: DynamicComponentHostDirective): ComponentRef<TableCell<any>> {
-		const component = this.getCellComponentByType(cellType);
-		const componentFactory = this.componentFactoryResolver.resolveComponentFactory<TableCell<any>>(component);
+	public createCell(
+		cellType: CellTypes | ComponentType<TableCell<any>>,
+		cellHost: DynamicComponentHostDirective
+	): ComponentRef<TableCell<any>> {
+		const component = typeof cellType === 'string' ? this.getCellComponentByType(cellType) : cellType;
 		const viewContainerRef = cellHost.viewContainerRef;
 		viewContainerRef.clear();
-		this.componentRef = viewContainerRef.createComponent(componentFactory);
+		this.componentRef = viewContainerRef.createComponent(component);
 		return this.componentRef;
 	}
 

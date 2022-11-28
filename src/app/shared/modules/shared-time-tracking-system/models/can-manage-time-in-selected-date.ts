@@ -1,16 +1,21 @@
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { PortalInfoService } from '@app/services/portal-info.service';
 import { LAST_DAY_TO_FILL_HOURS } from '@shared/modules/shared-time-tracking-system/models/constants';
-import { first } from 'rxjs/operators';
 
-export abstract class CanManageTimeInSelectedDate {
+@Injectable()
+export class CanManageTimeInSelectedDate {
 	private readonly selectedDate = new BehaviorSubject(DateTime.now());
 	public readonly selectedDate$ = this.selectedDate.asObservable();
 
 	private readonly canEdit = new BehaviorSubject(this.canEditTime());
 	public readonly canEdit$ = this.canEdit.asObservable();
 
-	constructor() {}
+	public readonly minDate$ = this.portalInfo.portal$.pipe(map((portal) => DateTime.fromISO(portal.createdAtUtc)));
+
+	constructor(private portalInfo: PortalInfoService) {}
 
 	public setNewDate(date: DateTime): void {
 		this.selectedDate.next(date);

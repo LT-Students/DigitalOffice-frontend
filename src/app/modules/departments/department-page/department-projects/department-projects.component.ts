@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
 import { AppRoutes } from '@app/models/app-routes';
@@ -10,6 +10,7 @@ import { Icons } from '@shared/modules/icons/icons';
 import { TableComponent } from '../../../table/table.component';
 import { DynamicFilterComponent } from '../../../dynamic-filter/dynamic-filter.component';
 import { DepartmentPermissionService } from '../../services/department-permission.service';
+import { DepartmentPageStateService } from '../../department-id-route-container/department-page-state.service';
 import { TableConfigsService } from './services/table-configs.service';
 import { DepartmentProjectsApiService, FindProjectsParams } from './services/department-projects-api.service';
 import { TransferProjectsDialogComponent } from './transfer-projects-dialog/transfer-projects-dialog.component';
@@ -33,6 +34,7 @@ export class DepartmentProjectsComponent implements OnInit {
 	public canTransferProjects$ = this.departmentPermissions.canTransferProjects$(this.route.snapshot.params['id']);
 
 	constructor(
+		private depState: DepartmentPageStateService,
 		private tableConfigs: TableConfigsService,
 		private departmentPermissions: DepartmentPermissionService,
 		private router: Router,
@@ -43,7 +45,7 @@ export class DepartmentProjectsComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
-		this.dataSource = this.createDataSource();
+		this.createDataSource();
 	}
 
 	public transferProjects(): void {
@@ -63,17 +65,17 @@ export class DepartmentProjectsComponent implements OnInit {
 		this.router.navigate([AppRoutes.Projects, p.id]);
 	}
 
-	private createDataSource(): DoTableDataSource<ProjectInfo> {
-		const initialData = this.route.snapshot.data['projects'];
-		const dataSource = new DoTableDataSource<ProjectInfo>(initialData);
-		const id = this.route.snapshot.params['id'];
-		dataSource.dataService = {
-			loadData: this.apiService.findDepartmentProjects.bind(this.apiService, id),
-			convertListParamsToRequestParams: this.convertListParamsToRequestParams.bind(this),
-		};
-		dataSource.sort = this.table.sort;
-		dataSource.filter = this.filter;
-		return dataSource;
+	private createDataSource(): void {
+		this.depState.projects$.pipe(first()).subscribe((projects) => {
+			this.dataSource = new DoTableDataSource<ProjectInfo>(projects);
+			const id = this.route.snapshot.params['id'];
+			this.dataSource.dataService = {
+				loadData: this.apiService.findDepartmentProjects.bind(this.apiService, id),
+				convertListParamsToRequestParams: this.convertListParamsToRequestParams.bind(this),
+			};
+			this.dataSource.sort = this.table.sort;
+			this.dataSource.filter = this.filter;
+		});
 	}
 
 	private convertListParamsToRequestParams(params: ListParams): FindProjectsParams {

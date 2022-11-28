@@ -15,7 +15,6 @@ import {
 import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { SelectionModel } from '@app/utils/selection-model';
 import { CdkNoDataRow, CdkTable } from '@angular/cdk/table';
@@ -29,13 +28,6 @@ import { ColumnDef, TableOptions } from './models';
 	styleUrls: ['./table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	animations: [
-		trigger('detailExpand', [
-			state('collapsed', style({ height: '0px', minHeight: '0' })),
-			state('expanded', style({ height: '*' })),
-			transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-		]),
-	],
 })
 export class TableComponent<T> implements OnInit, AfterContentInit {
 	@ContentChild(CdkNoDataRow) noDataRow?: CdkNoDataRow;
@@ -57,7 +49,10 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 			this.columns = options.columns || this._columns;
 			this._rowHeight = options.rowHeight || this._rowHeight;
 			this._rowStyle = options.rowStyle || this._rowStyle;
+			this._getRowStyle = options.getRowStyle || this._getRowStyle;
 			this._rowClass = options.rowClass || this._rowClass;
+			this._getRowClass = options.getRowClass || this._getRowClass;
+			this._getRowTooltip = options.getRowTooltip || this._getRowTooltip;
 			this.contextMenuItems = options.contextMenuItems || this.contextMenuItems;
 			this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
 			this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
@@ -87,13 +82,40 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 	private _rowStyle = {};
 
 	@Input()
-	set rowClass(className: string) {
+	set getRowStyle(getRowStyle: ((row: T) => { [key: string]: any }) | null) {
+		this._getRowStyle = getRowStyle;
+	}
+	get getRowStyle(): ((row: T) => { [key: string]: any }) | null {
+		return this._getRowStyle;
+	}
+	private _getRowStyle: ((row: T) => { [key: string]: any }) | null = null;
+
+	@Input()
+	set rowClass(className: string | string[]) {
 		this._rowClass = className;
 	}
-	get rowClass(): string {
+	get rowClass(): string | string[] {
 		return this._rowClass;
 	}
-	private _rowClass = '';
+	private _rowClass: string | string[] = '';
+
+	@Input()
+	set getRowClass(getRowClass: ((row: T) => string | string[]) | null) {
+		this._getRowClass = getRowClass;
+	}
+	get getRowClass(): ((row: T) => string | string[]) | null {
+		return this._getRowClass;
+	}
+	private _getRowClass: ((row: T) => string | string[]) | null = null;
+
+	@Input()
+	set getRowTooltip(getRowTooltip: ((row: T) => string | null) | null) {
+		this._getRowTooltip = getRowTooltip;
+	}
+	get getRowTooltip(): ((row: T) => string | null) | null {
+		return this._getRowTooltip;
+	}
+	private _getRowTooltip: ((row: T) => string | null) | null = null;
 
 	@Input() dataSource!: T[] | DataSource<T> | Observable<readonly T[]>;
 	@Input()
